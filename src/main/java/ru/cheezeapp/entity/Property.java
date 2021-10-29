@@ -25,6 +25,9 @@ public class Property {
     @Column
     Long cypher;
 
+    /**
+     * Функция или не функция (1 или 0)
+     */
     @Column
     Boolean propertyType;
 

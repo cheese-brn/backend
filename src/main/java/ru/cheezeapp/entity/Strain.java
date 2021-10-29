@@ -15,15 +15,27 @@ public class Strain {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    /**
+     * Наименование
+     */
     @Column
     String exemplar;
 
+    /**
+     * Модификация
+     */
     @Column
     String modification;
 
+    /**
+     * Способ получения
+     */
     @Column
     String obtainingMethod;
 
+    /**
+     * Происхождение
+     */
     @Column
     String origin;
 
@@ -35,6 +47,9 @@ public class Strain {
     @JoinColumn(name = "strain_id", referencedColumnName = "id")
     List<FactParametrFunc> factParametrsFunc;
 
+    /**
+     * Другие сведения
+     */
     @Column
     String annotation;
 }
