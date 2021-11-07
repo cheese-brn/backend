@@ -14,7 +14,7 @@ import java.util.List;
 @ToString
 @Entity
 @Table(name = "property")
-public class Property {
+public class PropertyEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
@@ -34,12 +34,12 @@ public class Property {
     @Column
     String description;
 
-    @OneToMany(targetEntity = FactParametr.class, cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = FactParametrEntity.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "property_id", referencedColumnName = "id")
-    List<FactParametr> factParametrs;
+    List<FactParametrEntity> factParametrs;
 
-    @OneToMany(targetEntity = SubProperty.class, cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = SubPropertyEntity.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "property_id", referencedColumnName = "id")
-    List<SubProperty> subProperties;
+    List<SubPropertyEntity> subProperties;
 }
 
