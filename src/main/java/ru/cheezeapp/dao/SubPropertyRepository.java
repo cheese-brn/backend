@@ -1,7 +1,7 @@
 package ru.cheezeapp.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.cheezeapp.entity.SubProperty;
+import ru.cheezeapp.entity.SubPropertyEntity;
 
-public interface SubPropertyRepository extends JpaRepository<SubProperty, Long> {
+public interface SubPropertyRepository extends JpaRepository<SubPropertyEntity, Long> {
 }

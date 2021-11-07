@@ -1,7 +1,7 @@
 package ru.cheezeapp.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.cheezeapp.entity.FactParametrFunc;
+import ru.cheezeapp.entity.FactParametrFuncEntity;
 
-public interface FactParametrFuncRepository extends JpaRepository<FactParametrFunc, Long> {
+public interface FactParametrFuncRepository extends JpaRepository<FactParametrFuncEntity, Long> {
 }

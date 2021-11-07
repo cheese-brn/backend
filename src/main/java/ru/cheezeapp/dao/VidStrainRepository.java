@@ -1,7 +1,7 @@
 package ru.cheezeapp.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.cheezeapp.entity.VidStrain;
+import ru.cheezeapp.entity.VidStrainEntity;
 
-public interface VidStrainRepository extends JpaRepository<VidStrain, Long> {
+public interface VidStrainRepository extends JpaRepository<VidStrainEntity, Long> {
 }
