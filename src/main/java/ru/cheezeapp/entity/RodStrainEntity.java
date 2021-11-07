@@ -9,8 +9,8 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name = "vid_strain")
-public class VidStrain {
+@Table(name = "rod_strain")
+public class RodStrainEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
@@ -21,7 +21,7 @@ public class VidStrain {
     @Column
     Long cypher;
 
-    @OneToMany(targetEntity = Strain.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "vid_id", referencedColumnName = "id")
-    List<Strain> strains;
+    @OneToMany(targetEntity = VidStrainEntity.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "rod_id", referencedColumnName = "id")
+    List<VidStrainEntity> vids;
 }

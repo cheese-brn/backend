@@ -1,24 +1,21 @@
 package ru.cheezeapp.model;
 
-import ru.cheezeapp.entity.FactParametr;
-import ru.cheezeapp.entity.SubProperty;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.List;
 
-public class PropertyModel {
-
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+public class Property {
     Long id;
-
     String name;
-
     Long cypher;
-
     Boolean propertyType;
-
     String description;
-
-    List<FactParametr> factParametrs;
-
     List<SubProperty> subProperties;
-
 }

@@ -12,12 +12,19 @@ import javax.persistence.*;
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name = "fact_param")
-public class FactParametr {
+@Table(name = "fact_param_func")
+public class FactParametrFuncEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
     @Column
-    String value;
+    String firstParametr;
+
+    @Column
+    String secondParametr;
+
+    @Column
+    String thirdParametr;
+
 }

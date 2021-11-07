@@ -10,7 +10,7 @@ import java.util.List;
 @ToString
 @Entity
 @Table(name = "strain")
-public class Strain {
+public class StrainEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
@@ -27,13 +27,13 @@ public class Strain {
     @Column
     String origin;
 
-    @OneToMany(targetEntity = FactParametr.class, cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = FactParametrEntity.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "strain_id", referencedColumnName = "id")
-    List<FactParametr> factParametrs;
+    List<FactParametrEntity> factParametrs;
 
-    @OneToMany(targetEntity = FactParametrFunc.class, cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = FactParametrFuncEntity.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "strain_id", referencedColumnName = "id")
-    List<FactParametrFunc> factParametrsFunc;
+    List<FactParametrFuncEntity> factParametrsFunc;
 
     @Column
     String annotation;
