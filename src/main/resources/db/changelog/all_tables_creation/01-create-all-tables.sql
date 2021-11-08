@@ -16,8 +16,8 @@ GO
 create table dependency_table
 (
     id                    bigserial UNIQUE NOT NULL,
-    second_subproperty_id bigint,
     first_subproperty_id  bigint,
+    second_subproperty_id bigint,
     constraint dependency_table_pkey
         primary key (id)
 );
