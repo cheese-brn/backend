@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <include file="dependency_table-table/01-changeset-add-fk-dependency_table-table.xml" relativeToChangelogFile="true"/>
+    <include file="fact_param-table/02-changeset-add-fk-fact_param-table.xml" relativeToChangelogFile="true"/>
+    <include file="fact_param_func-table/03-changeset-add-fk-fact_param_func-table.xml" relativeToChangelogFile="true"/>
+    <include file="strain-table/04-changeset-add-fk-strain-table.xml" relativeToChangelogFile="true"/>
+    <include file="subproperty-table/05-changeset-add-fk-subproperty-table.xml" relativeToChangelogFile="true"/>
+    <include file="vid_strain-table/06-changeset-add-fk-vid_strain-table.xml" relativeToChangelogFile="true"/>
+
+</databaseChangeLog>
