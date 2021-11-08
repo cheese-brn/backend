@@ -10,31 +10,46 @@ import java.util.List;
 @ToString
 @Entity
 @Table(name = "strain")
-public class Strain {
+public class StrainEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    /**
+     * Наименование
+     */
     @Column
     String exemplar;
 
+    /**
+     * Модификация
+     */
     @Column
     String modification;
 
+    /**
+     * Способ получения
+     */
     @Column
     String obtainingMethod;
 
+    /**
+     * Происхождение
+     */
     @Column
     String origin;
 
-    @OneToMany(targetEntity = FactParametr.class, cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = FactParametrEntity.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "strain_id", referencedColumnName = "id")
-    List<FactParametr> factParametrs;
+    List<FactParametrEntity> factParametrs;
 
-    @OneToMany(targetEntity = FactParametrFunc.class, cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = FactParametrFuncEntity.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "strain_id", referencedColumnName = "id")
-    List<FactParametrFunc> factParametrsFunc;
+    List<FactParametrFuncEntity> factParametrsFunc;
 
+    /**
+     * Другие сведения
+     */
     @Column
     String annotation;
 }

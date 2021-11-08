@@ -14,7 +14,7 @@ import java.util.List;
 @ToString
 @Entity
 @Table(name = "data_type")
-public class DataType {
+public class DataTypeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
@@ -22,7 +22,7 @@ public class DataType {
     @Column
     String name;
 
-    @OneToMany(targetEntity = SubProperty.class, cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = SubPropertyEntity.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "datatype_id", referencedColumnName = "id")
-    List<SubProperty> subProperties;
+    List<SubPropertyEntity> subProperties;
 }

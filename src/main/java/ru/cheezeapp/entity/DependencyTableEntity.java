@@ -6,25 +6,20 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name = "fact_param_func")
-public class FactParametrFunc {
+@Table(name = "dependency_table")
+public class DependencyTableEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column
-    String firstParametr;
-
-    @Column
-    String secondParametr;
-
-    @Column
-    String thirdParametr;
-
+    @OneToMany(targetEntity = FactParametrFuncEntity.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "dependency_table_id", referencedColumnName = "id")
+    List<FactParametrFuncEntity> factParametrsFunc;
 }
