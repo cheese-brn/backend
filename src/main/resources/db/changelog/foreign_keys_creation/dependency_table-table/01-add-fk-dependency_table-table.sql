@@ -1,8 +1,8 @@
 alter table dependency_table
-    add constraint first_subproperty_fk
+    add constraint fk_first_subproperty_id
         foreign key ("first_subproperty_id")
             references subproperty ("id"),
-    add constraint second_subproperty_fk
+    add constraint fk_second_subproperty_id
         foreign key ("second_subproperty_id")
             references subproperty ("id");
 
