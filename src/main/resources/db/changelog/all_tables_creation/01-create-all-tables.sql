@@ -35,8 +35,9 @@ create table fact_param
     value       varchar(255),
     strain_id   bigint,
     property_id bigint,
+    subproperty_id bigint,
     constraint fact_param_pkey
-        primary key(id, strain_id, property_id)
+        primary key(id, strain_id, property_id, subproperty_id)
 );
 
 GO
