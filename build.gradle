@@ -31,6 +31,8 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.5.2'
     liquibaseRuntime 'org.postgresql:postgresql:42.2.23'
     liquibaseRuntime 'org.liquibase:liquibase-core:4.3.5'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.12.1'
+
 }
 
 liquibase {
