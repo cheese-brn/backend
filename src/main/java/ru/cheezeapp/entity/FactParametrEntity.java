@@ -1,23 +1,52 @@
 package ru.cheezeapp.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Data
+/**
+ * Сущность фактического параметра
+ */
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Entity
 @Table(name = "fact_param")
 public class FactParametrEntity {
+    /**
+     * ID параметра
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     Long id;
 
-    @Column
+    /**
+     * Значение
+     */
+    @Column(name = "value")
     String value;
+
+    /**
+     * Внешний ключ на сущность {@link StrainEntity}
+     */
+    @ManyToOne
+    @JoinColumn(name = "strain_id", nullable = false)
+    StrainEntity strain;
+
+    /**
+     * Внешний ключ на сущность {@link PropertyEntity}
+     */
+    @ManyToOne
+    @JoinColumn(name = "property_id", nullable = false)
+    PropertyEntity property;
+
+    /**
+     * Внешний ключ на сущность {@link SubPropertyEntity}
+     */
+    @ManyToOne
+    @JoinColumn(name = "subproperty_id", nullable = false)
+    SubPropertyEntity subProperty;
+
 }

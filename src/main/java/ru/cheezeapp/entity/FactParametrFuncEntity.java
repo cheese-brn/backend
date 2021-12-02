@@ -1,30 +1,57 @@
 package ru.cheezeapp.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Data
+/**
+ * Сущность фактического параметра функции
+ */
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Entity
 @Table(name = "fact_param_func")
 public class FactParametrFuncEntity {
+    /**
+     * ID
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     Long id;
 
-    @Column
+    /**
+     * Первый параметр
+     */
+    @Column(name = "first_parametr")
     String firstParametr;
 
-    @Column
+    /**
+     * Второй параметр
+     */
+    @Column(name = "second_parametr")
     String secondParametr;
 
-    @Column
+    /**
+     * Третий параметр
+     */
+    @Column(name = "third_parametr")
     String thirdParametr;
+
+    /**
+     * Внешний ключ на сущность {@link StrainEntity}
+     */
+    @ManyToOne
+    @JoinColumn(name = "strain_id", nullable = false)
+    StrainEntity strain;
+
+    /**
+     * Внешний ключ на сущность {@link DependencyTableEntity}
+     */
+    @ManyToOne
+    @JoinColumn(name = "dependency_table_id", nullable = false)
+    DependencyTableEntity dependencyTable;
 
 }

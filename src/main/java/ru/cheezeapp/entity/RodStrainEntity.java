@@ -3,25 +3,42 @@ package ru.cheezeapp.entity;
 import lombok.*;
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
-@Data
+/**
+ * Сущность рода
+ */
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Entity
 @Table(name = "rod_strain")
 public class RodStrainEntity {
+    /**
+     * ID рода
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     Long id;
 
-    @Column
-    String name;
-
-    @Column
+    /**
+     * Шифр
+     */
+    @Column(name = "cypher")
     Long cypher;
 
-    @OneToMany(targetEntity = VidStrainEntity.class, cascade = CascadeType.ALL)
+    /**
+     * Наименование
+     */
+    @Column(name = "name")
+    String name;
+
+    /**
+     * Связь один-ко-многим с {@link VidStrainEntity}
+     */
+    @OneToMany(targetEntity = VidStrainEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "rod_id", referencedColumnName = "id")
     List<VidStrainEntity> vids;
 }

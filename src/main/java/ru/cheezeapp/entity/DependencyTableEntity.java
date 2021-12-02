@@ -1,23 +1,41 @@
 package ru.cheezeapp.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
 
-@Data
+/**
+ * Сущность таблицы зависимостей
+ */
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Entity
 @Table(name = "dependency_table")
 public class DependencyTableEntity {
+    /**
+     * ID зависимости
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     Long id;
+
+    /**
+     * Внешний ключ на сущность {@link SubPropertyEntity} для первого подсвойства зависимости
+     */
+    @ManyToOne
+    @JoinColumn(name = "first_subproperty_id", nullable = false)
+    SubPropertyEntity firstSubProperty;
+
+    /**
+     * Внешний ключ на сущность {@link SubPropertyEntity} для второго подсвойства зависимости
+     */
+    @ManyToOne
+    @JoinColumn(name = "second_subproperty_id", nullable = false)
+    SubPropertyEntity secondSubProperty;
 
     @OneToMany(targetEntity = FactParametrFuncEntity.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "dependency_table_id", referencedColumnName = "id")
