@@ -46,14 +46,14 @@ public class SubPropertyEntity {
     /**
      * Связь один-ко-многим с {@link DependencyTableEntity} для первого параметра зависимости
      */
-    @OneToMany(targetEntity = DependencyTableEntity.class, cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = DependencyTableEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "first_subproperty_id", referencedColumnName = "id")
     List<DependencyTableEntity> firstSubproperty;
 
     /**
      * Связь один-ко-многим с {@link DependencyTableEntity} для второго параметра зависимости
      */
-    @OneToMany(targetEntity = DependencyTableEntity.class, cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = DependencyTableEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "second_subproperty_id", referencedColumnName = "id")
     List<DependencyTableEntity> secondSubproperty;
 }

@@ -32,7 +32,7 @@ public class DataTypeEntity {
     /**
      * Связь один-ко-многим с {@link SubPropertyEntity} для первого параметра зависимости
      */
-    @OneToMany(targetEntity = SubPropertyEntity.class, cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = SubPropertyEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "datatype_id", referencedColumnName = "id")
     List<SubPropertyEntity> subProperties;
 }

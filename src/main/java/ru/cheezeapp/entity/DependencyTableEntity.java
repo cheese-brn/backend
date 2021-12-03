@@ -37,7 +37,7 @@ public class DependencyTableEntity {
     @JoinColumn(name = "second_subproperty_id", nullable = false)
     SubPropertyEntity secondSubProperty;
 
-    @OneToMany(targetEntity = FactParametrFuncEntity.class, cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = FactParametrFuncEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "dependency_table_id", referencedColumnName = "id")
     List<FactParametrFuncEntity> factParametrsFunc;
 }

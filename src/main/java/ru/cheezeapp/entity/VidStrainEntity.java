@@ -1,5 +1,6 @@
 package ru.cheezeapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import javax.persistence.*;
 import java.util.List;
@@ -44,7 +45,7 @@ public class VidStrainEntity {
     /**
      * Связь один-ко-многим с {@link StrainEntity}
      */
-    @OneToMany(targetEntity = StrainEntity.class, cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = StrainEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "vid_id", referencedColumnName = "id")
     List<StrainEntity> strains;
 }

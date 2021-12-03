@@ -1,5 +1,6 @@
 package ru.cheezeapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import javax.persistence.*;
 import java.util.List;
@@ -62,14 +63,14 @@ public class StrainEntity {
     /**
      * Связь один-ко-многим с {@link FactParametrEntity}
      */
-    @OneToMany(targetEntity = FactParametrEntity.class, cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = FactParametrEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "strain_id", referencedColumnName = "id")
     List<FactParametrEntity> factParametrs;
 
     /**
      * Связь один-ко-многим с {@link FactParametrFuncEntity}
      */
-    @OneToMany(targetEntity = FactParametrFuncEntity.class, cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = FactParametrFuncEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "strain_id", referencedColumnName = "id")
     List<FactParametrFuncEntity> factParametrsFunc;
 

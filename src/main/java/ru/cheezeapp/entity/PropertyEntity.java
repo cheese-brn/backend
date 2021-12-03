@@ -1,5 +1,6 @@
 package ru.cheezeapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -50,14 +51,14 @@ public class PropertyEntity {
     /**
      * Связь один-ко-многим с {@link FactParametrEntity}
      */
-    @OneToMany(targetEntity = FactParametrEntity.class, cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = FactParametrEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "property_id", referencedColumnName = "id")
     List<FactParametrEntity> factParametrs;
 
     /**
      * Связь один-ко-многим с {@link SubPropertyEntity}
      */
-    @OneToMany(targetEntity = SubPropertyEntity.class, cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = SubPropertyEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "property_id", referencedColumnName = "id")
     List<SubPropertyEntity> subProperties;
 }
