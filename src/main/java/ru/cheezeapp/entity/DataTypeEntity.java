@@ -1,27 +1,37 @@
 package ru.cheezeapp.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
 
-@Data
+/**
+ * Сущность типа данных
+ */
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Entity
 @Table(name = "data_type")
 public class DataTypeEntity {
+    /**
+     * ID типа данных
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     Long id;
 
-    @Column
+    /**
+     * Наименование
+     */
+    @Column(name = "name")
     String name;
 
+    /**
+     * Связь один-ко-многим с {@link SubPropertyEntity} для первого параметра зависимости
+     */
     @OneToMany(targetEntity = SubPropertyEntity.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "datatype_id", referencedColumnName = "id")
     List<SubPropertyEntity> subProperties;
