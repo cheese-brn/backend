@@ -1,22 +1,64 @@
 package ru.cheezeapp.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+import ru.cheezeapp.entity.FactParametrEntity;
+import ru.cheezeapp.entity.VidStrainEntity;
 
 import java.util.List;
 
-@Data
+/**
+ * Канальная модель штамма
+ */
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class Strain {
-    Long id;
-    String exemplar;
-    String modification;
-    String obtainingMethod;
-    String origin;
-    List<Property> properties;
-    String annotation;
+
+    /**
+     * ID штамма
+     */
+    private Long id;
+
+    /**
+     * Другие сведения
+     */
+    private String annotation;
+
+    /**
+     * Наименование
+     */
+    private String exemplar;
+
+    /**
+     * Модификация
+     */
+    private String modification;
+
+    /**
+     * Способ получения
+     */
+    private String obtainingMethod;
+
+    /**
+     * Происхождение
+     */
+    private String origin;
+
+    /**
+     * Внешний ключ на штамм
+     */
+    @JsonIgnore
+    private VidStrainEntity vidStrain;
+
+    /**
+     * Фактические параметры
+     */
+    private List<FactParametr> factParametrs;
+
+    /**
+     * Фактические параметры функции
+     */
+    private List<FactParametrFunc> factParametrsFunc;
 }
