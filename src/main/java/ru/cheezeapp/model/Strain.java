@@ -12,6 +12,7 @@ import java.util.List;
  */
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Strain {
@@ -20,6 +21,16 @@ public class Strain {
      * ID штамма
      */
     private Long id;
+
+    /**
+     * Род
+     */
+    private String rod;
+
+    /**
+     * Вид
+     */
+    private String vid;
 
     /**
      * Другие сведения

@@ -1,10 +1,7 @@
 package ru.cheezeapp.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import ru.cheezeapp.entity.FactParametrFuncEntity;
 import ru.cheezeapp.entity.SubPropertyEntity;
 
@@ -15,6 +12,7 @@ import java.util.List;
  */
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class DependencyTable {

@@ -1,10 +1,7 @@
 package ru.cheezeapp.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import ru.cheezeapp.entity.PropertyEntity;
 import ru.cheezeapp.entity.StrainEntity;
 import ru.cheezeapp.entity.SubPropertyEntity;
@@ -14,6 +11,7 @@ import ru.cheezeapp.entity.SubPropertyEntity;
  */
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class FactParametr {
@@ -31,7 +29,6 @@ public class FactParametr {
     /**
      * Штамм, к которому относится данный параметр
      */
-    @JsonIgnore
     private StrainEntity strain;
 
     /**

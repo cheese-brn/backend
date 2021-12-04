@@ -1,10 +1,7 @@
 package ru.cheezeapp.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import ru.cheezeapp.entity.DependencyTableEntity;
 import ru.cheezeapp.entity.StrainEntity;
 
@@ -13,6 +10,7 @@ import ru.cheezeapp.entity.StrainEntity;
  */
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class FactParametrFunc {
