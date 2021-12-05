@@ -2,6 +2,7 @@ package ru.cheezeapp.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
@@ -40,7 +41,8 @@ public class RodStrainEntity {
     /**
      * Связь один-ко-многим с {@link VidStrainEntity}
      */
-    @OneToMany(targetEntity = VidStrainEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(targetEntity = VidStrainEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY,
+            orphanRemoval = true)
     @JoinColumn(name = "rod_id", referencedColumnName = "id")
     List<VidStrainEntity> vids;
 }

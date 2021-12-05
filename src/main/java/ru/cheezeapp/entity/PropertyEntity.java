@@ -52,14 +52,16 @@ public class PropertyEntity {
     /**
      * Связь один-ко-многим с {@link FactParametrEntity}
      */
-    @OneToMany(targetEntity = FactParametrEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(targetEntity = FactParametrEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY,
+            orphanRemoval = true)
     @JoinColumn(name = "property_id", referencedColumnName = "id")
     List<FactParametrEntity> factParametrs;
 
     /**
      * Связь один-ко-многим с {@link SubPropertyEntity}
      */
-    @OneToMany(targetEntity = SubPropertyEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(targetEntity = SubPropertyEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY,
+            orphanRemoval = true)
     @JoinColumn(name = "property_id", referencedColumnName = "id")
     List<SubPropertyEntity> subProperties;
 }
