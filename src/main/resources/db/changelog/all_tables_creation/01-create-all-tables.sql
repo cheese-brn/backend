@@ -1,9 +1,9 @@
 create table data_type
 (
-    id   bigserial
-        constraint data_type_pkey
-            primary key,
-    name varchar(255)
+    id   bigserial UNIQUE NOT NULL,
+    name varchar(255),
+    constraint data_type_pkey
+        primary key (id)
 );
 
 GO
@@ -31,13 +31,14 @@ GO
 
 create table fact_param
 (
-    id          bigserial UNIQUE NOT NULL,
-    value       varchar(255),
-    strain_id   bigint,
-    property_id bigint,
+    id             bigserial UNIQUE NOT NULL,
+    value          varchar(255),
+    strain_id      bigint,
+    property_id    bigint,
     subproperty_id bigint,
     constraint fact_param_pkey
-        primary key(id, strain_id, property_id, subproperty_id)
+        primary key (id)
+
 );
 
 GO
@@ -56,7 +57,7 @@ create table fact_param_func
     strain_id           bigint,
     dependency_table_id bigint,
     constraint fact_param_func_pkey
-        primary key(id, strain_id, dependency_table_id)
+        primary key (id)
 );
 
 GO
@@ -68,13 +69,13 @@ GO
 
 create table property
 (
-    id            bigserial
-        constraint property_pkey
-            primary key,
+    id            bigserial UNIQUE NOT NULL,
     cypher        bigint,
     description   varchar(255),
     name          varchar(255),
-    property_type boolean
+    property_type boolean,
+    constraint property_pkey
+        primary key (id)
 );
 
 GO
@@ -86,11 +87,11 @@ GO
 
 create table rod_strain
 (
-    id     bigserial
-        constraint rod_strain_pkey
-            primary key,
+    id     bigserial UNIQUE NOT NULL,
     cypher bigint,
-    name   varchar(255)
+    name   varchar(255),
+    constraint rod_strain_pkey
+        primary key (id)
 );
 
 GO
@@ -110,7 +111,7 @@ create table strain
     origin           varchar(255),
     vid_id           bigint,
     constraint strain_pkey
-        primary key(id, vid_id)
+        primary key (id)
 );
 
 GO
@@ -127,7 +128,7 @@ create table subproperty
     property_id bigint,
     datatype_id bigint,
     constraint subproperty_pkey
-        primary key(id, property_id)
+        primary key (id)
 );
 
 GO
@@ -144,7 +145,7 @@ create table vid_strain
     name   varchar(255),
     rod_id bigint,
     constraint vid_strain_pkey
-        primary key (id, rod_id)
+        primary key (id)
 );
 
 GO
