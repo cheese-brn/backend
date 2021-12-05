@@ -5,12 +5,11 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import ru.cheezeapp.entity.FactParametrEntity;
-import ru.cheezeapp.entity.PropertyEntity;
-import ru.cheezeapp.entity.StrainEntity;
+import ru.cheezeapp.entity.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -68,5 +67,94 @@ public class ObjectToJsonConverter {
         }
     }
 
+    public static String vidListToJson(List<VidStrainEntity> vids) {
+        ArrayNode arrayNode = mapper.createArrayNode();
+        for (VidStrainEntity vid : vids) {
+            ObjectNode vidNode = mapper.createObjectNode();
+            vidNode.put("name", vid.getName());
+            vidNode.put("id", vid.getId());
+            vidNode.put("childrenCount", vid.getStrains().size());
+            arrayNode.add(vidNode);
+        }
+        try {
+            return mapper.writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(arrayNode).replace("\\", "");
+        }
+        catch (Exception e) {
+            return null;
+        }
 
+    }
+
+    public static String rodListToJson(List<RodStrainEntity> rods) {
+        ArrayNode arrayNode = mapper.createArrayNode();
+        for (RodStrainEntity rod : rods) {
+            ObjectNode rodNode = mapper.createObjectNode();
+            rodNode.put("name", rod.getName());
+            rodNode.put("id", rod.getId());
+            rodNode.put("childrenCount", rod.getVids().size());
+            arrayNode.add(rodNode);
+        }
+        try {
+            return mapper.writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(arrayNode).replace("\\", "");
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static String strainListToJson(List<StrainEntity> strains) {
+        ArrayNode arrayNode = mapper.createArrayNode();
+        for (StrainEntity strain : strains) {
+            ObjectNode vidNode = mapper.createObjectNode();
+            vidNode.put("name",
+                    strain.getVidStrain().getRodStrain().getName() + " " + strain.getVidStrain().getName() +
+                            " " + strain.getExemplar() + " " + strain.getModification());
+            vidNode.put("id", strain.getId());
+            arrayNode.add(vidNode);
+        }
+        try {
+            return mapper.writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(arrayNode).replace("\\", "");
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static String propertyListToJson(List<PropertyEntity> properties) {
+        ArrayNode arrayNode = mapper.createArrayNode();
+        for (PropertyEntity property : properties) {
+            ObjectNode propertyNode = mapper.createObjectNode();
+            propertyNode.put("name", property.getName());
+            propertyNode.put("id", property.getId());
+            arrayNode.add(propertyNode);
+        }
+        try {
+            return mapper.writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(arrayNode).replace("\\", "");
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static String subpropertyListToJson(List<SubPropertyEntity> subproperties) {
+        ArrayNode arrayNode = mapper.createArrayNode();
+        for (SubPropertyEntity subproperty : subproperties) {
+            ObjectNode subpropertyNode = mapper.createObjectNode();
+            subpropertyNode.put("name", subproperty.getName());
+            subpropertyNode.put("id", subproperty.getId());
+            subpropertyNode.put("datatype", subproperty.getDataType().getName());
+            arrayNode.add(subpropertyNode);
+        }
+        try {
+            return mapper.writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(arrayNode).replace("\\", "");
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
 }
