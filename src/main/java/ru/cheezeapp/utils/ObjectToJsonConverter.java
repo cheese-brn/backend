@@ -52,6 +52,7 @@ public class ObjectToJsonConverter {
             propertyNode.put("description", property.getDescription());
             for (FactParametrEntity factParametr : Objects.requireNonNull(propertyMap.get(property))) {
                 ObjectNode factParamNode = mapper.createObjectNode();
+                factParamNode.put("id", factParametr.getSubProperty().getId());
                 factParamNode.put("name", factParametr.getSubProperty().getName());
                 factParamNode.put("value", factParametr.getValue());
                 factParamNodes.add(factParamNode);
