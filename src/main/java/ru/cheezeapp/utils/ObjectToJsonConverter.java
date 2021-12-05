@@ -9,6 +9,8 @@ import ru.cheezeapp.entity.FactParametrEntity;
 import ru.cheezeapp.entity.PropertyEntity;
 import ru.cheezeapp.entity.StrainEntity;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -29,6 +31,10 @@ public class ObjectToJsonConverter {
         strainNode.put("id", strain.getVidStrain().getId());
         strainNode.put("rod", strain.getVidStrain().getRodStrain().getName());
         strainNode.put("vid", strain.getVidStrain().getName());
+        strainNode.put("author", "Placeholder");
+        Date dateNow = new Date();
+        SimpleDateFormat formatForDateNow = new SimpleDateFormat("E dd.MM.yyyy',' kk:mm");
+        strainNode.put("date", formatForDateNow.format(dateNow));
         strainNode.put("annotation", strain.getAnnotation());
         strainNode.put("exemplar", strain.getExemplar());
         strainNode.put("modification", strain.getModification());
