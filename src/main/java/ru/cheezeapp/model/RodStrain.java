@@ -1,20 +1,38 @@
 package ru.cheezeapp.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.List;
 
-@Data
+/**
+ * Канальная модель рода
+ */
+@Getter
+@Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class RodStrain {
-    Long id;
-    String name;
-    Long cypher;
-    List<VidStrain> vidStrains;
+
+    /**
+     * ID рода
+     */
+    private Long id;
+
+    /**
+     * Шифр
+     */
+    private Long cypher;
+
+    /**
+     * Наименование
+     */
+    private String name;
+
+    /**
+     * Список видов рода
+     */
+    @JsonIgnore
+    private List<VidStrain> vidStrains;
 }

@@ -1,19 +1,38 @@
 package ru.cheezeapp.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
 import java.util.List;
 
-@Data
+/**
+ * Канальная модель вида
+ */
+@Getter
+@Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class VidStrain {
-    Long id;
-    String name;
-    Long cypher;
-    List<Strain> strains;
+
+    /**
+     * ID вида
+     */
+    private Long id;
+
+    /**
+     * Шифр
+     */
+    private Long cypher;
+
+    /**
+     * Наименование
+     */
+    private String name;
+
+    /**
+     * Список штаммов вида
+     */
+    @JsonIgnore
+    private List<Strain> strains;
 }
