@@ -130,6 +130,7 @@ public class ObjectToJsonConverter {
         for (PropertyEntity property : properties) {
             ObjectNode propertyNode = mapper.createObjectNode();
             propertyNode.put("name", property.getName());
+            propertyNode.put("description", property.getDescription());
             propertyNode.put("id", property.getId());
             arrayNode.add(propertyNode);
         }
