@@ -1,5 +1,6 @@
 package ru.cheezeapp.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,7 @@ import ru.cheezeapp.utils.ObjectToJsonConverter;
 import java.util.List;
 
 @RestController
+@Slf4j
 public class FinderController {
 
     @Autowired
@@ -39,8 +41,10 @@ public class FinderController {
      * @return список штаммов
      */
     @GetMapping("/strains")
-    public List<StrainEntity> getAllStrains() {
-        return strainSearchService.findAll();
+    public String getAllStrains() {
+        List<StrainEntity> allStrains = strainSearchService.findAll();
+        log.info("[/strains]\tGET request: return all strains");
+        return ObjectToJsonConverter.strainListToJson(allStrains);
     }
 
     /**
@@ -52,6 +56,7 @@ public class FinderController {
     @GetMapping("/strain/{id}")
     public String getStrainById(@PathVariable Long id) {
         StrainEntity strain = strainSearchService.findStrainById(id);
+        log.info("[/strain/id]\tGET request: return strain by ID");
         return ObjectToJsonConverter.strainToJson(strain);
     }
 
@@ -63,6 +68,7 @@ public class FinderController {
     @GetMapping("/rod/list")
     public String getListOfRods() {
         List<RodStrainEntity> rodsStrainEntity = rodSearchService.findAll();
+        log.info("[/rod/list]\tGET request: return all rods by list");
         return ObjectToJsonConverter.rodListToJson(rodsStrainEntity);
     }
 
@@ -75,6 +81,7 @@ public class FinderController {
     @GetMapping("/vid/list/{id}")
     public String getListOfVidsByRodId(@PathVariable Long id) {
         List<VidStrainEntity> vidListByRodId = vidSearchService.findVidsByRodId(id);
+        log.info("[/vid/list/id]\tGET request: return list of vids by ID's rod");
         return ObjectToJsonConverter.vidListToJson(vidListByRodId);
     }
 
@@ -87,6 +94,7 @@ public class FinderController {
     @GetMapping("/strain/list/{id}")
     public String getListOfStrainsByVidId(@PathVariable Long id) {
         List<StrainEntity> strainsListByVidId = strainSearchService.findStrainsByVidId(id);
+        log.info("[/strain/list/id]\tGET request: return list of strains by ID's vid");
         return ObjectToJsonConverter.strainListToJson(strainsListByVidId);
     }
 
@@ -98,6 +106,7 @@ public class FinderController {
     @GetMapping("/property/list")
     public String getListOfProperties() {
         List<PropertyEntity> properties = propertySearchService.findAll();
+        log.info("[/property/list]\tGET request: return list of all properties");
         return ObjectToJsonConverter.propertyListToJson(properties);
     }
 
@@ -107,9 +116,10 @@ public class FinderController {
      * @param id ID свойства
      * @return JSON списка подсвойств
      */
-    @GetMapping("/property/list/{id}")
+    @GetMapping("/subproperty/list/{id}")
     public String getListOfSubpropertiesByPropertyId(@PathVariable Long id) {
         List<SubPropertyEntity> subproperties = subpropertySearchService.findSubpropertiesByPropertyId(id);
+        log.info("[/subproperty/list/id]\tGET request: return list of subproperty by ID's property");
         return ObjectToJsonConverter.subpropertyListToJson(subproperties);
     }
 
