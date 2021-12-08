@@ -1,12 +1,12 @@
 insert into subproperty
 values (1,
-        'Наличие плазмид',
+        '',
         1,
         1);
 
 insert into subproperty
 values (2,
-        'Форма и расположение клеток',
+        '',
         2,
         1);
 
@@ -36,13 +36,13 @@ values (6,
 
 insert into subproperty
 values (7,
-        'Аммиак из аргинина',
+        '',
         5,
         1);
 
 insert into subproperty
 values (8,
-        'Утилизация цитрата',
+        '',
         6,
         1);
 
@@ -60,25 +60,25 @@ values (10,
 
 insert into subproperty
 values (13,
-        'Характер сгустка',
+        '',
         9,
         1);
 
 insert into subproperty
 values (15,
-        'Предельная кислотность',
+        '',
         10,
         1);
 
 insert into subproperty
 values (16,
-        'Устойчивость к желчи',
+        '',
         11,
         1);
 
 insert into subproperty
 values (17,
-        'Температура роста',
+        '',
         12,
         1);
 
