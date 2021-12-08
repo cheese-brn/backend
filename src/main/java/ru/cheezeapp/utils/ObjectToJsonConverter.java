@@ -27,7 +27,7 @@ public class ObjectToJsonConverter {
      */
     public static String strainToJson(StrainEntity strain) {
         ObjectNode strainNode = mapper.createObjectNode();
-        strainNode.put("id", strain.getVidStrain().getId());
+        strainNode.put("id", strain.getId());
         strainNode.put("rod", strain.getVidStrain().getRodStrain().getName());
         strainNode.put("vid", strain.getVidStrain().getName());
         strainNode.put("author", "Placeholder");
