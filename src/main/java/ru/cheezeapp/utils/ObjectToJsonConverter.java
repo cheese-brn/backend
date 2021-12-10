@@ -132,6 +132,7 @@ public class ObjectToJsonConverter {
             propertyNode.put("name", property.getName());
             propertyNode.put("description", property.getDescription());
             propertyNode.put("id", property.getId());
+            propertyNode.put("childrenCount", property.getSubProperties().size());
             arrayNode.add(propertyNode);
         }
         try {
