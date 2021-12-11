@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.cheezeapp.dao.PropertyRepository;
 import ru.cheezeapp.dao.SubPropertyRepository;
 import ru.cheezeapp.entity.PropertyEntity;
-import ru.cheezeapp.entity.StrainEntity;
 import ru.cheezeapp.entity.SubPropertyEntity;
 
 import java.util.List;
@@ -27,5 +26,17 @@ public class SubpropertySearchService {
             return subPropertyRepository.findAllByProperty(property.get());
         else
             throw new RuntimeException("Property[id = " + id +"] not found in repository");
+    }
+
+    public List<SubPropertyEntity> findAll() {
+        return subPropertyRepository.findAll();
+    }
+
+    public SubPropertyEntity findById(Long id) {
+        Optional<SubPropertyEntity> subProperty = subPropertyRepository.findById(id);
+        if (subProperty.isPresent())
+            return subProperty.get();
+        else
+            throw new RuntimeException("Subproperty[id = ]" + id + "] not found in repository");
     }
 }

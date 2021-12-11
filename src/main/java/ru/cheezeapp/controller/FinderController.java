@@ -11,7 +11,8 @@ import ru.cheezeapp.service.rod.RodSearchService;
 import ru.cheezeapp.service.strain.StrainSearchService;
 import ru.cheezeapp.service.subproperty.SubpropertySearchService;
 import ru.cheezeapp.service.vid.VidSearchService;
-import ru.cheezeapp.utils.ObjectToJsonConverter;
+import ru.cheezeapp.utils.jsonConverter.CatalogsToJson;
+import ru.cheezeapp.utils.jsonConverter.ObjectToJsonConverter;
 
 import java.util.List;
 
@@ -43,8 +44,8 @@ public class FinderController {
     @GetMapping("/strains")
     public String getAllStrains() {
         List<StrainEntity> allStrains = strainSearchService.findAll();
-        log.info("[/strains]\tGET request: return all strains");
-        return ObjectToJsonConverter.strainListToJson(allStrains);
+        log.info("[GET /strains]\tReturn all strains");
+        return CatalogsToJson.strainCatalogToJson(allStrains);
     }
 
     /**
@@ -53,36 +54,11 @@ public class FinderController {
      * @param id ID штамма
      * @return JSON штамма
      */
-    @GetMapping("/strain/{id}")
+    @GetMapping("/strains/{id}")
     public String getStrainById(@PathVariable Long id) {
         StrainEntity strain = strainSearchService.findStrainById(id);
-        log.info("[/strain/id]\tGET request: return strain by ID");
+        log.info("[GET /strains/{id}]\tReturn strain by ID");
         return ObjectToJsonConverter.strainToJson(strain);
-    }
-
-    /**
-     * Метод поиска всех родов и формирования их в список, вывод в виде JSON
-     *
-     * @return JSON списка родов
-     */
-    @GetMapping("/rod/list")
-    public String getListOfRods() {
-        List<RodStrainEntity> rodsStrainEntity = rodSearchService.findAll();
-        log.info("[/rod/list]\tGET request: return all rods by list");
-        return ObjectToJsonConverter.rodListToJson(rodsStrainEntity);
-    }
-
-    /**
-     * Метод поиска видов по заданному ID рода и формирования JSON
-     *
-     * @param id ID рода
-     * @return JSON списка видов
-     */
-    @GetMapping("/vid/list/{id}")
-    public String getListOfVidsByRodId(@PathVariable Long id) {
-        List<VidStrainEntity> vidListByRodId = vidSearchService.findVidsByRodId(id);
-        log.info("[/vid/list/id]\tGET request: return list of vids by ID's rod");
-        return ObjectToJsonConverter.vidListToJson(vidListByRodId);
     }
 
     /**
@@ -91,11 +67,61 @@ public class FinderController {
      * @param id ID вида
      * @return JSON списка штаммов
      */
-    @GetMapping("/strain/list/{id}")
+    @GetMapping("/strains/vids/{id}")
     public String getListOfStrainsByVidId(@PathVariable Long id) {
         List<StrainEntity> strainsListByVidId = strainSearchService.findStrainsByVidId(id);
-        log.info("[/strain/list/id]\tGET request: return list of strains by ID's vid");
-        return ObjectToJsonConverter.strainListToJson(strainsListByVidId);
+        log.info("[GET /strains/vids/{id}]\tReturn list of strains by ID's vid");
+        return CatalogsToJson.strainCatalogToJson(strainsListByVidId);
+    }
+
+    /**
+     * Метод поиска всех родов и формирования их в список, вывод в виде JSON
+     *
+     * @return JSON списка родов
+     */
+    @GetMapping("/rods")
+    public String getListOfRods() {
+        List<RodStrainEntity> rodsStrainEntity = rodSearchService.findAll();
+        log.info("[GET /rods]\tReturn all rods by list");
+        return CatalogsToJson.rodCatalogToJson(rodsStrainEntity);
+    }
+
+    //TODO реализовать JSON всех полей рода
+    @GetMapping("/rods/{id}")
+    public String getRodById(@PathVariable Long id) {
+        RodStrainEntity rod = rodSearchService.findById(id);
+        return ObjectToJsonConverter.rodToJson(rod);
+    }
+
+    /**
+     * API-метод, который предоставляет список всех видов в формате JSON
+     * @return JSON списка видов
+     */
+    @GetMapping("/vids")
+    public String getListOfVids() {
+        List<VidStrainEntity> allVids = vidSearchService.findAll();
+        log.info("[GET /vids]\tReturn all vids by list");
+        return CatalogsToJson.vidCatalogToJson(allVids);
+    }
+
+    //TODO реализовать метод JSON (стоит заглушка)
+    @GetMapping("/vids/{id}")
+    public String getVidById(@PathVariable Long id) {
+        VidStrainEntity vid = vidSearchService.findById(id);
+        return ObjectToJsonConverter.vidToJson(vid);
+    }
+
+    /**
+     * Метод поиска видов по заданному ID рода и формирования JSON
+     *
+     * @param id ID рода
+     * @return JSON списка видов
+     */
+    @GetMapping("/vids/rods/{id}")
+    public String getListOfVidsByRodId(@PathVariable Long id) {
+        List<VidStrainEntity> vidListByRodId = vidSearchService.findVidsByRodId(id);
+        log.info("[GET /vids/rods/{id}]\tReturn list of vids by ID's rod");
+        return CatalogsToJson.vidCatalogToJson(vidListByRodId);
     }
 
     /**
@@ -103,11 +129,32 @@ public class FinderController {
      *
      * @return JSON списка свойств
      */
-    @GetMapping("/property/list")
+    @GetMapping("/properties")
     public String getListOfProperties() {
         List<PropertyEntity> properties = propertySearchService.findAll();
-        log.info("[/property/list]\tGET request: return list of all properties");
-        return ObjectToJsonConverter.propertyListToJson(properties);
+        log.info("[GET /properties]\tReturn list of all properties");
+        return CatalogsToJson.propertyCatalogToJson(properties);
+    }
+
+    //TODO заглушку в JSON потом убрать
+    @GetMapping("/properties/{id}")
+    public String getPropertyById(@PathVariable Long id) {
+        PropertyEntity property = propertySearchService.findById(id);
+        return ObjectToJsonConverter.propertyToJson(property);
+    }
+
+    @GetMapping("/subproperties")
+    public String getSubpropertyList() {
+        List<SubPropertyEntity> subproperties = subpropertySearchService.findAll();
+        log.info("[GET /subproperties]\tReturn a list of subproperties");
+        return CatalogsToJson.catalogSubpropertyToJson(subproperties);
+    }
+
+    //TODO убрать заглушку JSON
+    @GetMapping("/subproperties/{id}")
+    public String getSubpropertyById(@PathVariable Long id) {
+        SubPropertyEntity subproperty = subpropertySearchService.findById(id);
+        return ObjectToJsonConverter.subpropertyToJson(subproperty);
     }
 
     /**
@@ -116,11 +163,11 @@ public class FinderController {
      * @param id ID свойства
      * @return JSON списка подсвойств
      */
-    @GetMapping("/subproperty/list/{id}")
+    @GetMapping("/subproperties/properties/{id}")
     public String getListOfSubpropertiesByPropertyId(@PathVariable Long id) {
         List<SubPropertyEntity> subproperties = subpropertySearchService.findSubpropertiesByPropertyId(id);
-        log.info("[/subproperty/list/id]\tGET request: return list of subproperty by ID's property");
-        return ObjectToJsonConverter.subpropertyListToJson(subproperties);
+        log.info("[GET /subproperties/properties/{id}]\tReturn list of subproperty by ID's property");
+        return CatalogsToJson.catalogSubpropertyToJson(subproperties);
     }
 
 }

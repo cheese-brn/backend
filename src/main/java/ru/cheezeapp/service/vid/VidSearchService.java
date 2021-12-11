@@ -33,4 +33,20 @@ public class VidSearchService {
         else
             throw new RuntimeException("Rod[id = " + id +"] not found in repository");
     }
+
+    /**
+     * Поиск всех видов из репозитория
+     * @return список всех видов
+     */
+    public List<VidStrainEntity> findAll() {
+        return vidStrainRepository.findAll();
+    }
+    
+    public VidStrainEntity findById(Long id) {
+        Optional<VidStrainEntity> vid = vidStrainRepository.findById(id);
+        if (vid.isPresent())
+            return vid.get();
+        else
+            throw new RuntimeException("Vid[id = " + id +"] not found in repository");
+    }
 }

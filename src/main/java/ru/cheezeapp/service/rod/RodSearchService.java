@@ -7,6 +7,7 @@ import ru.cheezeapp.dao.RodStrainRepository;
 import ru.cheezeapp.entity.RodStrainEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RodSearchService {
@@ -32,5 +33,13 @@ public class RodSearchService {
      */
     @Transactional
     public List<RodStrainEntity> findAll() {return rodStrainRepository.findAll();}
+
+    public RodStrainEntity findById(Long id) {
+        Optional<RodStrainEntity> rod = rodStrainRepository.findById(id);
+        if (rod.isPresent())
+            return rod.get();
+        else
+            throw new RuntimeException("Rod[id = " + id + "] not found in repository");
+    }
 
 }
