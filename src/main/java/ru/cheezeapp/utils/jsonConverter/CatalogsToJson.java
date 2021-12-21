@@ -18,6 +18,7 @@ public class CatalogsToJson {
             vidNode.put("id", vid.getId());
             vidNode.put("name", vid.getName());
             vidNode.put("rodName", vid.getRodStrain().getName());
+            vidNode.put("childrenCount", vid.getStrains().size());
             arrayNode.add(vidNode);
         }
         try {
@@ -35,6 +36,7 @@ public class CatalogsToJson {
             ObjectNode rodNode = mapper.createObjectNode();
             rodNode.put("id", rod.getId());
             rodNode.put("name", rod.getName());
+            rodNode.put("childrenCount", rod.getVids().size());
             arrayNode.add(rodNode);
         }
         try {
@@ -72,6 +74,7 @@ public class CatalogsToJson {
             propertyNode.put("id", property.getId());
             propertyNode.put("name", property.getName());
             propertyNode.put("description", property.getDescription());
+            propertyNode.put("childrenCount", property.getSubProperties().size());
             arrayNode.add(propertyNode);
         }
         try {
@@ -89,8 +92,8 @@ public class CatalogsToJson {
             ObjectNode subpropertyNode = mapper.createObjectNode();
             subpropertyNode.put("id", subproperty.getId());
             subpropertyNode.put("name", subproperty.getName());
+            subpropertyNode.put("propertyName", subproperty.getProperty().getName());
             subpropertyNode.put("datatype", subproperty.getDataType().getName());
-            subpropertyNode.put("property", subproperty.getProperty().getName());
             arrayNode.add(subpropertyNode);
         }
         try {

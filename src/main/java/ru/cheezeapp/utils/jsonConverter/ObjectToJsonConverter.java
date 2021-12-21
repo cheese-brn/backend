@@ -9,7 +9,6 @@ import ru.cheezeapp.entity.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -70,18 +69,61 @@ public class ObjectToJsonConverter {
     }
 
     public static String rodToJson(RodStrainEntity rod){
-        return "";
+        ObjectNode rodNode = mapper.createObjectNode();
+        rodNode.put("id", rod.getId());
+        rodNode.put("name", rod.getName());
+        rodNode.put("childrenCount", rod.getVids().size());
+        try {
+            return mapper.writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(rodNode).replace("\\", "");
+        }
+        catch (Exception e) {
+            return null;
+        }
     }
 
     public static String vidToJson(VidStrainEntity vid) {
-        return "";
+        ObjectNode vidNode = mapper.createObjectNode();
+        vidNode.put("id", vid.getId());
+        vidNode.put("name", vid.getName());
+        vidNode.put("rodName", vid.getRodStrain().getName());
+        vidNode.put("childrenCount", vid.getStrains().size());
+        try {
+            return mapper.writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(vidNode).replace("\\", "");
+        }
+        catch (Exception e) {
+            return null;
+        }
     }
 
     public static String propertyToJson(PropertyEntity property) {
-        return "";
+        ObjectNode propertyNode = mapper.createObjectNode();
+        propertyNode.put("id", property.getId());
+        propertyNode.put("name", property.getName());
+        propertyNode.put("description", property.getDescription());
+        propertyNode.put("childrenCount", property.getSubProperties().size());
+        try {
+            return mapper.writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(propertyNode).replace("\\", "");
+        }
+        catch (Exception e) {
+            return null;
+        }
     }
 
-    public static String subpropertyToJson(SubPropertyEntity subProperty) {
-        return "";
+    public static String subpropertyToJson(SubPropertyEntity subproperty) {
+        ObjectNode subpropertyNode = mapper.createObjectNode();
+        subpropertyNode.put("id", subproperty.getId());
+        subpropertyNode.put("name", subproperty.getName());
+        subpropertyNode.put("propertyName", subproperty.getProperty().getName());
+        subpropertyNode.put("datatype", subproperty.getDataType().getName());
+        try {
+            return mapper.writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(subpropertyNode).replace("\\", "");
+        }
+        catch (Exception e) {
+            return null;
+        }
     }
 }
