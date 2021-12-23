@@ -63,6 +63,12 @@ public class StrainEntity {
     VidStrainEntity vidStrain;
 
     /**
+     * Удален ли штамм
+     */
+    @Column(name = "isDeleted")
+    boolean isDeleted;
+
+    /**
      * Связь один-ко-многим с {@link FactParametrEntity}
      */
     @OneToMany(targetEntity = FactParametrEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY,

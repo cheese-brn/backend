@@ -24,4 +24,12 @@
         <tagDatabase tag="fk_keys_creation"/>
     </changeSet>
 
+    <include file="columns_for_delete_creation/db.changelog-columns_for_delete.xml" relativeToChangelogFile="true"/>
+
+    <changeSet id="19" author="pavel">
+        <tagDatabase tag="columns_for_delete_creation"/>
+    </changeSet>
+
+
+
 </databaseChangeLog>
