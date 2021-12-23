@@ -28,7 +28,9 @@ public class ObjectToJsonConverter {
         ObjectNode strainNode = mapper.createObjectNode();
         strainNode.put("id", strain.getId());
         strainNode.put("rod", strain.getVidStrain().getRodStrain().getName());
+        strainNode.put("rodId", strain.getVidStrain().getRodStrain().getId());
         strainNode.put("vid", strain.getVidStrain().getName());
+        strainNode.put("vidId", strain.getVidStrain().getId());
         strainNode.put("author", "Placeholder");
         Date dateNow = new Date();
         SimpleDateFormat formatForDateNow = new SimpleDateFormat("E dd.MM.yyyy',' kk:mm");
