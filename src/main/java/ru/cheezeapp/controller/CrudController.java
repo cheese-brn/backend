@@ -1,19 +1,25 @@
 package ru.cheezeapp.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.cheezeapp.entity.StrainEntity;
 import ru.cheezeapp.service.strain.StrainCrudService;
+import ru.cheezeapp.service.strain.StrainSearchService;
 import ru.cheezeapp.utils.jsonConverter.JsonToObjectConverter;
 
 /**
  * Crud контроллер для обработки запросов, связанных
  */
 @RestController
+@Slf4j
 public class CrudController {
 
     @Autowired
     StrainCrudService strainCrudService;
+
+    @Autowired
+    StrainSearchService strainSearchService;
 
     @Autowired
     JsonToObjectConverter jsonToObjectConverter;
@@ -46,10 +52,14 @@ public class CrudController {
     public String sendStrain(@RequestBody String strainJson) {
         try {
             StrainEntity strain = jsonToObjectConverter.JsonToStrain(strainJson);
-            if (strain.getId() == null)
+            if (strain.getId() == 0) {
                 strainCrudService.addStrain(strain);
-            else
+                log.info("Strain was created, id = " + strainSearchService.findByName(strain.getExemplar()));
+            }
+            else {
                 strainCrudService.updateStrain(strain);
+                log.info("Strain was updated, id = " + strain.getId());
+            }
             return "good :)";
         }
         catch (Exception e) {
