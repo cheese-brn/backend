@@ -25,15 +25,32 @@ public class CrudController {
     JsonToObjectConverter jsonToObjectConverter;
 
     /**
-     * Метод обработки запроса на удаление штамма из БД
+     * Метод обработки запроса на мягкое удаление штамма
      *
      * @param id ID удаляемого штамма
      * @return сообщение об обработке
      */
     @PostMapping("/strain/delete/{id}")
-    public String deleteStrainById(@PathVariable Long id) {
+    public String softDeletionOfStrainById(@PathVariable Long id) {
         try {
-            strainCrudService.deleteStrainById(id);
+            strainCrudService.softDeletionOfStrainById(id);
+            return "good :)";
+        }
+        catch (Exception e) {
+            return e.getMessage();
+        }
+    }
+
+    /**
+     * Метод обработки запроса на полное удаление штамма из БД
+     *
+     * @param id ID удаляемого штамма
+     * @return сообщение об обработке
+     */
+    @PostMapping("/strain/hard_delete/{id}")
+    public String hardDeletionOfStrainById(@PathVariable Long id) {
+        try {
+            strainCrudService.hardDeletionOfStrainById(id);
             return "good :)";
         }
         catch (Exception e) {
