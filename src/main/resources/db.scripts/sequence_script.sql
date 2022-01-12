@@ -1,0 +1,9 @@
+alter sequence strain_id_seq restart with 13;
+alter sequence fact_param_id_seq restart with 125;
+alter sequence fact_param_func_id_seq restart with 19;
+alter sequence data_type_id_seq restart with 3;
+alter sequence dependency_table_id_seq restart with 2;
+alter sequence property_id_seq restart with 14;
+alter sequence rod_strain_id_seq restart with 6;
+alter sequence subproperty_id_seq restart with 20;
+alter sequence vid_strain_id_seq restart with 7;
