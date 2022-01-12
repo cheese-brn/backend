@@ -35,6 +35,26 @@ public class StrainSearchService {
     }
 
     /**
+     * Метод поиска всех неудаленных штаммов
+     *
+     * @return список штаммов
+     */
+    @Transactional
+    public List<StrainEntity> findAllNonDeletedStrains() {
+        return strainRepository.findAllByDeletedIsFalse();
+    }
+
+    /**
+     * Метод поиска всех удаленных штаммов
+     *
+     * @return список штаммов
+     */
+    @Transactional
+    public List<StrainEntity> findAllDeletedStrains() {
+        return strainRepository.findAllByDeletedIsTrue();
+    }
+
+    /**
      * Метод поиска штамма по ID
      *
      * @param id ID для поиска
@@ -47,6 +67,7 @@ public class StrainSearchService {
 
     /**
      * Поиск штаммов по заданному ID вида
+     *
      * @param id ID вида
      * @return список найденных штаммов
      */
@@ -56,7 +77,7 @@ public class StrainSearchService {
         if (vid.isPresent())
             return strainRepository.findAllByVidStrain(vid.get());
         else
-            throw new RuntimeException("Vid[id = " + id +"] not found in repository");
+            throw new RuntimeException("Vid[id = " + id + "] not found in repository");
     }
 
 
