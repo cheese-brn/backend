@@ -37,14 +37,26 @@ public class FinderController {
 
 
     /**
-     * Метод поиска всех штаммов. Формируем JSON и отправляем его
+     * Метод поиска всех неудаленных штаммов. Формируем JSON и отправляем его
      *
      * @return список штаммов
      */
     @GetMapping("/strains")
     public String getAllStrains() {
-        List<StrainEntity> allStrains = strainSearchService.findAll();
-        log.info("[GET /strains]\tReturn all strains");
+        List<StrainEntity> allStrains = strainSearchService.findAllNonDeletedStrains();
+        log.info("[GET /strains]\tReturn all non deleted strains");
+        return CatalogsToJson.strainCatalogToJson(allStrains);
+    }
+
+    /**
+     * Метод поиска всех удаленных штаммов. Формируем JSON и отправляем его
+     *
+     * @return список штаммов
+     */
+    @GetMapping("/deleted_strains")
+    public String getAllDeletedStrains() {
+        List<StrainEntity> allStrains = strainSearchService.findAllDeletedStrains();
+        log.info("[GET /strains]\tReturn all deleted strains");
         return CatalogsToJson.strainCatalogToJson(allStrains);
     }
 

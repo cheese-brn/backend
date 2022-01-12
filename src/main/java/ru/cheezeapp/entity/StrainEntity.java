@@ -65,8 +65,8 @@ public class StrainEntity {
     /**
      * Удален ли штамм
      */
-    @Column(name = "isDeleted")
-    boolean isDeleted;
+    @Column(name = "is_deleted")
+    boolean deleted;
 
     /**
      * Связь один-ко-многим с {@link FactParametrEntity}
