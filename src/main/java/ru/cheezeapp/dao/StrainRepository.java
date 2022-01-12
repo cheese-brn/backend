@@ -5,6 +5,7 @@ import ru.cheezeapp.entity.StrainEntity;
 import ru.cheezeapp.entity.VidStrainEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface StrainRepository extends JpaRepository<StrainEntity, Long> {
 
@@ -29,4 +30,13 @@ public interface StrainRepository extends JpaRepository<StrainEntity, Long> {
      * @return список неудаленных штаммов
      */
     List<StrainEntity> findAllByDeletedIsFalse();
+  
+    /**
+     * Метод поиска штамма по экземпляру
+     *
+     * @param exemplar экземпляр
+     * @return optional штамма
+     */
+    Optional<StrainEntity> findByExemplar(String exemplar);
+
 }

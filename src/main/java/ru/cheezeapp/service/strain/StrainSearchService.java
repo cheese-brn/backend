@@ -80,5 +80,8 @@ public class StrainSearchService {
             throw new RuntimeException("Vid[id = " + id + "] not found in repository");
     }
 
+    public StrainEntity findByName(String name) {
+        return strainRepository.findByExemplar(name).orElse(null);
+    }
 
 }

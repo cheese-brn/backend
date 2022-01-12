@@ -18,7 +18,7 @@ public class StrainCrudService {
     StrainRepository strainRepository;
 
     /**
-     * Процедура добавления штамма в БД
+     * Процедура добавления штамма в БД. Также добавляем все параметры штамма.
      *
      * @param strain штамм для добавления
      */
@@ -39,6 +39,19 @@ public class StrainCrudService {
         if (strainEntity.isPresent()) {
             strainRepository.deleteById(id);
         } else throw new RuntimeException("Штамм не существует");
+    }
+
+    /**
+     * Процедура обновления штамма в БД. Также обновляем все параметры штамма.
+     *
+     * @param strain штамм для обновления
+     */
+    @Transactional
+    public void updateStrain(StrainEntity strain) {
+        Optional<StrainEntity> strainEntity = strainRepository.findById(strain.getId());
+        if(strainEntity.isPresent()) {
+            strainRepository.save(strain);
+        }
     }
 
 }
