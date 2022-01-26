@@ -30,7 +30,7 @@ public interface StrainRepository extends JpaRepository<StrainEntity, Long> {
      * @return список неудаленных штаммов
      */
     List<StrainEntity> findAllByDeletedIsFalse();
-  
+
     /**
      * Метод поиска штамма по экземпляру
      *
@@ -38,5 +38,10 @@ public interface StrainRepository extends JpaRepository<StrainEntity, Long> {
      * @return optional штамма
      */
     Optional<StrainEntity> findByExemplar(String exemplar);
+
+    /**
+     * Процедура удаления всех штаммов с пометкой "Удален"
+     */
+    void deleteAllByDeletedIsTrue();
 
 }
