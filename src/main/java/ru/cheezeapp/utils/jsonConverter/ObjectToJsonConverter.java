@@ -9,6 +9,7 @@ import ru.cheezeapp.entity.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -40,11 +41,28 @@ public class ObjectToJsonConverter {
         strainNode.put("modification", strain.getModification());
         strainNode.put("obtainingMethod", strain.getObtainingMethod());
         strainNode.put("origin", strain.getOrigin());
+        ArrayNode factParams = factParamsToJson(strain.getFactParametrs());
+        strainNode.set("factParams", factParams);
+        try {
+            return mapper.writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(strainNode).replace("\\", "");
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * Метод конвертации фактических параметров в Json
+     *
+     * @param factParams список фактических параметров
+     * @return ArrayNode объект, содержащий Json
+     */
+    private static ArrayNode factParamsToJson(List<FactParametrEntity> factParams) {
         MultiValueMap<PropertyEntity, FactParametrEntity> propertyMap = new LinkedMultiValueMap<>();
-        for (FactParametrEntity factParametr : strain.getFactParametrs())
+        for (FactParametrEntity factParametr : factParams)
             propertyMap.add(factParametr.getProperty(), factParametr);
-        ArrayNode factParams = mapper.createArrayNode();
-        for(PropertyEntity property : propertyMap.keySet()) {
+        ArrayNode factParamsArrayNode = mapper.createArrayNode();
+        for (PropertyEntity property : propertyMap.keySet()) {
             ObjectNode propertyNode = mapper.createObjectNode();
             ArrayNode factParamNodes = mapper.createArrayNode();
             propertyNode.put("id", property.getId());
@@ -58,19 +76,18 @@ public class ObjectToJsonConverter {
                 factParamNodes.add(factParamNode);
             }
             propertyNode.set("subProps", factParamNodes);
-            factParams.add(propertyNode);
+            factParamsArrayNode.add(propertyNode);
         }
-        strainNode.set("factParams", factParams);
-        try {
-            return mapper.writerWithDefaultPrettyPrinter()
-                    .writeValueAsString(strainNode).replace("\\", "");
-        }
-        catch (Exception e) {
-            return null;
-        }
+        return factParamsArrayNode;
     }
 
-    public static String rodToJson(RodStrainEntity rod){
+    /**
+     * Конвертация рода в Json
+     *
+     * @param rod Модель рода
+     * @return Json рода
+     */
+    public static String rodToJson(RodStrainEntity rod) {
         ObjectNode rodNode = mapper.createObjectNode();
         rodNode.put("id", rod.getId());
         rodNode.put("name", rod.getName());
@@ -78,12 +95,17 @@ public class ObjectToJsonConverter {
         try {
             return mapper.writerWithDefaultPrettyPrinter()
                     .writeValueAsString(rodNode).replace("\\", "");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return null;
         }
     }
 
+    /**
+     * Конвертация вида в Json
+     *
+     * @param vid Модель вида
+     * @return Json вида
+     */
     public static String vidToJson(VidStrainEntity vid) {
         ObjectNode vidNode = mapper.createObjectNode();
         vidNode.put("id", vid.getId());
@@ -93,12 +115,17 @@ public class ObjectToJsonConverter {
         try {
             return mapper.writerWithDefaultPrettyPrinter()
                     .writeValueAsString(vidNode).replace("\\", "");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return null;
         }
     }
 
+    /**
+     * Конвертация свойства в Json
+     *
+     * @param property Модель свойства
+     * @return Json свойства
+     */
     public static String propertyToJson(PropertyEntity property) {
         ObjectNode propertyNode = mapper.createObjectNode();
         propertyNode.put("id", property.getId());
@@ -108,12 +135,17 @@ public class ObjectToJsonConverter {
         try {
             return mapper.writerWithDefaultPrettyPrinter()
                     .writeValueAsString(propertyNode).replace("\\", "");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return null;
         }
     }
 
+    /**
+     * Конвертация подсвойства в Json
+     *
+     * @param subproperty Модель подсвойства
+     * @return Json подсвойства
+     */
     public static String subpropertyToJson(SubPropertyEntity subproperty) {
         ObjectNode subpropertyNode = mapper.createObjectNode();
         subpropertyNode.put("id", subproperty.getId());
@@ -123,8 +155,7 @@ public class ObjectToJsonConverter {
         try {
             return mapper.writerWithDefaultPrettyPrinter()
                     .writeValueAsString(subpropertyNode).replace("\\", "");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return null;
         }
     }
