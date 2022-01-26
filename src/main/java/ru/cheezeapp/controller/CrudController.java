@@ -1,5 +1,6 @@
 package ru.cheezeapp.controller;
 
+import liquibase.pro.packaged.S;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -89,6 +90,22 @@ public class CrudController {
     public String hardDeleteAllStrains() {
         try {
             strainCrudService.hardDeleteAllStrains();
+            return "good :)";
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+    }
+
+    /**
+     * Метод восстановления штамма из корзины
+     *
+     * @param id ID восстанавливаемого штамма
+     * @return сообщение об обработке
+     */
+    @PostMapping("/strain/restore/{id}")
+    public String restoreStrain(@PathVariable long id) {
+        try {
+            strainCrudService.restoreStrain(id);
             return "good :)";
         } catch (Exception e) {
             return e.getMessage();

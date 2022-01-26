@@ -77,4 +77,14 @@ public class StrainCrudService {
         strainRepository.deleteAllByDeletedIsTrue();
     }
 
+    @Transactional
+    public void restoreStrain(long id) {
+        Optional<StrainEntity> strainEntity = strainRepository.findById(id);
+        if (strainEntity.isPresent()) {
+            StrainEntity strain = strainEntity.get();
+            strain.setDeleted(false);
+            strainRepository.save(strain);
+        }
+    }
+
 }
