@@ -7,10 +7,19 @@ import ru.cheezeapp.entity.*;
 
 import java.util.List;
 
+/**
+ * Класс, содержащий методы конвертирования каталогов в Json
+ */
 public class CatalogsToJson {
 
     static ObjectMapper mapper = new ObjectMapper();
 
+    /**
+     * Метод конвертации списка видов в Json
+     *
+     * @param vids список видов
+     * @return Json списка видов
+     */
     public static String vidCatalogToJson(List<VidStrainEntity> vids) {
         ArrayNode arrayNode = mapper.createArrayNode();
         for (VidStrainEntity vid : vids) {
@@ -30,6 +39,12 @@ public class CatalogsToJson {
         }
     }
 
+    /**
+     * Метод конвертации списка родов в Json
+     *
+     * @param rods список родов
+     * @return Json списка родов
+     */
     public static String rodCatalogToJson(List<RodStrainEntity> rods) {
         ArrayNode arrayNode = mapper.createArrayNode();
         for (RodStrainEntity rod : rods) {
@@ -48,6 +63,12 @@ public class CatalogsToJson {
         }
     }
 
+    /**
+     * Метод конвертации списка штаммов в Json
+     *
+     * @param strains список штаммов
+     * @return Json списка штаммов
+     */
     public static String strainCatalogToJson(List<StrainEntity> strains) {
         ArrayNode arrayNode = mapper.createArrayNode();
         for (StrainEntity strain : strains) {
@@ -67,6 +88,12 @@ public class CatalogsToJson {
         }
     }
 
+    /**
+     * Метод конвертации списка свойств в Json
+     *
+     * @param properties список свойств
+     * @return Json списка свойств
+     */
     public static String propertyCatalogToJson(List<PropertyEntity> properties) {
         ArrayNode arrayNode = mapper.createArrayNode();
         for (PropertyEntity property : properties) {
@@ -86,7 +113,13 @@ public class CatalogsToJson {
         }
     }
 
-    public static String catalogSubpropertyToJson(List<SubPropertyEntity> subproperties) {
+    /**
+     * Метод конвертации списка подсвойств в Json
+     *
+     * @param subproperties список подсвойств
+     * @return Json списка подсвойств
+     */
+    public static String subpropertyCatalogToJson(List<SubPropertyEntity> subproperties) {
         ArrayNode arrayNode = mapper.createArrayNode();
         for (SubPropertyEntity subproperty : subproperties) {
             ObjectNode subpropertyNode = mapper.createObjectNode();

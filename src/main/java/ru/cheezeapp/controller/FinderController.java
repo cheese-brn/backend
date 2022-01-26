@@ -159,7 +159,7 @@ public class FinderController {
     public String getSubpropertyList() {
         List<SubPropertyEntity> subproperties = subpropertySearchService.findAll();
         log.info("[GET /subproperties]\tReturn a list of subproperties");
-        return CatalogsToJson.catalogSubpropertyToJson(subproperties);
+        return CatalogsToJson.subpropertyCatalogToJson(subproperties);
     }
 
     //TODO убрать заглушку JSON
@@ -179,7 +179,7 @@ public class FinderController {
     public String getListOfSubpropertiesByPropertyId(@PathVariable Long id) {
         List<SubPropertyEntity> subproperties = subpropertySearchService.findSubpropertiesByPropertyId(id);
         log.info("[GET /subproperties/properties/{id}]\tReturn list of subproperty by ID's property");
-        return CatalogsToJson.catalogSubpropertyToJson(subproperties);
+        return CatalogsToJson.subpropertyCatalogToJson(subproperties);
     }
 
 }
