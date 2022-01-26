@@ -88,7 +88,7 @@ public class CrudController {
     @PostMapping("/strain/hard_delete_all")
     public String hardDeleteAllStrains() {
         try {
-            strainCrudService.harDeleteAllStrains();
+            strainCrudService.hardDeleteAllStrains();
             return "good :)";
         } catch (Exception e) {
             return e.getMessage();

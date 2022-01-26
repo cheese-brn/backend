@@ -73,7 +73,7 @@ public class StrainCrudService {
      * Процедура удаления всех штаммов с пометкой "Удален".
      */
     @Transactional
-    public void harDeleteAllStrains() {
+    public void hardDeleteAllStrains() {
         strainRepository.deleteAllByDeletedIsTrue();
     }
 
