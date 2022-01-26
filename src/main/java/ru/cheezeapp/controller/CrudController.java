@@ -35,8 +35,7 @@ public class CrudController {
         try {
             strainCrudService.softDeletionOfStrainById(id);
             return "good :)";
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return e.getMessage();
         }
     }
@@ -52,8 +51,7 @@ public class CrudController {
         try {
             strainCrudService.hardDeletionOfStrainById(id);
             return "good :)";
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return e.getMessage();
         }
     }
@@ -72,14 +70,27 @@ public class CrudController {
             if (strain.getId() == 0) {
                 strainCrudService.addStrain(strain);
                 log.info("Strain was created, id = " + strainSearchService.findByName(strain.getExemplar()));
-            }
-            else {
+            } else {
                 strainCrudService.updateStrain(strain);
                 log.info("Strain was updated, id = " + strain.getId());
             }
             return "good :)";
+        } catch (Exception e) {
+            return e.getMessage();
         }
-        catch (Exception e) {
+    }
+
+    /**
+     * Метод удаления всех штаммов из корзины
+     *
+     * @return сообщение об обработке
+     */
+    @PostMapping("/strain/hard_delete_all")
+    public String hardDeleteAllStrains() {
+        try {
+            strainCrudService.harDeleteAllStrains();
+            return "good :)";
+        } catch (Exception e) {
             return e.getMessage();
         }
     }
