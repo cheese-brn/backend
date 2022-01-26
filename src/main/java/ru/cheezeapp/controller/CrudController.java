@@ -1,12 +1,11 @@
 package ru.cheezeapp.controller;
 
-import liquibase.pro.packaged.S;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.cheezeapp.entity.StrainEntity;
+import ru.cheezeapp.service.property.PropertyCrudService;
 import ru.cheezeapp.service.strain.StrainCrudService;
-import ru.cheezeapp.service.strain.StrainSearchService;
 import ru.cheezeapp.utils.jsonConverter.JsonToObjectConverter;
 
 /**
@@ -20,7 +19,7 @@ public class CrudController {
     StrainCrudService strainCrudService;
 
     @Autowired
-    StrainSearchService strainSearchService;
+    PropertyCrudService propertyCrudService;
 
     @Autowired
     JsonToObjectConverter jsonToObjectConverter;
@@ -64,8 +63,8 @@ public class CrudController {
     }
 
     /**
-     * Метод обработки запроса на добавление или штамма из БД.
-     * Если ID штамма = null, значит добавяем, иначе, редактируем.
+     * Метод обработки запроса на добавление или обновления штамма.
+     * Если ID штамма == 0, значит добавяем, иначе, редактируем.
      *
      * @param strainJson JSON штамма
      * @return сообщение об обработке
@@ -74,11 +73,10 @@ public class CrudController {
     public String sendStrain(@RequestBody String strainJson) {
         log.info("[POST /strain/send/]\tEntered sendStrain() method");
         try {
-            StrainEntity strain = jsonToObjectConverter.JsonToStrain(strainJson);
+            StrainEntity strain = jsonToObjectConverter.jsonToStrain(strainJson);
             if (strain.getId() == 0) {
                 strainCrudService.addStrain(strain);
-                log.info("[POST /strain/send/]\tStrain was created, id = " +
-                        strainSearchService.findByName(strain.getExemplar()));
+                log.info("[POST /strain/send/]\tNew strain was created");
                 return "Штамм был успешно добавлен";
             } else {
                 strainCrudService.updateStrain(strain);
