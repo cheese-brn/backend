@@ -41,9 +41,8 @@ public class ObjectToJsonConverter {
         strainNode.put("modification", strain.getModification());
         strainNode.put("obtainingMethod", strain.getObtainingMethod());
         strainNode.put("origin", strain.getOrigin());
-        ArrayNode factParams = factParamsToJson(strain.getFactParametrs());
-        strainNode.set("factParams", factParams);
         try {
+            strainNode.set("factParams", mapper.readTree(factParamsToJson(strain.getFactParametrs())));
             return mapper.writerWithDefaultPrettyPrinter()
                     .writeValueAsString(strainNode).replace("\\", "");
         } catch (Exception e) {
@@ -55,9 +54,9 @@ public class ObjectToJsonConverter {
      * Метод конвертации фактических параметров в Json
      *
      * @param factParams список фактических параметров
-     * @return ArrayNode объект, содержащий Json
+     * @return Json строка со списком фактических параметров
      */
-    private static ArrayNode factParamsToJson(List<FactParametrEntity> factParams) {
+    private static String factParamsToJson(List<FactParametrEntity> factParams) {
         MultiValueMap<PropertyEntity, FactParametrEntity> propertyMap = new LinkedMultiValueMap<>();
         for (FactParametrEntity factParametr : factParams)
             propertyMap.add(factParametr.getProperty(), factParametr);
@@ -78,7 +77,12 @@ public class ObjectToJsonConverter {
             propertyNode.set("subProps", factParamNodes);
             factParamsArrayNode.add(propertyNode);
         }
-        return factParamsArrayNode;
+        try {
+            return mapper.writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(factParamsArrayNode).replace("\\", "");
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     /**
