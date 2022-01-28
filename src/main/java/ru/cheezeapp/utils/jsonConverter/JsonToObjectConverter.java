@@ -8,9 +8,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.cheezeapp.dao.*;
-import ru.cheezeapp.entity.FactParametrEntity;
-import ru.cheezeapp.entity.StrainEntity;
-import ru.cheezeapp.entity.VidStrainEntity;
+import ru.cheezeapp.entity.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +43,7 @@ public class JsonToObjectConverter {
      * @param json JSON строка
      * @return Сущность штамма
      */
-    public StrainEntity JsonToStrain(String json) {
+    public StrainEntity jsonToStrain(String json) {
         try {
             ObjectNode jsonNodes = mapper.readValue(json, ObjectNode.class);
             Optional<VidStrainEntity> vidStrain = vidStrainRepository.findById(jsonNodes.get("vidId").longValue());
@@ -59,7 +57,7 @@ public class JsonToObjectConverter {
                         .origin(jsonNodes.path("origin").textValue())
                         .vidStrain(vidStrain.get())
                         .build();
-                newStrain.setFactParametrs(this.JsonToFactParams(jsonNodes.path("factParams").toString(),
+                newStrain.setFactParametrs(jsonToFactParams(jsonNodes.path("factParams").toString(),
                         newStrain));
                 newStrain.setFactParametrsFunc(new ArrayList<>());
                 return newStrain;
@@ -76,17 +74,22 @@ public class JsonToObjectConverter {
      * @param json JSON строка
      * @return Список фиктических параметров
      */
-    public List<FactParametrEntity> JsonToFactParams(String json, StrainEntity strain) {
+    public List<FactParametrEntity> jsonToFactParams(String json, StrainEntity strain) {
         List<FactParametrEntity> factParams = new ArrayList<>();
         try {
             JsonNode factParamsJson = mapper.readTree(json);
             for (JsonNode property : factParamsJson)
                 for (JsonNode subProp : property.path("subProps")) {
+                    Optional<PropertyEntity> propertyEntity = propertyRepository.findById(property.path("id").longValue());
+                    Optional<SubPropertyEntity> subPropertyEntity = subPropertyRepository
+                            .findById(subProp.path("id").longValue());
+                    if(!propertyEntity.isPresent() || !subPropertyEntity.isPresent())
+                        continue;
                     factParams.add(FactParametrEntity.builder()
                             .value(subProp.path("value").textValue())
                             .strain(strain)
-                            .property(propertyRepository.findById(property.path("id").longValue()).get())
-                            .subProperty(subPropertyRepository.findById(subProp.path("id").longValue()).get())
+                            .property(propertyEntity.get())
+                            .subProperty(subPropertyEntity.get())
                             .build());
                 }
             return factParams;
