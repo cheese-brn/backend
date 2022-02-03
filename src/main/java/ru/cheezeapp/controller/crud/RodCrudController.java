@@ -22,6 +22,13 @@ public class RodCrudController {
     @Autowired
     JsonToObjectConverter jsonToObjectConverter;
 
+    /**
+     * Метод обработки запроса на добавление или обновление рода.
+     * Если ID рода == 0, значит добавяем, иначе, редактируем.
+     *
+     * @param rodJson JSON рода
+     * @return сообщение об обработке
+     */
     @PostMapping("/rod/send")
     public String sendRod(@RequestBody String rodJson) {
         log.info("[POST /rod/send/]\tEntered sendRod() method");
