@@ -3,7 +3,6 @@ package ru.cheezeapp.utils.jsonConverter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -75,15 +74,15 @@ public class JsonToObjectConverter {
      * @return Список фиктических параметров
      */
     public List<FactParametrEntity> jsonToFactParams(String json, StrainEntity strain) {
-        List<FactParametrEntity> factParams = new ArrayList<>();
         try {
+            List<FactParametrEntity> factParams = new ArrayList<>();
             JsonNode factParamsJson = mapper.readTree(json);
             for (JsonNode property : factParamsJson)
                 for (JsonNode subProp : property.path("subProps")) {
                     Optional<PropertyEntity> propertyEntity = propertyRepository.findById(property.path("id").longValue());
                     Optional<SubPropertyEntity> subPropertyEntity = subPropertyRepository
                             .findById(subProp.path("id").longValue());
-                    if(!propertyEntity.isPresent() || !subPropertyEntity.isPresent())
+                    if (!propertyEntity.isPresent() || !subPropertyEntity.isPresent())
                         continue;
                     factParams.add(FactParametrEntity.builder()
                             .value(subProp.path("value").textValue())
@@ -95,8 +94,27 @@ public class JsonToObjectConverter {
             return factParams;
         } catch (JsonProcessingException e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
+    }
+
+    /**
+     * Метод конвертации JSON строки в {@link RodStrainEntity}
+     *
+     * @param json JSON строка
+     * @return Сущность рода
+     */
+    public RodStrainEntity jsonToRod(String json) {
+        try {
+            ObjectNode jsonNodes = mapper.readValue(json, ObjectNode.class);
+            return RodStrainEntity.builder()
+                    .id(jsonNodes.get("id").longValue())
+                    .name(jsonNodes.get("name").textValue())
+                    .build();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 
 }
