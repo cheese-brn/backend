@@ -15,7 +15,7 @@ public interface StrainRepository extends JpaRepository<StrainEntity, Long> {
      * @param vidStrain вид
      * @return список штаммов
      */
-    List<StrainEntity> findAllByVidStrain(VidStrainEntity vidStrain);
+    List<StrainEntity> findAllByVidStrainAndDeletedIsFalse(VidStrainEntity vidStrain);
 
     /**
      * Метод поиска всех удаленных штаммов

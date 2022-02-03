@@ -1,7 +1,6 @@
 package ru.cheezeapp.service.strain;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.server.DelegatingServerHttpResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.cheezeapp.dao.StrainRepository;
@@ -66,16 +65,16 @@ public class StrainSearchService {
     }
 
     /**
-     * Поиск штаммов по заданному ID вида
+     * Поиск штаммов по заданному ID вида.
      *
      * @param id ID вида
-     * @return список найденных штаммов
+     * @return список найденных неудаленных штаммов
      */
     @Transactional
     public List<StrainEntity> findStrainsByVidId(Long id) {
         Optional<VidStrainEntity> vid = vidStrainRepository.findById(id);
         if (vid.isPresent())
-            return strainRepository.findAllByVidStrain(vid.get());
+            return strainRepository.findAllByVidStrainAndDeletedIsFalse(vid.get());
         else
             throw new RuntimeException("Vid[id = " + id + "] not found in repository");
     }
