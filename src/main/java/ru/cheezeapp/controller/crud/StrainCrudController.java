@@ -1,4 +1,4 @@
-package ru.cheezeapp.controller;
+package ru.cheezeapp.controller.crud;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,11 +9,11 @@ import ru.cheezeapp.service.strain.StrainCrudService;
 import ru.cheezeapp.utils.jsonConverter.JsonToObjectConverter;
 
 /**
- * Crud контроллер для обработки запросов, связанных
+ * Контроллер для обработки CRUD запросов, связанных со штаммами.
  */
 @RestController
 @Slf4j
-public class CrudController {
+public class StrainCrudController {
 
     @Autowired
     StrainCrudService strainCrudService;
