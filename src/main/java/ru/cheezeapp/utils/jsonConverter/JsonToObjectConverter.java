@@ -99,4 +99,29 @@ public class JsonToObjectConverter {
         return null;
     }
 
+    /**
+     * Метод конвертации JSON строки в {@link VidStrainEntity}
+     *
+     * @param json JSON вида
+     * @return СУщность вида
+     */
+    public VidStrainEntity jsonToVid(String json) {
+        try {
+            ObjectNode jsonNodes = mapper.readValue(json, ObjectNode.class);
+            Optional<RodStrainEntity> rodStrain = rodStrainRepository.findById(jsonNodes.get("rodId").longValue());
+            if(rodStrain.isPresent()) {
+                return VidStrainEntity.builder()
+                        .id(jsonNodes.get("id").longValue())
+                        .name(jsonNodes.get("name").textValue())
+                        .rodStrain(rodStrain.get())
+                        .build();
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
 }
