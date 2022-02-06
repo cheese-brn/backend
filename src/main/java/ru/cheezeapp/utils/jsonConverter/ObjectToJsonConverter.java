@@ -114,7 +114,7 @@ public class ObjectToJsonConverter {
         ObjectNode vidNode = mapper.createObjectNode();
         vidNode.put("id", vid.getId());
         vidNode.put("name", vid.getName());
-        vidNode.put("rodName", vid.getRodStrain().getName());
+        vidNode.put("rodId", vid.getRodStrain().getId());
         vidNode.put("childrenCount", vid.getStrains().size());
         try {
             return mapper.writerWithDefaultPrettyPrinter()
