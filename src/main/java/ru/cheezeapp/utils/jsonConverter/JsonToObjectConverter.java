@@ -88,6 +88,7 @@ public class JsonToObjectConverter {
                             .subProperty(subPropertyEntity.get())
                             .build());
                 }
+            return factParams;
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             return null;
@@ -117,7 +118,7 @@ public class JsonToObjectConverter {
      * Метод конвертации JSON строки в {@link VidStrainEntity}
      *
      * @param json JSON вида
-     * @return СУщность вида
+     * @return Сущность вида
      */
     public VidStrainEntity jsonToVid(String json) {
         try {
@@ -134,7 +135,7 @@ public class JsonToObjectConverter {
         catch (Exception e) {
             e.printStackTrace();
         }
-        return factParams;
+        return null;
     }
 
     /**
