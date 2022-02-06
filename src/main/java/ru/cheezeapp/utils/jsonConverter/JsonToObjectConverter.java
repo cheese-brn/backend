@@ -70,16 +70,9 @@ public class JsonToObjectConverter {
         return null;
     }
 
-    /**
-     * Метод конвертации JSON строки в список {@link FactParametrEntity}
-     *
-     * @param json   JSON строка
-     * @param strain штамм, которому соответствуют фактические параметры
-     * @return Список фиктических параметров
-     */
-    private List<FactParametrEntity> jsonToFactParams(String json, StrainEntity strain) {
-        List<FactParametrEntity> factParams = new ArrayList<>();
+    public List<FactParametrEntity> jsonToFactParams(String json, StrainEntity strain) {
         try {
+            List<FactParametrEntity> factParams = new ArrayList<>();
             JsonNode factParamsJson = mapper.readTree(json);
             for (JsonNode property : factParamsJson)
                 for (JsonNode subProp : property.path("subProps")) {
@@ -96,6 +89,49 @@ public class JsonToObjectConverter {
                             .build());
                 }
         } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Метод конвертации JSON строки в {@link RodStrainEntity}
+     *
+     * @param json JSON строка
+     * @return Сущность рода
+     */
+    public RodStrainEntity jsonToRod(String json) {
+        try {
+            ObjectNode jsonNodes = mapper.readValue(json, ObjectNode.class);
+            return RodStrainEntity.builder()
+                    .id(jsonNodes.get("id").longValue())
+                    .name(jsonNodes.get("name").textValue())
+                    .build();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Метод конвертации JSON строки в {@link VidStrainEntity}
+     *
+     * @param json JSON вида
+     * @return СУщность вида
+     */
+    public VidStrainEntity jsonToVid(String json) {
+        try {
+            ObjectNode jsonNodes = mapper.readValue(json, ObjectNode.class);
+            Optional<RodStrainEntity> rodStrain = rodStrainRepository.findById(jsonNodes.get("rodId").longValue());
+            if(rodStrain.isPresent()) {
+                return VidStrainEntity.builder()
+                        .id(jsonNodes.get("id").longValue())
+                        .name(jsonNodes.get("name").textValue())
+                        .rodStrain(rodStrain.get())
+                        .build();
+            }
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
         return factParams;
@@ -123,7 +159,7 @@ public class JsonToObjectConverter {
         }
         return null;
     }
-
+  
     /**
      * Метод конвертации JSON строки в список {@link SubPropertyEntity}
      *
