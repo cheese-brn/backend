@@ -41,6 +41,7 @@ public class VidCrudService {
         log.info("VID CRUD SERVICE\tEntered updateVid() method");
         Optional<VidStrainEntity> vidStrainEntity = vidStrainRepository.findById(vid.getId());
         if(vidStrainEntity.isPresent()) {
+            vid.setStrains(vidStrainEntity.get().getStrains());
             vidStrainRepository.save(vid);
             log.info("VID CRUD SERVICE\tVid was updated");
         }

@@ -107,6 +107,7 @@ public class JsonToObjectConverter {
             return RodStrainEntity.builder()
                     .id(jsonNodes.get("rodId").longValue())
                     .name(jsonNodes.get("name").textValue())
+//                    .vids(new ArrayList<>())
                     .build();
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -126,7 +127,7 @@ public class JsonToObjectConverter {
             Optional<RodStrainEntity> rodStrain = rodStrainRepository.findById(jsonNodes.get("rodId").longValue());
             if(rodStrain.isPresent()) {
                 return VidStrainEntity.builder()
-                        .id(jsonNodes.get("id").longValue())
+                        .id(jsonNodes.get("vidId").longValue())
                         .name(jsonNodes.get("name").textValue())
                         .rodStrain(rodStrain.get())
                         .build();
