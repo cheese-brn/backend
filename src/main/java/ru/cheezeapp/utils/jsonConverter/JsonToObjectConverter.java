@@ -105,9 +105,8 @@ public class JsonToObjectConverter {
         try {
             ObjectNode jsonNodes = mapper.readValue(json, ObjectNode.class);
             return RodStrainEntity.builder()
-                    .id(jsonNodes.get("rodId").longValue())
-                    .name(jsonNodes.get("name").textValue())
-//                    .vids(new ArrayList<>())
+                    .id(jsonNodes.path("rodId").longValue())
+                    .name(jsonNodes.path("name").textValue())
                     .build();
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -124,11 +123,11 @@ public class JsonToObjectConverter {
     public VidStrainEntity jsonToVid(String json) {
         try {
             ObjectNode jsonNodes = mapper.readValue(json, ObjectNode.class);
-            Optional<RodStrainEntity> rodStrain = rodStrainRepository.findById(jsonNodes.get("rodId").longValue());
+            Optional<RodStrainEntity> rodStrain = rodStrainRepository.findById(jsonNodes.path("rodId").longValue());
             if(rodStrain.isPresent()) {
                 return VidStrainEntity.builder()
-                        .id(jsonNodes.get("vidId").longValue())
-                        .name(jsonNodes.get("name").textValue())
+                        .id(jsonNodes.path("vidId").longValue())
+                        .name(jsonNodes.path("name").textValue())
                         .rodStrain(rodStrain.get())
                         .build();
             }
@@ -149,12 +148,13 @@ public class JsonToObjectConverter {
         try {
             ObjectNode jsonNodes = mapper.readValue(json, ObjectNode.class);
             PropertyEntity property = PropertyEntity.builder()
-                    .id(jsonNodes.get("id").longValue())
-                    .name(jsonNodes.get("name").textValue())
-                    .description(jsonNodes.get("description").textValue())
-                    .propertyType(jsonNodes.get("isFunc").booleanValue())
+                    .id(jsonNodes.path("id").longValue())
+                    .name(jsonNodes.path("name").textValue())
+                    .description(jsonNodes.path("description").textValue())
+                    .propertyType(jsonNodes.path("isFunc").booleanValue())
                     .build();
-            property.setSubProperties(jsonToSubProperties(jsonNodes.get("subProps").textValue(), property));
+            property.setSubProperties(jsonToSubProperties(jsonNodes.path("subProps").toString(), property));
+            property.setFactParametrs(new ArrayList<>());
             return property;
         } catch (Exception e) {
             e.printStackTrace();
@@ -170,24 +170,25 @@ public class JsonToObjectConverter {
      * @return список подсвойств
      */
     private List<SubPropertyEntity> jsonToSubProperties(String json, PropertyEntity property) {
-        List<SubPropertyEntity> subPropertyEntities = new ArrayList<>();
         try {
+            List<SubPropertyEntity> subPropertyEntities = new ArrayList<>();
             JsonNode subPropertiesJson = mapper.readTree(json);
             for (JsonNode subProperty : subPropertiesJson) {
                 SubPropertyEntity subPropertyEntity = SubPropertyEntity.builder()
-                        .id(subProperty.get("id").longValue())
-                        .name(subProperty.get("name").textValue())
+                        .id(subProperty.path("id").longValue())
+                        .name(subProperty.path("name").textValue())
                         .property(property)
                         .build();
-                DataTypeEntity dataType = dataTypeRepository.findById(subProperty.get("datatype").longValue())
+                DataTypeEntity dataType = dataTypeRepository.findById(subProperty.path("datatype").longValue())
                         .orElse(dataTypeRepository.getById(1L));
                 subPropertyEntity.setDataType(dataType);
                 subPropertyEntities.add(subPropertyEntity);
+                return subPropertyEntities;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return subPropertyEntities;
+        return null;
     }
 
 }

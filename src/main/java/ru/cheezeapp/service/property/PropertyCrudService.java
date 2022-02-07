@@ -5,8 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.cheezeapp.dao.PropertyRepository;
+import ru.cheezeapp.dao.SubPropertyRepository;
 import ru.cheezeapp.entity.PropertyEntity;
+import ru.cheezeapp.entity.SubPropertyEntity;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -18,6 +21,9 @@ public class PropertyCrudService {
 
     @Autowired
     PropertyRepository propertyRepository;
+
+    @Autowired
+    SubPropertyRepository subPropertyRepository;
 
     /**
      * Процедура добавления свойства. Вместе со свойством добавляем подсвойства.
