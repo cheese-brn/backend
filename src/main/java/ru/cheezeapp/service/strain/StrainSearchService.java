@@ -1,6 +1,7 @@
 package ru.cheezeapp.service.strain;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.cheezeapp.dao.StrainRepository;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Сервис над штаммом для операций, связанных с поиском
+ * Сервис для методов с операциями поиска, связанных со штаммами
  */
 @Service
 public class StrainSearchService {
@@ -26,11 +27,11 @@ public class StrainSearchService {
     /**
      * Метод поиска всех штаммов
      *
-     * @return список штаммов
+     * @return список штаммов, отсортированных по экземпляру
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public List<StrainEntity> findAll() {
-        return strainRepository.findAll();
+        return strainRepository.findAll(Sort.by("exemplar"));
     }
 
     /**
@@ -38,7 +39,7 @@ public class StrainSearchService {
      *
      * @return список штаммов
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public List<StrainEntity> findAllNonDeletedStrains() {
         return strainRepository.findAllByDeletedIsFalse();
     }
@@ -46,11 +47,11 @@ public class StrainSearchService {
     /**
      * Метод поиска всех удаленных штаммов
      *
-     * @return список штаммов
+     * @return список штаммов, отсортированных по экземпляру
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public List<StrainEntity> findAllDeletedStrains() {
-        return strainRepository.findAllByDeletedIsTrue();
+        return strainRepository.findAllByDeletedIsTrue(Sort.by("exemplar"));
     }
 
     /**
@@ -59,7 +60,7 @@ public class StrainSearchService {
      * @param id ID для поиска
      * @return модель штамма
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public StrainEntity findStrainById(Long id) {
         return strainRepository.findById(id).orElse(null);
     }
@@ -68,17 +69,24 @@ public class StrainSearchService {
      * Поиск штаммов по заданному ID вида.
      *
      * @param id ID вида
-     * @return список найденных неудаленных штаммов
+     * @return список найденных неудаленных штаммов, отсортированных по экземпляру
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public List<StrainEntity> findStrainsByVidId(Long id) {
         Optional<VidStrainEntity> vid = vidStrainRepository.findById(id);
         if (vid.isPresent())
-            return strainRepository.findAllByVidStrainAndDeletedIsFalse(vid.get());
+            return strainRepository.findAllByVidStrainAndDeletedIsFalse(vid.get(), Sort.by("exemplar"));
         else
             throw new RuntimeException("Vid[id = " + id + "] not found in repository");
     }
 
+    /**
+     * Метод поиска штамма по имени
+     *
+     * @param name имя штамма
+     * @return Сущность штамма
+     */
+    @Transactional(readOnly = true)
     public StrainEntity findByName(String name) {
         return strainRepository.findByExemplar(name).orElse(null);
     }

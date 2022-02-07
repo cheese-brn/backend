@@ -1,6 +1,7 @@
 package ru.cheezeapp.service.vid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.cheezeapp.dao.RodStrainRepository;
@@ -11,6 +12,9 @@ import ru.cheezeapp.entity.VidStrainEntity;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Сервис для методов с операциями поиска, связанных с видами
+ */
 @Service
 public class VidSearchService {
 
@@ -22,12 +26,13 @@ public class VidSearchService {
 
     /**
      * Поиск видов по заданному ID рода
+     *
      * @param id ID рода
-     * @return список найденных видов
+     * @return список найденных видов, отсортированных по наименованию
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public List<VidStrainEntity> findVidsByRodId(Long id) {
-        Optional<RodStrainEntity> rodStrainEntity = rodStrainRepository.findById(id);
+        Optional<RodStrainEntity> rodStrainEntity = rodStrainRepository.findById(id, Sort.by("name"));
         if (rodStrainEntity.isPresent())
             return vidStrainRepository.findAllByRodStrain(rodStrainEntity.get());
         else
@@ -36,12 +41,20 @@ public class VidSearchService {
 
     /**
      * Поиск всех видов из репозитория
-     * @return список всех видов
+     * @return список всех видов, отсортированных по наименованию
      */
+    @Transactional(readOnly = true)
     public List<VidStrainEntity> findAll() {
-        return vidStrainRepository.findAll();
+        return vidStrainRepository.findAll(Sort.by("name"));
     }
-    
+
+    /**
+     * Метод поиска вида по ID
+     *
+     * @param id ID вида
+     * @return Сущность вида
+     */
+    @Transactional(readOnly = true)
     public VidStrainEntity findById(Long id) {
         Optional<VidStrainEntity> vid = vidStrainRepository.findById(id);
         if (vid.isPresent())
