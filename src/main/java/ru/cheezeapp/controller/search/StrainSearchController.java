@@ -72,4 +72,17 @@ public class StrainSearchController {
         return CatalogsToJson.strainCatalogToJson(strainsListByVidId);
     }
 
+    /**
+     * Метод поиска штаммов по заданному ID рода и формирования JSON
+     *
+     * @param id ID рода
+     * @return JSON списка штаммов
+     */
+    @GetMapping("/strains/rods/{id}")
+    public String getListOfStrainsByRodId(@PathVariable Long id) {
+        List<StrainEntity> strainsListByRodId = strainSearchService.findStrainsByRodId(id);
+        log.info("[GET /strains/rods/{id}]\tReturn list of strains by ID's rod");
+        return CatalogsToJson.strainCatalogToJson(strainsListByRodId);
+    }
+
 }

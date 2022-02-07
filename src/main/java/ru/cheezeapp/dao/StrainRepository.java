@@ -13,7 +13,7 @@ public interface StrainRepository extends JpaRepository<StrainEntity, Long> {
     /**
      * Метод поиска всех штаммов по виду
      *
-     * @param vidStrain вид
+     * @param vidStrain        вид
      * @param sortingParameter параметр сортировки
      * @return список штаммов
      */
@@ -22,8 +22,8 @@ public interface StrainRepository extends JpaRepository<StrainEntity, Long> {
     /**
      * Метод поиска всех удаленных штаммов
      *
-     * @return список удаленных штаммов
      * @param sortingParameter параметр сортировки
+     * @return список удаленных штаммов
      */
     List<StrainEntity> findAllByDeletedIsTrue(Sort sortingParameter);
 
