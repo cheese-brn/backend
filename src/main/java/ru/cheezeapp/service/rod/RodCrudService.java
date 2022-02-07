@@ -41,6 +41,7 @@ public class RodCrudService {
         log.info("ROD CRUD SERVICE\tEntered updateRod() method");
         Optional<RodStrainEntity> rodOptional = rodStrainRepository.findById(rodStrainEntity.getId());
         if (rodOptional.isPresent()) {
+            rodStrainEntity.setVids(rodOptional.get().getVids());
             rodStrainRepository.save(rodStrainEntity);
         }
         log.info("ROD CRUD SERVICE\tupdateRod() method done");

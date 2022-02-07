@@ -105,7 +105,7 @@ public class JsonToObjectConverter {
         try {
             ObjectNode jsonNodes = mapper.readValue(json, ObjectNode.class);
             return RodStrainEntity.builder()
-                    .id(jsonNodes.get("id").longValue())
+                    .id(jsonNodes.get("rodId").longValue())
                     .name(jsonNodes.get("name").textValue())
                     .build();
         } catch (Exception e) {
