@@ -183,8 +183,8 @@ public class JsonToObjectConverter {
                         .orElse(dataTypeRepository.getById(1L));
                 subPropertyEntity.setDataType(dataType);
                 subPropertyEntities.add(subPropertyEntity);
-                return subPropertyEntities;
             }
+            return subPropertyEntities;
         } catch (Exception e) {
             e.printStackTrace();
         }
