@@ -118,4 +118,15 @@ public class StrainSearchService {
             throw new RuntimeException("Rod[id = " + id + "] not found in repository");
     }
 
+    /**
+     * Поиск списка штаммов по частичному наименованию экземпляра
+     * (штаммы не являются удаленными)
+     * @param name частичное наименование экземпляра
+     * @return список сущностей штамма
+     */
+    @Transactional(readOnly = true)
+    public List<StrainEntity> findByExemplarContaining(String name) {
+        return strainRepository.findByExemplarContainingAndDeletedIsFalse(name);
+    }
+
 }

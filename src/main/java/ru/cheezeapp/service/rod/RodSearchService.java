@@ -44,4 +44,13 @@ public class RodSearchService {
             throw new RuntimeException("Rod[id = " + id + "] not found in repository");
     }
 
+    /**
+     * Поиск списка родов по заданному частичному имени
+     * @param name частичное имя
+     * @return список сущностей родов
+     */
+    @Transactional(readOnly = true)
+    public List<RodStrainEntity> findByNameContaining(String name) {
+        return rodStrainRepository.findByNameContaining(name);
+    }
 }

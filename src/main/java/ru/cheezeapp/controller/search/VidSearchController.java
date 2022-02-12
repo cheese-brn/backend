@@ -4,12 +4,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.cheezeapp.entity.*;
 import ru.cheezeapp.service.vid.VidSearchService;
 import ru.cheezeapp.utils.jsonConverter.CatalogsToJson;
 import ru.cheezeapp.utils.jsonConverter.ObjectToJsonConverter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -59,6 +61,19 @@ public class VidSearchController {
         List<VidStrainEntity> vidListByRodId = vidSearchService.findVidsByRodId(id);
         log.info("[GET /vids/rods/{id}]\tReturn list of vids by ID's rod");
         return CatalogsToJson.vidCatalogToJson(vidListByRodId);
+    }
+
+    @GetMapping("/vids/searchByName")
+    public String getListOfVidsByNameContaining(@RequestBody(required = false) String name) {
+        if (name == null)
+            return getListOfVids();
+        List<VidStrainEntity> vids = vidSearchService.findByNameContaining(name);
+        log.info("[GET /vids/searchByName]\tReturn list of vids by containing name");
+        List<String> returnValue = new ArrayList<>();
+        for (VidStrainEntity vid : vids) {
+            returnValue.add(ObjectToJsonConverter.vidToJson(vid));
+        }
+        return returnValue.toString();
     }
 
 }

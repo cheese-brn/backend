@@ -47,4 +47,6 @@ public interface StrainRepository extends JpaRepository<StrainEntity, Long> {
      */
     void deleteAllByDeletedIsTrue();
 
+    List<StrainEntity> findByExemplarContainingAndDeletedIsFalse(String name);
+
 }

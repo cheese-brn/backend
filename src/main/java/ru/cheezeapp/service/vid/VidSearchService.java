@@ -62,4 +62,14 @@ public class VidSearchService {
         else
             throw new RuntimeException("Vid[id = " + id +"] not found in repository");
     }
+
+    /**
+     * Поиск списка видов по заданному частичному имени
+     * @param name частичное имя
+     * @return список сущностей видов
+     */
+    @Transactional(readOnly = true)
+    public List<VidStrainEntity> findByNameContaining(String name) {
+        return vidStrainRepository.findByNameContaining(name);
+    }
 }
