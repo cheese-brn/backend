@@ -1,22 +1,21 @@
 package ru.cheezeapp.utils.documentConverter;
 
 import org.apache.poi.xwpf.usermodel.*;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHMerge;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTcPr;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.STMerge;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import ru.cheezeapp.entity.FactParametrEntity;
 import ru.cheezeapp.entity.StrainEntity;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
- * Класс, содержащий методы формирования документов из объектов
+ * Класс, содержащий методы формирования документа из объекта штамма
  */
-public class ObjectToDocumentConverter {
+public class StrainToDocumentConverter {
 
     /**
      * Заголовок документа
@@ -25,6 +24,9 @@ public class ObjectToDocumentConverter {
             "КОЛЛЕКЦИЯ МИКРООРГАНИЗМОВ",
             "ПАСПОРТ ШТАММА"};
 
+    /**
+     * Заголовок таблицы
+     */
     private static final String[] TABLE_HEADER = {"№№", "Показатель", "Фактические данные"};
 
     /**
@@ -44,19 +46,30 @@ public class ObjectToDocumentConverter {
     private static final String Second_COLUMN_WIDTH = "45%";
 
     /**
+     * Метод формирования документа из штамма и перевода его в объект Resources
+     *
+     * @param strain объект штамма
+     * @return объект Resource для файла документа штамма
+     * @throws MalformedURLException исключение при обработке URL
+     */
+    public static Resource strainToDocumentAsResource(StrainEntity strain) throws MalformedURLException {
+        XWPFDocument document = strainToDocument(strain);
+        String docName = DocumentUtils.DOCUMENTS_DIRECTORY + formStrainName(strain) + ".docx";
+        DocumentUtils.saveDoc(document, docName);
+        Path file = Paths.get(docName);
+        return new UrlResource(file.toUri());
+    }
+
+    /**
      * Метод формирования Word документа из сущности штамма
      *
      * @param strain сущность штамма
      */
-    public static void strainToDocument(StrainEntity strain) {
+    public static XWPFDocument strainToDocument(StrainEntity strain) {
         XWPFDocument document = new XWPFDocument();
         createTitle(document);
         createTableFromStrain(document, strain);
-        try {
-            saveDoc(document, formStrainName(strain) + ".docx");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        return document;
     }
 
     /**
@@ -101,7 +114,7 @@ public class ObjectToDocumentConverter {
             paramCount++;
         }
         XWPFTableRow annotationRow = table.createRow();
-        mergeCellsHorizontal(annotationRow, 1, 2);
+        DocumentUtils.mergeCellsHorizontal(annotationRow, 1, 2);
         setParagraphCell(annotationRow, 0, 0, Integer.toString(paramCount));
         setParagraphCell(annotationRow, 1, 0, "Другие сведения: " + strain.getAnnotation());
     }
@@ -109,32 +122,14 @@ public class ObjectToDocumentConverter {
     /**
      * Процедура формирования параграфа клетки таблицы. Берется первый параграф строки
      *
-     * @param tableRow строка таблицы
-     * @param cellIndex индекс клетки
+     * @param tableRow      строка таблицы
+     * @param cellIndex     индекс клетки
      * @param paragraphText текст параграфа клетки
      */
     private static void setParagraphCell(XWPFTableRow tableRow, int cellIndex, int paragraphIndex, String paragraphText) {
         XWPFParagraph paragraph = tableRow.getCell(cellIndex).getParagraphArray(paragraphIndex);
         setParagraph(paragraph);
         createRun(paragraph, paragraphText);
-    }
-
-    /**
-     * Процедура слияния ячеек строки
-     *
-     * @param row строка
-     * @param startCol индекс ячейки начала слияния
-     * @param endCol индекс ячейки конца слияния
-     */
-    private static void mergeCellsHorizontal(XWPFTableRow row, int startCol, int endCol) {
-        for (int cellIndex = startCol; cellIndex <= endCol; cellIndex++) {
-            XWPFTableCell cell = row.getCell(cellIndex);
-            if (cellIndex == startCol) {
-                cell.getCTTc().addNewTcPr().addNewHMerge().setVal(STMerge.RESTART);
-            } else {
-                cell.getCTTc().addNewTcPr().addNewHMerge().setVal(STMerge.CONTINUE);
-            }
-        }
     }
 
     /**
@@ -216,21 +211,6 @@ public class ObjectToDocumentConverter {
                 strain.getVidStrain().getName() + " " +
                 strain.getExemplar() + " " +
                 strain.getModification();
-    }
-
-    /**
-     * Процедура сохранения документа
-     *
-     * @param document документ для сохранения
-     * @param docName  имя документа
-     * @throws IOException исключение ввода-вывода
-     */
-    //TODO Найти как делать сохраенние на клиентский комп
-    private static void saveDoc(XWPFDocument document, String docName) throws IOException {
-        FileOutputStream out = new FileOutputStream(docName);
-        document.write(out);
-        out.close();
-        document.close();
     }
 
 }
