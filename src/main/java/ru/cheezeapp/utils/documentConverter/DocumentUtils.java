@@ -4,13 +4,12 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STMerge;
-import org.springframework.util.FileSystemUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Objects;
 
 public class DocumentUtils {
 
@@ -20,11 +19,26 @@ public class DocumentUtils {
     public static final String DOCUMENTS_DIRECTORY = "src/documents/";
 
     /**
+     * Процедура создания директории для сохранения документов
+     */
+    public static void createDocumentFolder() {
+        File folder = new File(DOCUMENTS_DIRECTORY);
+        if (!folder.exists())
+            try {
+                Files.createDirectory(Paths.get(DOCUMENTS_DIRECTORY));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+    }
+
+    /**
      * Процедура удаления документа
      */
     public static void deleteAllDocs() {
-        for(File document : Objects.requireNonNull(Paths.get(DOCUMENTS_DIRECTORY).toFile().listFiles()))
-            document.deleteOnExit();
+        File[] documents = Paths.get(DOCUMENTS_DIRECTORY).toFile().listFiles();
+        if (documents != null)
+            for (File document : documents)
+                document.deleteOnExit();
     }
 
     /**

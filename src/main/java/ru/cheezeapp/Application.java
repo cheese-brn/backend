@@ -9,12 +9,14 @@ public class Application {
 
     /**
      * Метод запуска приложения.
-     * Перед запуском приложения удаляем все сформированные отчеты по штаммам из папки documents
+     * Перед запуском приложения удаляем все сформированные отчеты по штаммам из папки documents.
+     * Если папки documents нет, создаем ее.
      *
      * @param args агрументы
      */
     public static void main(String[] args) {
         DocumentUtils.deleteAllDocs();
+        DocumentUtils.createDocumentFolder();
         SpringApplication.run(Application.class, args);
     }
 
