@@ -6,5 +6,8 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
     <include file="01-changeset-add-column-for-strain-table.xml" relativeToChangelogFile="true"/>
+    <include file="02-changeset-add-column-for-vid-table.xml" relativeToChangelogFile="true"/>
+    <include file="03-changeset-add-column-for-rod-table.xml" relativeToChangelogFile="true"/>
+    <include file="04-changeset-add-column-for-property-table.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

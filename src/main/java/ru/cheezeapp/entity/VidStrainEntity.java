@@ -37,6 +37,12 @@ public class VidStrainEntity {
     String name;
 
     /**
+     * Удален ли вид
+     */
+    @Column(name = "is_deleted")
+    boolean deleted;
+
+    /**
      * Внешний ключ на сущность {@link RodStrainEntity}
      */
     @ManyToOne

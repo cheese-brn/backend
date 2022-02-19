@@ -50,6 +50,12 @@ public class PropertyEntity {
     Boolean propertyType;
 
     /**
+     * Удалено ли свойство
+     */
+    @Column(name = "is_deleted")
+    boolean deleted;
+
+    /**
      * Связь один-ко-многим с {@link FactParametrEntity}
      */
     @OneToMany(targetEntity = FactParametrEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY,

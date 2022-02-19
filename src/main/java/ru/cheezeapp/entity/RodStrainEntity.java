@@ -39,6 +39,12 @@ public class RodStrainEntity {
     String name;
 
     /**
+     * Удален ли род
+     */
+    @Column(name = "is_deleted")
+    boolean deleted;
+
+    /**
      * Связь один-ко-многим с {@link VidStrainEntity}
      */
     @OneToMany(targetEntity = VidStrainEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY,
