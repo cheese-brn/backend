@@ -45,6 +45,7 @@ public class PropertyCrudService {
         log.info("PROPERTY CRUD SERVICE\tEntered updateProperty() method");
         Optional<PropertyEntity> propertyEntity = propertyRepository.findById(property.getId());
         if (propertyEntity.isPresent()) {
+            property.setFactParametrs(propertyEntity.get().getFactParametrs());
             propertyRepository.save(property);
             log.info("PROPERTY CRUD SERVICE\tUpdated property with id = " + property.getId());
         }
