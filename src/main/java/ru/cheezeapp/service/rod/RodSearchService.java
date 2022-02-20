@@ -25,8 +25,17 @@ public class RodSearchService {
      * @return список родов, отсортированных по наименованию
      */
     @Transactional(readOnly = true)
-    public List<RodStrainEntity> findAll() {
-        return rodStrainRepository.findAll(Sort.by("name"));
+    public List<RodStrainEntity> findAllNonDeletedRods() {
+        return rodStrainRepository.findAllByDeletedIsFalse(Sort.by("name"));
+    }
+
+    /**
+     * Поиск всех удаленных видов из репозитория
+     * @return список всех видов, отсортированных по наименованию
+     */
+    @Transactional(readOnly = true)
+    public List<RodStrainEntity> findAllDeletedRods() {
+        return rodStrainRepository.findAllByDeletedIsTrue(Sort.by("name"));
     }
 
     /**
@@ -51,6 +60,6 @@ public class RodSearchService {
      */
     @Transactional(readOnly = true)
     public List<RodStrainEntity> findByNameContaining(String name) {
-        return rodStrainRepository.findByNameContaining(name);
+        return rodStrainRepository.findByNameContainingAndDeletedIsFalse(name);
     }
 }

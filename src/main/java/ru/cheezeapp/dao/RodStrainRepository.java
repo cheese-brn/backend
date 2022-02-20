@@ -5,9 +5,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import ru.cheezeapp.entity.RodStrainEntity;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface RodStrainRepository extends JpaRepository<RodStrainEntity, Long> {
-    Optional<RodStrainEntity> findById(Long id, Sort name);
-    List<RodStrainEntity> findByNameContaining(String name);
+    List<RodStrainEntity> findAllByDeletedIsFalse(Sort sort);
+    List<RodStrainEntity> findAllByDeletedIsTrue(Sort sort);
+    void deleteAllByDeletedIsTrue();
+    List<RodStrainEntity> findByNameContainingAndDeletedIsFalse(String name);
 }

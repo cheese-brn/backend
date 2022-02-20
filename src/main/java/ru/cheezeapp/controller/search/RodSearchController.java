@@ -3,7 +3,7 @@ package ru.cheezeapp.controller.search;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.cheezeapp.entity.*;
+import ru.cheezeapp.entity.RodStrainEntity;
 import ru.cheezeapp.service.rod.RodSearchService;
 import ru.cheezeapp.utils.jsonConverter.CatalogsToJson;
 import ru.cheezeapp.utils.jsonConverter.ObjectToJsonConverter;
@@ -25,12 +25,23 @@ public class RodSearchController {
      */
     @GetMapping("/rods")
     public String getListOfRods() {
-        List<RodStrainEntity> rodsStrainEntity = rodSearchService.findAll();
-        log.info("[GET /rods]\tReturn all rods by list");
+        List<RodStrainEntity> rodsStrainEntity = rodSearchService.findAllNonDeletedRods();
+        log.info("[GET /rods]\tReturn all non deleted rods by list");
         return CatalogsToJson.rodCatalogToJson(rodsStrainEntity);
     }
 
-    //TODO реализовать JSON всех полей рода
+    /**
+     * Метод поиска всех родов и формирования их в список, вывод в виде JSON
+     *
+     * @return JSON списка родов
+     */
+    @GetMapping("/deleted_rods")
+    public String getListOfDeletedRods() {
+        List<RodStrainEntity> rodsStrainEntity = rodSearchService.findAllDeletedRods();
+        log.info("[GET /deleted_rods]\tReturn all deleted rods by list");
+        return CatalogsToJson.rodCatalogToJson(rodsStrainEntity);
+    }
+
     @GetMapping("/rods/{id}")
     public String getRodById(@PathVariable Long id) {
         RodStrainEntity rod = rodSearchService.findById(id);
