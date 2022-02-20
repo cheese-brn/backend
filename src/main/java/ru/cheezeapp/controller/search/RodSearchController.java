@@ -61,4 +61,15 @@ public class RodSearchController {
         return returnValue.toString();
     }
 
+    /**
+     * Метод обработки запроса на получение всех родов и их видов
+     *
+     * @return JSON родов и их видов
+     */
+    @GetMapping("/rods/rodsWithVids")
+    public String getListOfRodsWithVids() {
+        List<RodStrainEntity> rodStrainEntityList = rodSearchService.findAllNonDeletedRods();
+        return CatalogsToJson.rodsToJson(rodStrainEntityList);
+    }
+
 }

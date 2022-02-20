@@ -33,8 +33,7 @@ public class CatalogsToJson {
         try {
             return mapper.writerWithDefaultPrettyPrinter()
                     .writeValueAsString(arrayNode).replace("\\", "");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return null;
         }
     }
@@ -57,8 +56,7 @@ public class CatalogsToJson {
         try {
             return mapper.writerWithDefaultPrettyPrinter()
                     .writeValueAsString(arrayNode).replace("\\", "");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return null;
         }
     }
@@ -82,8 +80,7 @@ public class CatalogsToJson {
         try {
             return mapper.writerWithDefaultPrettyPrinter()
                     .writeValueAsString(arrayNode).replace("\\", "");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return null;
         }
     }
@@ -107,8 +104,7 @@ public class CatalogsToJson {
         try {
             return mapper.writerWithDefaultPrettyPrinter()
                     .writeValueAsString(arrayNode).replace("\\", "");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return null;
         }
     }
@@ -132,9 +128,39 @@ public class CatalogsToJson {
         try {
             return mapper.writerWithDefaultPrettyPrinter()
                     .writeValueAsString(arrayNode).replace("\\", "");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return null;
         }
     }
+
+    /**
+     * Метод конвертации списка родов с видами в Json
+     *
+     * @param rodStrainEntityList список родов
+     * @return JSON родов с видами
+     */
+    public static String rodsToJson(List<RodStrainEntity> rodStrainEntityList) {
+        ArrayNode rodsNode = mapper.createArrayNode();
+        for (RodStrainEntity rodStrain : rodStrainEntityList) {
+            ObjectNode rodNode = mapper.createObjectNode();
+            rodNode.put("id", rodStrain.getId());
+            rodNode.put("name", rodStrain.getName());
+            ArrayNode vidsNode = mapper.createArrayNode();
+            for (VidStrainEntity vidStrain : rodStrain.getVids()) {
+                ObjectNode vidNode = mapper.createObjectNode();
+                vidNode.put("id", vidStrain.getId());
+                vidNode.put("name", vidStrain.getName());
+                vidsNode.add(vidNode);
+            }
+            rodNode.set("vids", vidsNode);
+            rodsNode.add(rodNode);
+        }
+        try {
+            return mapper.writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(rodsNode).replace("\\", "");
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
 }
