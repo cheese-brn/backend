@@ -36,11 +36,12 @@ public class VidSearchService {
         if (rodStrainEntity.isPresent())
             return vidStrainRepository.findAllByRodStrainAndDeletedIsFalse(rodStrainEntity.get(), Sort.by("name"));
         else
-            throw new RuntimeException("Rod[id = " + id +"] not found in repository");
+            throw new RuntimeException("Rod[id = " + id + "] not found in repository");
     }
 
     /**
      * Поиск всех неудаленных видов из репозитория
+     *
      * @return список всех видов, отсортированных по наименованию
      */
     @Transactional(readOnly = true)
@@ -50,6 +51,7 @@ public class VidSearchService {
 
     /**
      * Поиск всех удаленных видов из репозитория
+     *
      * @return список всех видов, отсортированных по наименованию
      */
     @Transactional(readOnly = true)
@@ -69,11 +71,12 @@ public class VidSearchService {
         if (vid.isPresent())
             return vid.get();
         else
-            throw new RuntimeException("Vid[id = " + id +"] not found in repository");
+            throw new RuntimeException("Vid[id = " + id + "] not found in repository");
     }
 
     /**
      * Поиск списка видов по заданному частичному имени
+     *
      * @param name частичное имя
      * @return список сущностей видов
      */

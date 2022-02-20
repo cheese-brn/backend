@@ -36,7 +36,7 @@ public class SubpropertySearchService {
         if (property.isPresent())
             return subPropertyRepository.findAllByProperty(property.get(), Sort.by("name"));
         else
-            throw new RuntimeException("Property[id = " + id +"] not found in repository");
+            throw new RuntimeException("Property[id = " + id + "] not found in repository");
     }
 
     /**

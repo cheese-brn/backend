@@ -40,7 +40,7 @@ public class VidCrudService {
     public void updateVid(VidStrainEntity vid) {
         log.info("VID CRUD SERVICE\tEntered updateVid() method");
         Optional<VidStrainEntity> vidStrainEntity = vidStrainRepository.findById(vid.getId());
-        if(vidStrainEntity.isPresent()) {
+        if (vidStrainEntity.isPresent()) {
             vid.setStrains(vidStrainEntity.get().getStrains());
             vidStrainRepository.save(vid);
             log.info("VID CRUD SERVICE\tVid was updated");
@@ -87,7 +87,7 @@ public class VidCrudService {
     }
 
     /**
-     * Процедура удаления всех штаммов в корзине из БД
+     * Процедура удаления всех видов в корзине из БД
      */
     @Transactional
     public void hardDeleteAll() {
@@ -97,10 +97,9 @@ public class VidCrudService {
     }
 
     /**
-     * Процедура мягкого удаления вида по ID.
-     * Помечаем вид как удаленный и обновляем его в БД.
+     * Процедура восстановления вида по ID.
      *
-     * @param id ID вида для удаления
+     * @param id ID вида для восстановления
      */
     @Transactional
     public void restoreById(Long id) {

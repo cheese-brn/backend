@@ -107,20 +107,20 @@ public class StrainSearchService {
     @Transactional(readOnly = true)
     public List<StrainEntity> findStrainsByRodId(Long id) {
         Optional<RodStrainEntity> rod = rodStrainRepository.findById(id);
-        if(rod.isPresent()) {
+        if (rod.isPresent()) {
             List<StrainEntity> strainEntities = new ArrayList<>();
-            for(VidStrainEntity vid : rod.get().getVids())
+            for (VidStrainEntity vid : rod.get().getVids())
                 strainEntities.addAll(strainRepository.findAllByVidStrainAndDeletedIsFalse(vid, Sort.by("exemplar")));
             strainEntities.sort(Comparator.comparing(StrainEntity::getExemplar));
             return strainEntities;
-        }
-        else
+        } else
             throw new RuntimeException("Rod[id = " + id + "] not found in repository");
     }
 
     /**
      * Поиск списка штаммов по частичному наименованию экземпляра
      * (штаммы не являются удаленными)
+     *
      * @param name частичное наименование экземпляра
      * @return список сущностей штамма
      */

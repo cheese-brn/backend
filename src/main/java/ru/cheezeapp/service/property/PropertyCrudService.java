@@ -66,8 +66,7 @@ public class PropertyCrudService {
             propertyEntity.get().setDeleted(true);
             propertyRepository.save(propertyEntity.get());
             log.info("PROPERTY CRUD SERVICE\tsoftDeletionById() method done");
-        }
-        else {
+        } else {
             log.info("PROPERTY CRUD SERVICE\tsoftDeletionById() method done with exception");
             throw new RuntimeException("Свойство не существует");
         }
@@ -86,8 +85,7 @@ public class PropertyCrudService {
         if (propertyEntity.isPresent()) {
             propertyRepository.deleteById(id);
             log.info("PROPERTY CRUD SERVICE\thardDeletionById() method done");
-        }
-        else {
+        } else {
             log.info("PROPERTY CRUD SERVICE\thardDeletionById() method done with exception");
             throw new RuntimeException("Свойство не существует");
         }
@@ -107,8 +105,7 @@ public class PropertyCrudService {
             propertyEntity.get().setDeleted(false);
             propertyRepository.save(propertyEntity.get());
             log.info("PROPERTY CRUD SERVICE\trestoreById() method done");
-        }
-        else {
+        } else {
             log.info("PROPERTY CRUD SERVICE\trestoreById() method done with exception");
             throw new RuntimeException("Свойство не существует");
         }

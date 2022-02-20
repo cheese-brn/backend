@@ -31,6 +31,7 @@ public class RodSearchService {
 
     /**
      * Поиск всех удаленных видов из репозитория
+     *
      * @return список всех видов, отсортированных по наименованию
      */
     @Transactional(readOnly = true)
@@ -55,6 +56,7 @@ public class RodSearchService {
 
     /**
      * Поиск списка родов по заданному частичному имени
+     *
      * @param name частичное имя
      * @return список сущностей родов
      */

@@ -92,7 +92,7 @@ public class VidCrudController {
      */
     @GetMapping("/vid/hard_delete_all/")
     public String hardDeleteAllVids() {
-        log.info("[GET /vid/hard_delete_all/]\tEntered hardDeletionOfVidById() method");
+        log.info("[GET /vid/hard_delete_all/]\tEntered hardDeleteAllVids() method");
         try {
             vidCrudService.hardDeleteAll();
             log.info("[GET /vid/hard_delete_all/]\tHard deleted all vids");
