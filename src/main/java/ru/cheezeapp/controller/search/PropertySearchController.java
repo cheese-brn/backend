@@ -23,14 +23,26 @@ public class PropertySearchController {
     private PropertySearchService propertySearchService;
 
     /**
-     * Метод поиска списка всех свойств и передачи его в виде JSON
+     * Метод поиска списка всех неудаленных свойств и передачи его в виде JSON
      *
      * @return JSON списка свойств
      */
     @GetMapping("/properties")
     public String getListOfProperties() {
-        List<PropertyEntity> properties = propertySearchService.findAll();
-        log.info("[GET /properties]\tReturn list of all properties");
+        List<PropertyEntity> properties = propertySearchService.findAllNonDeletedProperties();
+        log.info("[GET /properties]\tReturn list of all non deleted properties");
+        return CatalogsToJson.propertyCatalogToJson(properties);
+    }
+
+    /**
+     * Метод поиска списка всех удаленных свойств и передачи его в виде JSON
+     *
+     * @return JSON списка свойств
+     */
+    @GetMapping("/deleted_properties")
+    public String getListOfDeletedProperties() {
+        List<PropertyEntity> properties = propertySearchService.findAllDeletedProperties();
+        log.info("[GET /deleted_properties]\tReturn list of all deleted properties");
         return CatalogsToJson.propertyCatalogToJson(properties);
     }
 

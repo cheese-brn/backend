@@ -46,6 +46,14 @@ public class SubPropertyEntity {
     DataTypeEntity dataType;
 
     /**
+     * Связь один-ко-многим с {@link FactParametrEntity}
+     */
+    @OneToMany(targetEntity = FactParametrEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY,
+            orphanRemoval = true)
+    @JoinColumn(name = "property_id", referencedColumnName = "id")
+    List<FactParametrEntity> factParametrs;
+
+    /**
      * Связь один-ко-многим с {@link DependencyTableEntity} для первого параметра зависимости
      */
     @OneToMany(targetEntity = DependencyTableEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)

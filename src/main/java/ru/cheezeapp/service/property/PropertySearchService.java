@@ -15,6 +15,7 @@ import java.util.Optional;
  */
 @Service
 public class PropertySearchService {
+
     @Autowired
     private PropertyRepository propertyRepository;
 
@@ -26,6 +27,26 @@ public class PropertySearchService {
     @Transactional(readOnly = true)
     public List<PropertyEntity> findAll() {
         return propertyRepository.findAll(Sort.by("name"));
+    }
+
+    /**
+     * Поиск всех неудаленных свойств в репозитории
+     *
+     * @return список свойств, отсортированных по наименованию
+     */
+    @Transactional(readOnly = true)
+    public List<PropertyEntity> findAllNonDeletedProperties() {
+        return propertyRepository.findAllByDeletedIsFalse(Sort.by("name"));
+    }
+
+    /**
+     * Поиск всех удаленных свойств в репозитории
+     *
+     * @return список свойств, отсортированных по наименованию
+     */
+    @Transactional(readOnly = true)
+    public List<PropertyEntity> findAllDeletedProperties() {
+        return propertyRepository.findAllByDeletedIsTrue(Sort.by("name"));
     }
 
     /**

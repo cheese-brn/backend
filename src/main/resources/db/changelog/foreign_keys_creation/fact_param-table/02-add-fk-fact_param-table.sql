@@ -7,6 +7,7 @@ alter table fact_param
             references property("id"),
     add constraint fk_subproperty_id
         foreign key ("subproperty_id")
-            references subproperty("id");
+            references subproperty("id")
+                ON DELETE CASCADE;
 
 GO
