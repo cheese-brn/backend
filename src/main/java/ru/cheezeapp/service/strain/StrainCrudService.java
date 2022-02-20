@@ -43,7 +43,7 @@ public class StrainCrudService {
         Optional<StrainEntity> strainEntity = strainRepository.findById(id);
         if (strainEntity.isPresent()) {
             strainEntity.get().setDeleted(true);
-            updateStrain(strainEntity.get());
+            strainRepository.save(strainEntity.get());
             log.info("STRAIN CRUD SERVICE\tsoftDeletionOfStrainById() method done");
         } else {
             log.info("STRAIN CRUD SERVICE\tsoftDeletionOfStrainById() method done");
