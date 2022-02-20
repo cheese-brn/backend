@@ -2,10 +2,7 @@ package ru.cheezeapp.controller.search;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.cheezeapp.entity.*;
 import ru.cheezeapp.service.vid.VidSearchService;
 import ru.cheezeapp.utils.jsonConverter.CatalogsToJson;
@@ -63,7 +60,7 @@ public class VidSearchController {
         return CatalogsToJson.vidCatalogToJson(vidListByRodId);
     }
 
-    @GetMapping("/vids/searchByName")
+    @PostMapping("/vids/searchByName")
     public String getListOfVidsByNameContaining(@RequestBody(required = false) String name) {
         if (name == null)
             return getListOfVids();
