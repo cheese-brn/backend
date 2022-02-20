@@ -52,7 +52,7 @@ public class VidStrainEntity {
     /**
      * Связь один-ко-многим с {@link StrainEntity}
      */
-    @OneToMany(targetEntity = StrainEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(targetEntity = StrainEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "vid_id", referencedColumnName = "id")
     List<StrainEntity> strains;
 }

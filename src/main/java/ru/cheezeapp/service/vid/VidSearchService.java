@@ -32,20 +32,29 @@ public class VidSearchService {
      */
     @Transactional(readOnly = true)
     public List<VidStrainEntity> findVidsByRodId(Long id) {
-        Optional<RodStrainEntity> rodStrainEntity = rodStrainRepository.findById(id, Sort.by("name"));
+        Optional<RodStrainEntity> rodStrainEntity = rodStrainRepository.findById(id);
         if (rodStrainEntity.isPresent())
-            return vidStrainRepository.findAllByRodStrain(rodStrainEntity.get());
+            return vidStrainRepository.findAllByRodStrainAndDeletedIsFalse(rodStrainEntity.get(), Sort.by("name"));
         else
             throw new RuntimeException("Rod[id = " + id +"] not found in repository");
     }
 
     /**
-     * Поиск всех видов из репозитория
+     * Поиск всех неудаленных видов из репозитория
      * @return список всех видов, отсортированных по наименованию
      */
     @Transactional(readOnly = true)
-    public List<VidStrainEntity> findAll() {
-        return vidStrainRepository.findAll(Sort.by("name"));
+    public List<VidStrainEntity> findAllNonDeletedVids() {
+        return vidStrainRepository.findAllByDeletedIsFalse(Sort.by("name"));
+    }
+
+    /**
+     * Поиск всех удаленных видов из репозитория
+     * @return список всех видов, отсортированных по наименованию
+     */
+    @Transactional(readOnly = true)
+    public List<VidStrainEntity> findAllDeletedVids() {
+        return vidStrainRepository.findAllByDeletedIsTrue(Sort.by("name"));
     }
 
     /**
@@ -70,6 +79,6 @@ public class VidSearchService {
      */
     @Transactional(readOnly = true)
     public List<VidStrainEntity> findByNameContaining(String name) {
-        return vidStrainRepository.findByNameContaining(name);
+        return vidStrainRepository.findByNameContainingAndDeletedIsFalse(name);
     }
 }

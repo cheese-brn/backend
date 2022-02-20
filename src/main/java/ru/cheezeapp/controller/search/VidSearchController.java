@@ -22,14 +22,26 @@ public class VidSearchController {
     private VidSearchService vidSearchService;
 
     /**
-     * API-метод, который предоставляет список всех видов в формате JSON
+     * API-метод, который предоставляет список всех неудаленных видов в формате JSON
      *
      * @return JSON списка видов
      */
     @GetMapping("/vids")
     public String getListOfVids() {
-        List<VidStrainEntity> allVids = vidSearchService.findAll();
-        log.info("[GET /vids]\tReturn all vids by list");
+        List<VidStrainEntity> allVids = vidSearchService.findAllNonDeletedVids();
+        log.info("[GET /vids]\tReturn all non deleted vids by list");
+        return CatalogsToJson.vidCatalogToJson(allVids);
+    }
+
+    /**
+     * API-метод, который предоставляет список всех удаленных видов в формате JSON
+     *
+     * @return JSON списка видов
+     */
+    @GetMapping("/deleted_vids")
+    public String getListOfDeletedVids() {
+        List<VidStrainEntity> allVids = vidSearchService.findAllDeletedVids();
+        log.info("[GET /deleted_vids]\tReturn all deleted vids by list");
         return CatalogsToJson.vidCatalogToJson(allVids);
     }
 
