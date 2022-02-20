@@ -85,6 +85,11 @@ public class VidCrudController {
         }
     }
 
+    /**
+     * Метод обработки запроса на полное удаление всех удаленных видов из БД. Вместе с видом удаляются все штаммы
+     *
+     * @return сообщение об обработке
+     */
     @GetMapping("/vid/hard_delete_all/")
     public String hardDeleteAllVids() {
         log.info("[GET /vid/hard_delete_all/]\tEntered hardDeletionOfVidById() method");
@@ -94,6 +99,25 @@ public class VidCrudController {
             return "Вид помещён в корзину";
         } catch (Exception e) {
             log.info("[GET /vid/hard_delete/]\tThrows exception: " + e.getMessage());
+            return e.getMessage();
+        }
+    }
+
+    /**
+     * Метод обработки запроса на восстановление вида из корзины.
+     *
+     * @param id ID восстанавливаемого вида
+     * @return сообщение об обработке
+     */
+    @GetMapping("/vid/restore/{id}")
+    public String restoreVidById(@PathVariable Long id) {
+        log.info("[GET /vid/restore/" + id + "]\tEntered restoreVidById() method");
+        try {
+            vidCrudService.restoreById(id);
+            log.info("[GET /vid/restore/" + id + "]\tRestored vid with id: " + id);
+            return "Вид успешно восстановлен";
+        } catch (Exception e) {
+            log.info("[GET /vid/restore/" + id + "]\tThrows exception: " + e.getMessage());
             return e.getMessage();
         }
     }
