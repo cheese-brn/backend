@@ -7,7 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.cheezeapp.dao.PropertyRepository;
 import ru.cheezeapp.dao.SubPropertyRepository;
 import ru.cheezeapp.entity.PropertyEntity;
+import ru.cheezeapp.entity.SubPropertyEntity;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -46,6 +48,10 @@ public class PropertyCrudService {
         Optional<PropertyEntity> propertyEntity = propertyRepository.findById(property.getId());
         if (propertyEntity.isPresent()) {
             property.setFactParametrs(propertyEntity.get().getFactParametrs());
+            List<SubPropertyEntity> subProperties = property.getSubProperties();
+            property.setSubProperties(propertyEntity.get().getSubProperties());
+            property.getSubProperties().clear();
+            property.getSubProperties().addAll(subProperties);
             propertyRepository.save(property);
             log.info("PROPERTY CRUD SERVICE\tUpdated property with id = " + property.getId());
         }
