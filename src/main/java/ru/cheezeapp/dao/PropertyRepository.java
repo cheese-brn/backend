@@ -24,4 +24,12 @@ public interface PropertyRepository extends JpaRepository<PropertyEntity, Long> 
      */
     List<PropertyEntity> findAllByDeletedIsTrue(Sort sortingParameter);
 
+    /**
+     * Метод поиска всех ноудаленных свойств по строке
+     *
+     * @param name наименование свойства
+     * @return список найденных свойств
+     */
+    List<PropertyEntity> findByNameContainingIgnoreCaseAndDeletedIsFalse(String name);
+
 }

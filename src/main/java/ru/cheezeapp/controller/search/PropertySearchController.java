@@ -2,15 +2,15 @@ package ru.cheezeapp.controller.search;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.cheezeapp.entity.*;
 import ru.cheezeapp.service.property.PropertySearchService;
 import ru.cheezeapp.utils.jsonConverter.CatalogsToJson;
 import ru.cheezeapp.utils.jsonConverter.ObjectToJsonConverter;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Контроллер для обработки запросов, связанных с поиском свойств.
@@ -52,12 +52,24 @@ public class PropertySearchController {
      * @param id id свойства
      * @return JSON свойства
      */
-    //TODO заглушку в JSON потом убрать
     @GetMapping("/properties/{id}")
     public String getPropertyById(@PathVariable Long id) {
         PropertyEntity property = propertySearchService.findById(id);
         log.info("[GET /properties/" + id + "]\tReturn property with id " + id);
         return ObjectToJsonConverter.propertyToJson(property);
+    }
+
+    /**
+     * Обробатчик запроса на поиск свойств по фрагменту
+     *
+     * @param name фрагмент имени свойства
+     * @return список найденных свойств
+     */
+    @PostMapping("/property/searchByName")
+    public String getListOfPropertiesByNameContaining(@RequestBody(required = false) String name) {
+        List<PropertyEntity> properties = propertySearchService.findByNameContaining(name);
+        log.info("[POST /property/searchByName]\tReturn list of properties by containing name");
+        return properties.stream().map(ObjectToJsonConverter::propertyToJson).collect(Collectors.toList()).toString();
     }
 
 }

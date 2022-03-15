@@ -10,5 +10,5 @@ public interface RodStrainRepository extends JpaRepository<RodStrainEntity, Long
     List<RodStrainEntity> findAllByDeletedIsFalse(Sort sort);
     List<RodStrainEntity> findAllByDeletedIsTrue(Sort sort);
     void deleteAllByDeletedIsTrue();
-    List<RodStrainEntity> findByNameContainingAndDeletedIsFalse(String name);
+    List<RodStrainEntity> findByNameContainingIgnoreCaseAndDeletedIsFalse(String name);
 }

@@ -62,6 +62,6 @@ public class RodSearchService {
      */
     @Transactional(readOnly = true)
     public List<RodStrainEntity> findByNameContaining(String name) {
-        return rodStrainRepository.findByNameContainingAndDeletedIsFalse(name);
+        return rodStrainRepository.findByNameContainingIgnoreCaseAndDeletedIsFalse(name);
     }
 }

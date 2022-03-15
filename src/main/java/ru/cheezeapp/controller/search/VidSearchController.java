@@ -77,7 +77,7 @@ public class VidSearchController {
         if (name == null)
             return getListOfVids();
         List<VidStrainEntity> vids = vidSearchService.findByNameContaining(name);
-        log.info("[GET /vids/searchByName]\tReturn list of vids by containing name");
+        log.info("[POST /vids/searchByName]\tReturn list of vids by containing name");
         List<String> returnValue = new ArrayList<>();
         for (VidStrainEntity vid : vids) {
             returnValue.add(ObjectToJsonConverter.vidToJson(vid));

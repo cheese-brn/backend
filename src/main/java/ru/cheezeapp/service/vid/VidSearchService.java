@@ -82,6 +82,6 @@ public class VidSearchService {
      */
     @Transactional(readOnly = true)
     public List<VidStrainEntity> findByNameContaining(String name) {
-        return vidStrainRepository.findByNameContainingAndDeletedIsFalse(name);
+        return vidStrainRepository.findByNameContainingIgnoreCaseAndDeletedIsFalse(name);
     }
 }

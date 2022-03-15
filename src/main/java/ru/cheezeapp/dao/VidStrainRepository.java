@@ -12,5 +12,5 @@ public interface VidStrainRepository extends JpaRepository<VidStrainEntity, Long
     List<VidStrainEntity> findAllByDeletedIsTrue(Sort sort);
     void deleteAllByDeletedIsTrue();
     List<VidStrainEntity> findAllByDeletedIsFalse(Sort sort);
-    List<VidStrainEntity> findByNameContainingAndDeletedIsFalse(String name);
+    List<VidStrainEntity> findByNameContainingIgnoreCaseAndDeletedIsFalse(String name);
 }
