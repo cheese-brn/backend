@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Класс, содержащий методы конвертирования объектов в Json
@@ -58,7 +59,9 @@ public class ObjectToJsonConverter {
      */
     private static String factParamsToJson(List<FactParametrEntity> factParams) {
         MultiValueMap<PropertyEntity, FactParametrEntity> propertyMap = new LinkedMultiValueMap<>();
-        for (FactParametrEntity factParametr : factParams)
+        for (FactParametrEntity factParametr : factParams.stream()
+                .filter(param -> !param.getProperty().isDeleted())
+                .collect(Collectors.toList()))
             propertyMap.add(factParametr.getProperty(), factParametr);
         ArrayNode factParamsArrayNode = mapper.createArrayNode();
         for (PropertyEntity property : propertyMap.keySet()) {

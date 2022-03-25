@@ -6,11 +6,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.cheezeapp.dao.PropertyRepository;
 import ru.cheezeapp.dao.SubPropertyRepository;
+import ru.cheezeapp.entity.FactParametrEntity;
 import ru.cheezeapp.entity.PropertyEntity;
 import ru.cheezeapp.entity.SubPropertyEntity;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Сервис с Crud операциями для свойства
@@ -47,11 +49,15 @@ public class PropertyCrudService {
         log.info("PROPERTY CRUD SERVICE\tEntered updateProperty() method");
         Optional<PropertyEntity> propertyEntity = propertyRepository.findById(property.getId());
         if (propertyEntity.isPresent()) {
+            List<FactParametrEntity> factParametrEntities = property.getFactParametrs();
             property.setFactParametrs(propertyEntity.get().getFactParametrs());
+            property.getFactParametrs().clear();
+            property.getFactParametrs().addAll(factParametrEntities);
             List<SubPropertyEntity> subProperties = property.getSubProperties();
             property.setSubProperties(propertyEntity.get().getSubProperties());
             property.getSubProperties().clear();
             property.getSubProperties().addAll(subProperties);
+            property.setFactParametrs(propertyEntity.get().getFactParametrs());
             propertyRepository.save(property);
             log.info("PROPERTY CRUD SERVICE\tUpdated property with id = " + property.getId());
         }

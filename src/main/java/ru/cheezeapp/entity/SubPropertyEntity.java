@@ -48,9 +48,8 @@ public class SubPropertyEntity {
     /**
      * Связь один-ко-многим с {@link FactParametrEntity}
      */
-    @OneToMany(targetEntity = FactParametrEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY,
+    @OneToMany(mappedBy = "subProperty", targetEntity = FactParametrEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY,
             orphanRemoval = true)
-    @JoinColumn(name = "property_id", referencedColumnName = "id")
     List<FactParametrEntity> factParametrs;
 
     /**

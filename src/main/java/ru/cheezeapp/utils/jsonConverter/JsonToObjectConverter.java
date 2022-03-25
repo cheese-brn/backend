@@ -12,6 +12,8 @@ import ru.cheezeapp.entity.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class JsonToObjectConverter {
@@ -154,7 +156,10 @@ public class JsonToObjectConverter {
                     .propertyType(jsonNodes.path("isFunc").booleanValue())
                     .build();
             property.setSubProperties(jsonToSubProperties(jsonNodes.path("subProps").toString(), property));
-            property.setFactParametrs(new ArrayList<>());
+            List<FactParametrEntity> factParametrEntityList = new ArrayList<>();
+            for(SubPropertyEntity subPropertyEntity : property.getSubProperties())
+                factParametrEntityList.addAll(subPropertyEntity.getFactParametrs());
+            property.setFactParametrs(factParametrEntityList);
             return property;
         } catch (Exception e) {
             e.printStackTrace();
@@ -174,10 +179,12 @@ public class JsonToObjectConverter {
             List<SubPropertyEntity> subPropertyEntities = new ArrayList<>();
             JsonNode subPropertiesJson = mapper.readTree(json);
             for (JsonNode subProperty : subPropertiesJson) {
+                Long id = subProperty.path("id").longValue();
                 SubPropertyEntity subPropertyEntity = SubPropertyEntity.builder()
-                        .id(subProperty.path("id").longValue())
+                        .id(id)
                         .name(subProperty.path("name").textValue())
                         .property(property)
+                        .factParametrs(factParametrRepository.findFactParametrEntitiesBySubPropertyId(id))
                         .build();
                 DataTypeEntity dataType = dataTypeRepository.findById(subProperty.path("datatype").longValue())
                         .orElse(dataTypeRepository.getById(1L));
