@@ -27,7 +27,7 @@ public class StrainToDocumentConverter {
     /**
      * Заголовок таблицы
      */
-    private static final String[] TABLE_HEADER = {"№№", "Показатель", "Фактические данные"};
+    private static final String[] TABLE_HEADER = {"№", "Показатель", "Фактические данные"};
 
     /**
      * Шрифт документа
