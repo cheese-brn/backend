@@ -34,6 +34,7 @@ public class ObjectToJsonConverter {
         strainNode.put("vid", strain.getVidStrain().getName());
         strainNode.put("vidId", strain.getVidStrain().getId());
         strainNode.put("author", "Placeholder");
+        strainNode.put("isLost", strain.isLost());
         Date dateNow = new Date();
         SimpleDateFormat formatForDateNow = new SimpleDateFormat("E dd.MM.yyyy',' kk:mm");
         strainNode.put("date", formatForDateNow.format(dateNow));

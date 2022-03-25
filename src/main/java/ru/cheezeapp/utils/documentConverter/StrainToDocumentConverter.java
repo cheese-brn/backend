@@ -45,6 +45,8 @@ public class StrainToDocumentConverter {
     private static final String FIRST_COLUMN_WIDTH = "3%";
     private static final String Second_COLUMN_WIDTH = "45%";
 
+    private static final String RED_COLOR = "db3327";
+
     /**
      * Метод формирования документа из штамма и перевода его в объект Resources
      *
@@ -67,7 +69,7 @@ public class StrainToDocumentConverter {
      */
     public static XWPFDocument strainToDocument(StrainEntity strain) {
         XWPFDocument document = new XWPFDocument();
-        createTitle(document);
+        createTitle(document, strain);
         createTableFromStrain(document, strain);
         return document;
     }
@@ -77,12 +79,18 @@ public class StrainToDocumentConverter {
      *
      * @param document объект документа
      */
-    private static void createTitle(XWPFDocument document) {
+    private static void createTitle(XWPFDocument document, StrainEntity strain) {
         XWPFParagraph title = document.createParagraph();
         setParagraph(title);
         for (String line : TITLE) {
             XWPFRun run = createRun(title, line);
             run.setBold(true);
+            run.addBreak();
+        }
+        if (strain.isLost()) {
+            XWPFRun run = createRun(title, "(Утрачен)");
+            run.setBold(true);
+            run.setColor(RED_COLOR);
             run.addBreak();
         }
     }

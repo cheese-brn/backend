@@ -30,6 +30,12 @@
         <tagDatabase tag="columns_for_delete_creation"/>
     </changeSet>
 
+    <include file="lost_column_for_strain/db.changelog-add-lost-column-for-strain-table.xml" relativeToChangelogFile="true"/>
+
+    <changeSet id="21" author="pavel">
+        <tagDatabase tag="lost_column_for_stain_creation"/>
+    </changeSet>
+
 
 
 </databaseChangeLog>

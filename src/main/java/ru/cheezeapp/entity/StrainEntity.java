@@ -69,6 +69,12 @@ public class StrainEntity {
     boolean deleted;
 
     /**
+     * Утрачен ли штамм
+     */
+    @Column(name = "is_lost")
+    boolean lost;
+
+    /**
      * Связь один-ко-многим с {@link FactParametrEntity}
      */
     @OneToMany(targetEntity = FactParametrEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY,
