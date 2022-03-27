@@ -185,6 +185,7 @@ public class JsonToObjectConverter {
                         .id(id)
                         .name(subProperty.path("name").textValue())
                         .property(property)
+                        .unit(subProperty.path("unit").textValue())
                         .factParametrs(factParametrRepository.findFactParametrEntitiesBySubPropertyId(id))
                         .build();
                 DataTypeEntity dataType = dataTypeRepository.findById(subProperty.path("datatype").longValue())

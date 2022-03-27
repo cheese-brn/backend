@@ -160,6 +160,7 @@ public class ObjectToJsonConverter {
         subpropertyNode.put("name", subproperty.getName());
         subpropertyNode.put("propertyName", subproperty.getProperty().getName());
         subpropertyNode.put("datatype", subproperty.getDataType().getName());
+        subpropertyNode.put("unit", subproperty.getUnit());
         try {
             return mapper.writerWithDefaultPrettyPrinter()
                     .writeValueAsString(subpropertyNode).replace("\\", "");

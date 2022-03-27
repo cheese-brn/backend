@@ -36,6 +36,10 @@
         <tagDatabase tag="lost_column_for_stain_creation"/>
     </changeSet>
 
+    <include file="unit_column_for_subproperty/db.changelog-add-unit-column-for-subproperty-table.xml" relativeToChangelogFile="true"/>
 
+    <changeSet id="23" author="pavel">
+        <tagDatabase tag="unit_column_for_subproperty_creation"/>
+    </changeSet>
 
 </databaseChangeLog>

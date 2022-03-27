@@ -32,6 +32,12 @@ public class SubPropertyEntity {
     String name;
 
     /**
+     * Единица измерения
+     */
+    @Column(name = "unit")
+    String unit;
+
+    /**
      * Внешний ключ на сущность {@link PropertyEntity}
      */
     @ManyToOne
