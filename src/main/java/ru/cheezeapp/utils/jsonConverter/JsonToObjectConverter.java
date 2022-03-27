@@ -59,6 +59,7 @@ public class JsonToObjectConverter {
                         .modification(jsonNodes.path("modification").textValue())
                         .obtainingMethod(jsonNodes.path("obtainingMethod").textValue())
                         .origin(jsonNodes.path("origin").textValue())
+                        .lost(jsonNodes.path("isLost").booleanValue())
                         .vidStrain(vidStrain.get())
                         .build();
                 strain.setFactParametrs(jsonToFactParams(jsonNodes.path("factParams").toString(),
