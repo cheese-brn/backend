@@ -3,9 +3,15 @@ package ru.cheezeapp.controller.crud;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import ru.cheezeapp.dao.DependencyTableRepository;
 import ru.cheezeapp.entity.PropertyEntity;
+import ru.cheezeapp.entity.SubPropertyEntity;
+import ru.cheezeapp.service.DependencyTableService;
 import ru.cheezeapp.service.property.PropertyCrudService;
+import ru.cheezeapp.service.property.PropertySearchService;
 import ru.cheezeapp.utils.jsonConverter.JsonToObjectConverter;
+
+import java.util.List;
 
 /**
  * Контроллер для обработки CRUD запросов, связанных со свойствами.
@@ -18,7 +24,13 @@ public class PropertyCrudController {
     PropertyCrudService propertyCrudService;
 
     @Autowired
+    PropertySearchService propertySearchService;
+
+    @Autowired
     JsonToObjectConverter jsonToObjectConverter;
+
+    @Autowired
+    DependencyTableService dependencyTableService;
 
     /**
      * Метод обработки запроса на добавление или обновления свойства.
@@ -34,6 +46,10 @@ public class PropertyCrudController {
             PropertyEntity property = jsonToObjectConverter.jsonToProperty(propertyJson);
             if (property.getId() == 0) {
                 propertyCrudService.addProperty(property);
+                List<SubPropertyEntity> function = jsonToObjectConverter.jsonToFunction(propertyJson, property);
+                if (function != null)
+                    dependencyTableService.addFunction(function);
+                PropertyEntity propertyEntity = propertySearchService.findByNameContaining(property.getName()).get(0);
                 log.info("[POST /property/send/]\tNew property was created");
                 return "Свойство было успешно добавлено";
             } else {

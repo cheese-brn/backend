@@ -9,4 +9,5 @@ import java.util.List;
 
 public interface SubPropertyRepository extends JpaRepository<SubPropertyEntity, Long> {
     List<SubPropertyEntity> findAllByProperty(PropertyEntity propertyEntity, Sort name);
+    SubPropertyEntity findByCypher(Integer cypher);
 }

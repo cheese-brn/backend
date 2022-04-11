@@ -13,6 +13,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 @Entity
 @Builder
 @Table(name = "subproperty")
@@ -38,10 +39,18 @@ public class SubPropertyEntity {
     String unit;
 
     /**
+     * Шифр
+     */
+    @Column(name = "cypher", columnDefinition = "bigint")
+    @EqualsAndHashCode.Exclude
+    Integer cypher;
+
+    /**
      * Внешний ключ на сущность {@link PropertyEntity}
      */
     @ManyToOne
     @JoinColumn(name = "property_id", nullable = false)
+    @EqualsAndHashCode.Exclude
     PropertyEntity property;
 
     /**
@@ -56,6 +65,7 @@ public class SubPropertyEntity {
      */
     @OneToMany(mappedBy = "subProperty", targetEntity = FactParametrEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY,
             orphanRemoval = true)
+    @EqualsAndHashCode.Exclude
     List<FactParametrEntity> factParametrs;
 
     /**
@@ -63,6 +73,7 @@ public class SubPropertyEntity {
      */
     @OneToMany(targetEntity = DependencyTableEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "first_subproperty_id", referencedColumnName = "id")
+    @EqualsAndHashCode.Exclude
     List<DependencyTableEntity> firstSubproperty;
 
     /**
@@ -70,5 +81,6 @@ public class SubPropertyEntity {
      */
     @OneToMany(targetEntity = DependencyTableEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "second_subproperty_id", referencedColumnName = "id")
+    @EqualsAndHashCode.Exclude
     List<DependencyTableEntity> secondSubproperty;
 }

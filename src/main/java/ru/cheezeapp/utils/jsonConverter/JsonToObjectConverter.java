@@ -8,12 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.cheezeapp.dao.*;
 import ru.cheezeapp.entity.*;
+import ru.cheezeapp.service.DependencyTableService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class JsonToObjectConverter {
@@ -35,6 +35,9 @@ public class JsonToObjectConverter {
 
     @Autowired
     FactParametrFuncRepository factParametrFuncRepository;
+
+    @Autowired
+    DependencyTableService dependencyTableService;
 
     @Autowired
     DataTypeRepository dataTypeRepository;
@@ -127,15 +130,14 @@ public class JsonToObjectConverter {
         try {
             ObjectNode jsonNodes = mapper.readValue(json, ObjectNode.class);
             Optional<RodStrainEntity> rodStrain = rodStrainRepository.findById(jsonNodes.path("rodId").longValue());
-            if(rodStrain.isPresent()) {
+            if (rodStrain.isPresent()) {
                 return VidStrainEntity.builder()
                         .id(jsonNodes.path("vidId").longValue())
                         .name(jsonNodes.path("name").textValue())
                         .rodStrain(rodStrain.get())
                         .build();
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -154,11 +156,17 @@ public class JsonToObjectConverter {
                     .id(jsonNodes.path("id").longValue())
                     .name(jsonNodes.path("name").textValue())
                     .description(jsonNodes.path("description").textValue())
-                    .propertyType(jsonNodes.path("isFunc").booleanValue())
                     .build();
             property.setSubProperties(jsonToSubProperties(jsonNodes.path("subProps").toString(), property));
+            if (jsonNodes.has("function")) {
+                List<SubPropertyEntity> params = jsonToSubProperties(jsonNodes.path("function").toString(), property);
+                for (SubPropertyEntity param : Objects.requireNonNull(params))
+                    property.getSubProperties().add(param);
+                property.setPropertyType(true);
+            } else
+                property.setPropertyType(false);
             List<FactParametrEntity> factParametrEntityList = new ArrayList<>();
-            for(SubPropertyEntity subPropertyEntity : property.getSubProperties())
+            for (SubPropertyEntity subPropertyEntity : property.getSubProperties())
                 factParametrEntityList.addAll(subPropertyEntity.getFactParametrs());
             property.setFactParametrs(factParametrEntityList);
             return property;
@@ -167,7 +175,7 @@ public class JsonToObjectConverter {
         }
         return null;
     }
-  
+
     /**
      * Метод конвертации JSON строки в список {@link SubPropertyEntity}
      *
@@ -188,6 +196,7 @@ public class JsonToObjectConverter {
                         .unit(subProperty.path("unit").textValue())
                         .factParametrs(factParametrRepository.findFactParametrEntitiesBySubPropertyId(id))
                         .build();
+                subPropertyEntity.setCypher(subPropertyEntity.hashCode());
                 DataTypeEntity dataType = dataTypeRepository.findById(subProperty.path("datatype").longValue())
                         .orElse(dataTypeRepository.getById(1L));
                 subPropertyEntity.setDataType(dataType);
@@ -198,6 +207,30 @@ public class JsonToObjectConverter {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * Метод конвертации JSON строки в список подсвойств функции
+     *
+     * @param json     JSON строка
+     * @param property свойство, которому соответствуют подсвойства
+     * @return список функциональных подсвойств
+     */
+    public List<SubPropertyEntity> jsonToFunction(String json, PropertyEntity property) {
+        try {
+            List<SubPropertyEntity> functionParams = new ArrayList<>();
+            JsonNode function = mapper.readTree(json);
+            if (function.path("function") == null)
+                return null;
+            List<SubPropertyEntity> params = jsonToSubProperties(function.path("function").toString(), property);
+            for (SubPropertyEntity parameter : Objects.requireNonNull(params)) {
+                functionParams.add(subPropertyRepository.findByCypher(parameter.getCypher()));
+            }
+            return functionParams;
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 }

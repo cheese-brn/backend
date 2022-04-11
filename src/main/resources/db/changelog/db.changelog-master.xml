@@ -42,4 +42,10 @@
         <tagDatabase tag="unit_column_for_subproperty_creation"/>
     </changeSet>
 
+    <include file="cypher_column_for_subproperty/db.changelog-add-cypher-column-for-subproperty-table.xml" relativeToChangelogFile="true"/>
+
+    <changeSet id="25" author="pavel">
+        <tagDatabase tag="cypher_column_for_subproperty_creation"/>
+    </changeSet>
+
 </databaseChangeLog>
