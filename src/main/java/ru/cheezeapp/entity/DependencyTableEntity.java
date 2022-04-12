@@ -24,6 +24,9 @@ public class DependencyTableEntity {
     @Column(name = "id")
     Long id;
 
+    @Column(name = "function_name")
+    String functionName;
+
     /**
      * Внешний ключ на сущность {@link SubPropertyEntity} для первого подсвойства зависимости
      */
@@ -41,4 +44,12 @@ public class DependencyTableEntity {
     @OneToMany(targetEntity = FactParametrFuncEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "dependency_table_id", referencedColumnName = "id")
     List<FactParametrFuncEntity> factParametrsFunc;
+
+    /**
+     * Внешний ключ на сущность {@link PropertyEntity}
+     */
+    @ManyToOne
+    @JoinColumn(name = "property_id", nullable = false)
+    PropertyEntity property;
+
 }

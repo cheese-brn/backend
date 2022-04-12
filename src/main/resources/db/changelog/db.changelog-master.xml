@@ -58,4 +58,11 @@
         <tagDatabase tag="foreign_key_dependency_table_property_creation"/>
     </changeSet>
 
+    <include file="function_name_column_for_dependency_table/db.changelog-add-lost-column-for-strain-table.xml"
+             relativeToChangelogFile="true"/>
+
+    <changeSet id="30" author="pavel">
+        <tagDatabase tag="function_name_column_for_dependency_table"/>
+    </changeSet>
+
 </databaseChangeLog>

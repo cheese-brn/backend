@@ -32,4 +32,6 @@ public interface PropertyRepository extends JpaRepository<PropertyEntity, Long> 
      */
     List<PropertyEntity> findByNameContainingIgnoreCaseAndDeletedIsFalse(String name);
 
+    PropertyEntity findByCypher(Integer cypher);
+
 }

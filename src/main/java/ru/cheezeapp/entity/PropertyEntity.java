@@ -15,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Builder
+@EqualsAndHashCode
 @Table(name = "property")
 public class PropertyEntity {
     /**
@@ -29,7 +30,7 @@ public class PropertyEntity {
      * Шифр
      */
     @Column(name = "cypher")
-    Long cypher;
+    Integer cypher;
 
     /**
      * Описание
@@ -61,6 +62,7 @@ public class PropertyEntity {
     @OneToMany(targetEntity = FactParametrEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY,
             orphanRemoval = true)
     @JoinColumn(name = "property_id", referencedColumnName = "id")
+    @EqualsAndHashCode.Exclude
     List<FactParametrEntity> factParametrs;
 
     /**
@@ -69,6 +71,17 @@ public class PropertyEntity {
     @OneToMany(targetEntity = SubPropertyEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY,
             orphanRemoval = true)
     @JoinColumn(name = "property_id", referencedColumnName = "id")
+    @EqualsAndHashCode.Exclude
     List<SubPropertyEntity> subProperties;
+
+    /**
+     * Связь один-ко-многим с {@link DependencyTableEntity}
+     */
+    @OneToMany(targetEntity = DependencyTableEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY,
+            orphanRemoval = true)
+    @JoinColumn(name = "property_id", referencedColumnName = "id")
+    @EqualsAndHashCode.Exclude
+    List<DependencyTableEntity> dependencies;
+
 }
 

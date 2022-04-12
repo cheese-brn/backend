@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.sun.tools.javac.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.cheezeapp.dao.*;
@@ -158,10 +159,10 @@ public class JsonToObjectConverter {
                     .description(jsonNodes.path("description").textValue())
                     .build();
             property.setSubProperties(jsonToSubProperties(jsonNodes.path("subProps").toString(), property));
-            if (jsonNodes.has("function")) {
-                List<SubPropertyEntity> params = jsonToSubProperties(jsonNodes.path("function").toString(), property);
-                for (SubPropertyEntity param : Objects.requireNonNull(params))
-                    property.getSubProperties().add(param);
+            if (jsonNodes.has("functions")) {
+                List<Pair<List<SubPropertyEntity>, String>> functions = jsonToFunction(json, property);
+                for (Pair<List<SubPropertyEntity>, String> function : functions)
+                    property.getSubProperties().addAll(function.fst);
                 property.setPropertyType(true);
             } else
                 property.setPropertyType(false);
@@ -188,18 +189,7 @@ public class JsonToObjectConverter {
             List<SubPropertyEntity> subPropertyEntities = new ArrayList<>();
             JsonNode subPropertiesJson = mapper.readTree(json);
             for (JsonNode subProperty : subPropertiesJson) {
-                Long id = subProperty.path("id").longValue();
-                SubPropertyEntity subPropertyEntity = SubPropertyEntity.builder()
-                        .id(id)
-                        .name(subProperty.path("name").textValue())
-                        .property(property)
-                        .unit(subProperty.path("unit").textValue())
-                        .factParametrs(factParametrRepository.findFactParametrEntitiesBySubPropertyId(id))
-                        .build();
-                subPropertyEntity.setCypher(subPropertyEntity.hashCode());
-                DataTypeEntity dataType = dataTypeRepository.findById(subProperty.path("datatype").longValue())
-                        .orElse(dataTypeRepository.getById(1L));
-                subPropertyEntity.setDataType(dataType);
+                SubPropertyEntity subPropertyEntity = jsonNodeToSubProperty(subProperty, property);
                 subPropertyEntities.add(subPropertyEntity);
             }
             return subPropertyEntities;
@@ -216,21 +206,41 @@ public class JsonToObjectConverter {
      * @param property свойство, которому соответствуют подсвойства
      * @return список функциональных подсвойств
      */
-    public List<SubPropertyEntity> jsonToFunction(String json, PropertyEntity property) {
+    public List<Pair<List<SubPropertyEntity>, String>> jsonToFunction(String json, PropertyEntity property) {
         try {
-            List<SubPropertyEntity> functionParams = new ArrayList<>();
-            JsonNode function = mapper.readTree(json);
-            if (function.path("function") == null)
+            JsonNode propertyNode = mapper.readTree(json);
+            if (propertyNode.path("functions") == null)
                 return null;
-            List<SubPropertyEntity> params = jsonToSubProperties(function.path("function").toString(), property);
-            for (SubPropertyEntity parameter : Objects.requireNonNull(params)) {
-                functionParams.add(subPropertyRepository.findByCypher(parameter.getCypher()));
+            List<Pair<List<SubPropertyEntity>, String>> functions = new ArrayList<>();
+            JsonNode functionsNode = propertyNode.path("functions");
+            for (JsonNode functionNode : functionsNode) {
+                Pair<List<SubPropertyEntity>, String> function = new Pair<>(new ArrayList<>(),
+                        functionNode.path("name").textValue());
+                function.fst.add(jsonNodeToSubProperty(functionNode.path("firstParam"), property));
+                function.fst.add(jsonNodeToSubProperty(functionNode.path("secondParam"), property));
+                functions.add(function);
             }
-            return functionParams;
+            return functions;
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             return null;
         }
+    }
+
+    private SubPropertyEntity jsonNodeToSubProperty(JsonNode subProperty, PropertyEntity property) {
+        Long id = subProperty.path("id").longValue();
+        SubPropertyEntity subPropertyEntity = SubPropertyEntity.builder()
+                .id(id)
+                .name(subProperty.path("name").textValue())
+                .property(property)
+                .unit(subProperty.path("unit").textValue())
+                .factParametrs(factParametrRepository.findFactParametrEntitiesBySubPropertyId(id))
+                .build();
+        subPropertyEntity.setCypher(subPropertyEntity.hashCode());
+        DataTypeEntity dataType = dataTypeRepository.findById(subProperty.path("datatype").longValue())
+                .orElse(dataTypeRepository.getById(1L));
+        subPropertyEntity.setDataType(dataType);
+        return subPropertyEntity;
     }
 
 }
