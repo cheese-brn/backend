@@ -30,22 +30,32 @@
         <tagDatabase tag="columns_for_delete_creation"/>
     </changeSet>
 
-    <include file="lost_column_for_strain/db.changelog-add-lost-column-for-strain-table.xml" relativeToChangelogFile="true"/>
+    <include file="lost_column_for_strain/db.changelog-add-lost-column-for-strain-table.xml"
+             relativeToChangelogFile="true"/>
 
     <changeSet id="21" author="pavel">
         <tagDatabase tag="lost_column_for_stain_creation"/>
     </changeSet>
 
-    <include file="unit_column_for_subproperty/db.changelog-add-unit-column-for-subproperty-table.xml" relativeToChangelogFile="true"/>
+    <include file="unit_column_for_subproperty/db.changelog-add-unit-column-for-subproperty-table.xml"
+             relativeToChangelogFile="true"/>
 
     <changeSet id="23" author="pavel">
         <tagDatabase tag="unit_column_for_subproperty_creation"/>
     </changeSet>
 
-    <include file="cypher_column_for_subproperty/db.changelog-add-cypher-column-for-subproperty-table.xml" relativeToChangelogFile="true"/>
+    <include file="cypher_column_for_subproperty/db.changelog-add-cypher-column-for-subproperty-table.xml"
+             relativeToChangelogFile="true"/>
 
     <changeSet id="25" author="pavel">
         <tagDatabase tag="cypher_column_for_subproperty_creation"/>
+    </changeSet>
+
+    <include file="foreign_key_dependency_table_property/db.changelog-add-fk-for-dependency-table-for-property.xml"
+             relativeToChangelogFile="true"/>
+
+    <changeSet id="28" author="pavel">
+        <tagDatabase tag="foreign_key_dependency_table_property_creation"/>
     </changeSet>
 
 </databaseChangeLog>
