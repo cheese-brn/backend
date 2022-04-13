@@ -366,7 +366,8 @@ values (12,
 insert into dependency_table
 values (1,
         3,
-        4);
+        4,
+        3);
 
 insert into fact_param
 values (1,

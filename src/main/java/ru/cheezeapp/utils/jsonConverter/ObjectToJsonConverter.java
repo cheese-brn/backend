@@ -142,7 +142,8 @@ public class ObjectToJsonConverter {
         propertyNode.put("childrenCount", property.getSubProperties().size());
         try {
             return mapper.writerWithDefaultPrettyPrinter()
-                    .writeValueAsString(propertyNode).replace("\\", "");
+                    .writeValueAsString(propertyNode)
+                    .replace("\\", "");
         } catch (Exception e) {
             return null;
         }
@@ -163,9 +164,11 @@ public class ObjectToJsonConverter {
         subpropertyNode.put("unit", subproperty.getUnit());
         try {
             return mapper.writerWithDefaultPrettyPrinter()
-                    .writeValueAsString(subpropertyNode).replace("\\", "");
+                    .writeValueAsString(subpropertyNode)
+                    .replace("\\", "");
         } catch (Exception e) {
             return null;
         }
     }
+
 }

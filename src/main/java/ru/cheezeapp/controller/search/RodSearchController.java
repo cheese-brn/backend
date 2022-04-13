@@ -69,7 +69,7 @@ public class RodSearchController {
     @GetMapping("/rods/rodsWithVids")
     public String getListOfRodsWithVids() {
         List<RodStrainEntity> rodStrainEntityList = rodSearchService.findAllNonDeletedRods();
-        return CatalogsToJson.rodsToJson(rodStrainEntityList);
+        return CatalogsToJson.rodsWithVidsToJson(rodStrainEntityList);
     }
 
 }
