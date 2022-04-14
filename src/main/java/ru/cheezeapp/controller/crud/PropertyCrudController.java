@@ -47,6 +47,7 @@ public class PropertyCrudController {
                 return "Свойство было успешно добавлено";
             } else {
                 propertyCrudService.updateProperty(property);
+                dependencyTableService.addFunctions(propertyJson, property);
                 log.info("[POST /property/send/]\tProperty was updated, id = " + property.getId());
                 return "Свойство было успешно обновлено";
             }
