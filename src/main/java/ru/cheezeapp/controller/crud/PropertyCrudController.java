@@ -46,6 +46,7 @@ public class PropertyCrudController {
                 log.info("[POST /property/send/]\tNew property was created");
                 return "Свойство было успешно добавлено";
             } else {
+                dependencyTableService.deleteAllByPropertyId(property.getId());
                 propertyCrudService.updateProperty(property);
                 dependencyTableService.addFunctions(propertyJson, property);
                 log.info("[POST /property/send/]\tProperty was updated, id = " + property.getId());

@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.cheezeapp.dao.DependencyTableRepository;
 import ru.cheezeapp.dao.PropertyRepository;
 import ru.cheezeapp.dao.SubPropertyRepository;
 import ru.cheezeapp.entity.*;
@@ -51,15 +52,12 @@ public class PropertyCrudService {
             property.setFactParametrs(propertyEntity.get().getFactParametrs());
             property.getFactParametrs().clear();
             property.getFactParametrs().addAll(factParametrEntities);
-            List<DependencyTableEntity> dependencyTableEntities = property.getDependencies();
             property.setDependencies(propertyEntity.get().getDependencies());
             property.getDependencies().clear();
-            property.getDependencies().addAll(dependencyTableEntities);
             List<SubPropertyEntity> subProperties = property.getSubProperties();
             property.setSubProperties(propertyEntity.get().getSubProperties());
             property.getSubProperties().clear();
             property.getSubProperties().addAll(subProperties);
-            property.setFactParametrs(propertyEntity.get().getFactParametrs());
             propertyRepository.save(property);
             log.info("PROPERTY CRUD SERVICE\tUpdated property with id = " + property.getId());
         }

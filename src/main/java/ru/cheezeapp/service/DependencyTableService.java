@@ -46,4 +46,9 @@ public class DependencyTableService {
                     .build());
     }
 
+    @Transactional
+    public void deleteAllByPropertyId(Long propertyId) {
+        if (propertyRepository.findById(propertyId).isPresent())
+            dependencyTableRepository.deleteAllByPropertyId(propertyId);
+    }
 }
