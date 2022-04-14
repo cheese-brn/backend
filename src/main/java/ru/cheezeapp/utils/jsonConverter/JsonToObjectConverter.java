@@ -225,6 +225,7 @@ public class JsonToObjectConverter {
             for (SubPropertyEntity subPropertyEntity : property.getSubProperties())
                 factParametrEntityList.addAll(subPropertyEntity.getFactParametrs());
             property.setFactParametrs(factParametrEntityList);
+            property.setDependencies(new ArrayList<>());
             return property;
         } catch (Exception e) {
             e.printStackTrace();

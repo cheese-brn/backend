@@ -6,9 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.cheezeapp.dao.PropertyRepository;
 import ru.cheezeapp.dao.SubPropertyRepository;
-import ru.cheezeapp.entity.FactParametrEntity;
-import ru.cheezeapp.entity.PropertyEntity;
-import ru.cheezeapp.entity.SubPropertyEntity;
+import ru.cheezeapp.entity.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -53,6 +51,10 @@ public class PropertyCrudService {
             property.setFactParametrs(propertyEntity.get().getFactParametrs());
             property.getFactParametrs().clear();
             property.getFactParametrs().addAll(factParametrEntities);
+            List<DependencyTableEntity> dependencyTableEntities = property.getDependencies();
+            property.setDependencies(propertyEntity.get().getDependencies());
+            property.getDependencies().clear();
+            property.getDependencies().addAll(dependencyTableEntities);
             List<SubPropertyEntity> subProperties = property.getSubProperties();
             property.setSubProperties(propertyEntity.get().getSubProperties());
             property.getSubProperties().clear();
