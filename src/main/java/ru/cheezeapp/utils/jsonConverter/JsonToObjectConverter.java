@@ -221,6 +221,7 @@ public class JsonToObjectConverter {
                 property.setPropertyType(true);
             } else
                 property.setPropertyType(false);
+            property.setCypher(property.hashCode());
             List<FactParametrEntity> factParametrEntityList = new ArrayList<>();
             for (SubPropertyEntity subPropertyEntity : property.getSubProperties())
                 factParametrEntityList.addAll(subPropertyEntity.getFactParametrs());

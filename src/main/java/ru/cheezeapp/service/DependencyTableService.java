@@ -36,14 +36,28 @@ public class DependencyTableService {
         if (functions.size() == 0)
             return;
         PropertyEntity propertyEntity = propertyRepository.findByCypher(property.getCypher());
-        for (FunctionPair function : functions)
+        for (FunctionPair function : functions) {
+            List<SubPropertyEntity> subPropertyEntities = subPropertyRepository
+                    .findByCypher(function.fst().get(0).getCypher());
+            SubPropertyEntity first, second;
+            if (subPropertyEntities.isEmpty())
+                return;
+            if (subPropertyEntities.size() == 1) {
+                first = subPropertyEntities.get(0);
+                second = subPropertyRepository.findByCypher(function.fst().get(1).getCypher()).get(0);
+            }
+            else {
+                first = subPropertyRepository.findByCypher(function.fst().get(1).getCypher()).get(0);
+                second = subPropertyRepository.findByCypher(function.fst().get(1).getCypher()).get(1);
+            }
             dependencyTableRepository.save(DependencyTableEntity.builder()
                     .property(propertyEntity)
-                    .firstSubProperty(subPropertyRepository.findByCypher(function.fst().get(0).getCypher()))
-                    .secondSubProperty(subPropertyRepository.findByCypher(function.fst().get(1).getCypher()))
+                    .firstSubProperty(first)
+                    .secondSubProperty(second)
                     .functionName(function.snd())
                     .factParametrsFunc(new ArrayList<>())
                     .build());
+        }
     }
 
     @Transactional
