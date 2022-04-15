@@ -4,11 +4,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.sun.tools.javac.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.cheezeapp.dao.*;
 import ru.cheezeapp.entity.*;
+import ru.cheezeapp.utils.structures.FunctionPair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -215,9 +215,9 @@ public class JsonToObjectConverter {
                     .build();
             property.setSubProperties(jsonToSubProperties(jsonNodes.path("subProps").toString(), property));
             if (jsonNodes.has("functions")) {
-                List<Pair<List<SubPropertyEntity>, String>> functions = jsonToFunction(json, property);
-                for (Pair<List<SubPropertyEntity>, String> function : functions)
-                    property.getSubProperties().addAll(function.fst);
+                List<FunctionPair> functions = jsonToFunction(json, property);
+                for (FunctionPair function : functions)
+                    property.getSubProperties().addAll(function.fst());
                 property.setPropertyType(true);
             } else
                 property.setPropertyType(false);
@@ -262,18 +262,18 @@ public class JsonToObjectConverter {
      * @param property свойство, которому соответствуют подсвойства
      * @return список функциональных подсвойств
      */
-    public List<Pair<List<SubPropertyEntity>, String>> jsonToFunction(String json, PropertyEntity property) {
+    public List<FunctionPair> jsonToFunction(String json, PropertyEntity property) {
         try {
             JsonNode propertyNode = mapper.readTree(json);
             if (propertyNode.path("functions") == null)
                 return null;
-            List<Pair<List<SubPropertyEntity>, String>> functions = new ArrayList<>();
+            List<FunctionPair> functions = new ArrayList<>();
             JsonNode functionsNode = propertyNode.path("functions");
             for (JsonNode functionNode : functionsNode) {
-                Pair<List<SubPropertyEntity>, String> function = new Pair<>(new ArrayList<>(),
+                FunctionPair function = new FunctionPair(new ArrayList<>(),
                         functionNode.path("name").textValue());
-                function.fst.add(jsonNodeToSubProperty(functionNode.path("firstParam"), property));
-                function.fst.add(jsonNodeToSubProperty(functionNode.path("secondParam"), property));
+                function.fst().add(jsonNodeToSubProperty(functionNode.path("firstParam"), property));
+                function.fst().add(jsonNodeToSubProperty(functionNode.path("secondParam"), property));
                 functions.add(function);
             }
             return functions;

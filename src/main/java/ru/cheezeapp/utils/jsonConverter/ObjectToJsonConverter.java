@@ -8,9 +8,7 @@ import org.springframework.util.MultiValueMap;
 import ru.cheezeapp.entity.*;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -44,7 +42,7 @@ public class ObjectToJsonConverter {
         strainNode.put("obtainingMethod", strain.getObtainingMethod());
         strainNode.put("origin", strain.getOrigin());
         try {
-            strainNode.set("factParams", mapper.readTree(factParamsToJson(strain.getFactParametrs())));
+            strainNode.set("factParams", mapper.readTree(factParamsToJson(strain)));
             return mapper.writerWithDefaultPrettyPrinter()
                     .writeValueAsString(strainNode).replace("\\", "");
         } catch (Exception e) {
@@ -55,15 +53,20 @@ public class ObjectToJsonConverter {
     /**
      * Метод конвертации фактических параметров в Json
      *
-     * @param factParams список фактических параметров
+     * @param strain штамм
      * @return Json строка со списком фактических параметров
      */
-    private static String factParamsToJson(List<FactParametrEntity> factParams) {
+    private static String factParamsToJson(StrainEntity strain) {
         MultiValueMap<PropertyEntity, FactParametrEntity> propertyMap = new LinkedMultiValueMap<>();
-        for (FactParametrEntity factParametr : factParams.stream()
+        for (FactParametrEntity factParametr : strain.getFactParametrs().stream()
                 .filter(param -> !param.getProperty().isDeleted())
                 .collect(Collectors.toList()))
             propertyMap.add(factParametr.getProperty(), factParametr);
+        List<DependencyTableEntity> dependencies = strain.getFactParametrsFunc()
+                .stream()
+                .map(FactParametrFuncEntity::getDependencyTable)
+                .distinct()
+                .collect(Collectors.toList());
         ArrayNode factParamsArrayNode = mapper.createArrayNode();
         for (PropertyEntity property : propertyMap.keySet()) {
             ObjectNode propertyNode = mapper.createObjectNode();
@@ -79,6 +82,18 @@ public class ObjectToJsonConverter {
                 factParamNodes.add(factParamNode);
             }
             propertyNode.set("subProps", factParamNodes);
+            List<DependencyTableEntity> functions = dependencies.stream()
+                    .filter(dependency -> dependency.getProperty().getId().equals(property.getId()))
+                            .collect(Collectors.toList());
+            ArrayNode functionsNode = mapper.createArrayNode();
+            for (DependencyTableEntity function : functions) {
+                ObjectNode functionNode = mapper.createObjectNode();
+                functionNode.put("funcName", function.getFunctionName());
+                functionNode.set("firstParam", funcParamsToJson(function, strain, 1));
+                functionNode.set("secondParam", funcParamsToJson(function, strain, 2));
+                functionsNode.add(functionNode);
+            }
+            propertyNode.set("functions", functionsNode);
             factParamsArrayNode.add(propertyNode);
         }
         try {
@@ -87,6 +102,30 @@ public class ObjectToJsonConverter {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    private static ObjectNode funcParamsToJson(DependencyTableEntity dependencyTable, StrainEntity strain, int paramNumber) {
+        ObjectNode funcParam = mapper.createObjectNode();
+        List<FactParametrFuncEntity> factParametrFuncEntities = strain.getFactParametrsFunc()
+                .stream().filter(param -> param.getDependencyTable().getId().equals(dependencyTable.getId()))
+                .collect(Collectors.toList());
+        if (paramNumber == 1) {
+            funcParam.put("id", dependencyTable.getFirstSubProperty().getId());
+            funcParam.put("name", dependencyTable.getFirstSubProperty().getName());
+            ArrayNode valuesNode = mapper.createArrayNode();
+            for (FactParametrFuncEntity param : factParametrFuncEntities)
+                valuesNode.add(param.getFirstParametr());
+            funcParam.set("values", valuesNode);
+        }
+        else {
+            funcParam.put("id", dependencyTable.getSecondSubProperty().getId());
+            funcParam.put("name", dependencyTable.getSecondSubProperty().getName());
+            ArrayNode valuesNode = mapper.createArrayNode();
+            for (FactParametrFuncEntity param : factParametrFuncEntities)
+                valuesNode.add(param.getSecondParametr());
+            funcParam.set("values", valuesNode);
+        }
+        return funcParam;
     }
 
     /**

@@ -160,7 +160,7 @@ public class CatalogsToJson {
     }
 
     /**
-     * Метод конвертации списка подсвойств без функций в Json
+     * Метод конвертации списка подсвойств с функциями в Json
      *
      * @param property сповйство
      * @return Json списка подсвойств
@@ -207,7 +207,7 @@ public class CatalogsToJson {
      * @param property свойство
      * @return объект ArrayNode с функциями
      */
-    private static ArrayNode functionCatalogToJson(PropertyEntity property) {
+    public static ArrayNode functionCatalogToJson(PropertyEntity property) {
         ArrayNode functionsNode = mapper.createArrayNode();
         List<DependencyTableEntity> dependencyTableEntities = property.getDependencies();
         for (DependencyTableEntity dependency : dependencyTableEntities) {
