@@ -708,7 +708,7 @@ values (39,
 
 insert into fact_param
 values (40,
-        '132 ºТ',
+        '132',
         4,
         10,
         15);
@@ -814,7 +814,7 @@ values (53,
 
 insert into fact_param
 values (54,
-        '136 ºТ',
+        '136',
         5,
         10,
         15);
@@ -927,7 +927,7 @@ values (68,
 
 insert into fact_param_func
 values (11,
-        '90 ºТ',
+        '90',
         '24',
         '',
         6,
@@ -935,7 +935,7 @@ values (11,
 
 insert into fact_param_func
 values (12,
-        '180 ºТ',
+        '180',
         '168',
         '',
         6,
@@ -1104,7 +1104,7 @@ values (91,
 
 insert into fact_param_func
 values (13,
-        '80 ºТ',
+        '80',
         '24',
         '',
         9,
@@ -1112,7 +1112,7 @@ values (13,
 
 insert into fact_param_func
 values (14,
-        '124 ºТ',
+        '124',
         '168',
         '',
         9,
@@ -1183,7 +1183,7 @@ values (100,
 
 insert into fact_param_func
 values (15,
-        '96 ºТ',
+        '96',
         '24',
         '',
         10,
@@ -1191,7 +1191,7 @@ values (15,
 
 insert into fact_param_func
 values (16,
-        '122 ºТ',
+        '122',
         '168',
         '',
         10,
@@ -1297,7 +1297,7 @@ values (114,
 
 insert into fact_param_func
 values (17,
-        '50 ºТ',
+        '50',
         '120',
         '',
         11,
@@ -1375,7 +1375,7 @@ values (124,
 
 insert into fact_param_func
 values (18,
-        '50 ºТ',
+        '50',
         'предельное',
         '',
         12,

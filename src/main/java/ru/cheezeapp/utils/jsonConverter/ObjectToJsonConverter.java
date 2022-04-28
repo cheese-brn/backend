@@ -85,15 +85,20 @@ public class ObjectToJsonConverter {
             List<DependencyTableEntity> functions = dependencies.stream()
                     .filter(dependency -> dependency.getProperty().getId().equals(property.getId()))
                             .collect(Collectors.toList());
+            dependencies.removeAll(functions);
             ArrayNode functionsNode = mapper.createArrayNode();
             for (DependencyTableEntity function : functions) {
-                ObjectNode functionNode = mapper.createObjectNode();
-                functionNode.put("funcName", function.getFunctionName());
-                functionNode.set("firstParam", funcParamsToJson(function, strain, 1));
-                functionNode.set("secondParam", funcParamsToJson(function, strain, 2));
-                functionsNode.add(functionNode);
+                functionsNode.add(functionsToJson(strain, function));
             }
             propertyNode.set("functions", functionsNode);
+            factParamsArrayNode.add(propertyNode);
+        }
+        for (DependencyTableEntity function : dependencies) {
+            ObjectNode propertyNode = mapper.createObjectNode();
+            propertyNode.put("id", function.getProperty().getId());
+            propertyNode.put("name", function.getProperty().getName());
+            propertyNode.put("description", function.getProperty().getDescription());
+            propertyNode.set("functions", functionsToJson(strain, function));
             factParamsArrayNode.add(propertyNode);
         }
         try {
@@ -104,6 +109,28 @@ public class ObjectToJsonConverter {
         }
     }
 
+    /**
+     * Метод конвертации функции в JSON
+     * @param strain штамм
+     * @param function функция
+     * @return ObjectNode функции
+     */
+    private static ObjectNode functionsToJson(StrainEntity strain, DependencyTableEntity function) {
+        ObjectNode functionNode = mapper.createObjectNode();
+        functionNode.put("funcName", function.getFunctionName());
+        functionNode.set("firstParam", funcParamsToJson(function, strain, 1));
+        functionNode.set("secondParam", funcParamsToJson(function, strain, 2));
+        return functionNode;
+    }
+
+    /**
+     * Метод конвертации фактических параметров функции в JSON
+     *
+     * @param dependencyTable функция
+     * @param strain штамм
+     * @param paramNumber номер параметра (1 или 2)
+     * @return ObjectNode функции
+     */
     private static ObjectNode funcParamsToJson(DependencyTableEntity dependencyTable, StrainEntity strain, int paramNumber) {
         ObjectNode funcParam = mapper.createObjectNode();
         List<FactParametrFuncEntity> factParametrFuncEntities = strain.getFactParametrsFunc()
