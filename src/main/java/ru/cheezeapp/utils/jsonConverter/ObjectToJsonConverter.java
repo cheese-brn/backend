@@ -112,6 +112,7 @@ public class ObjectToJsonConverter {
         if (paramNumber == 1) {
             funcParam.put("id", dependencyTable.getFirstSubProperty().getId());
             funcParam.put("name", dependencyTable.getFirstSubProperty().getName());
+            funcParam.put("unit", dependencyTable.getFirstSubProperty().getUnit());
             ArrayNode valuesNode = mapper.createArrayNode();
             for (FactParametrFuncEntity param : factParametrFuncEntities)
                 valuesNode.add(param.getFirstParametr());
@@ -120,6 +121,7 @@ public class ObjectToJsonConverter {
         else {
             funcParam.put("id", dependencyTable.getSecondSubProperty().getId());
             funcParam.put("name", dependencyTable.getSecondSubProperty().getName());
+            funcParam.put("unit", dependencyTable.getSecondSubProperty().getUnit());
             ArrayNode valuesNode = mapper.createArrayNode();
             for (FactParametrFuncEntity param : factParametrFuncEntities)
                 valuesNode.add(param.getSecondParametr());
