@@ -6,7 +6,6 @@ import ru.cheezeapp.entity.FactParametrEntity;
 import java.util.List;
 
 public interface FactParametrRepository extends JpaRepository<FactParametrEntity, Long> {
-
     List<FactParametrEntity> findFactParametrEntitiesBySubProperty_Id(Long id);
 
 }

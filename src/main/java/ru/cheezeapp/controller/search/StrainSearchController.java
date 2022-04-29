@@ -8,7 +8,6 @@ import ru.cheezeapp.service.strain.StrainSearchService;
 import ru.cheezeapp.utils.jsonConverter.CatalogsToJson;
 import ru.cheezeapp.utils.jsonConverter.ObjectToJsonConverter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
