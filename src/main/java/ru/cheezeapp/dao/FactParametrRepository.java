@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface FactParametrRepository extends JpaRepository<FactParametrEntity, Long> {
 
-    List<FactParametrEntity> findFactParametrEntitiesBySubPropertyId(Long id);
+    List<FactParametrEntity> findFactParametrEntitiesBySubProperty_Id(Long id);
 
 }

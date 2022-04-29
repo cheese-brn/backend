@@ -52,12 +52,14 @@ public class PropertyCrudService {
             property.setFactParametrs(propertyEntity.get().getFactParametrs());
             property.getFactParametrs().clear();
             property.getFactParametrs().addAll(factParametrEntities);
-            property.setDependencies(propertyEntity.get().getDependencies());
-            property.getDependencies().clear();
             List<SubPropertyEntity> subProperties = property.getSubProperties();
             property.setSubProperties(propertyEntity.get().getSubProperties());
             property.getSubProperties().clear();
             property.getSubProperties().addAll(subProperties);
+            List<DependencyTableEntity> dependencies = property.getDependencies();
+            property.setDependencies(propertyEntity.get().getDependencies());
+            property.getDependencies().clear();
+            property.getDependencies().addAll(dependencies);
             propertyRepository.save(property);
             log.info("PROPERTY CRUD SERVICE\tUpdated property with id = " + property.getId());
         }

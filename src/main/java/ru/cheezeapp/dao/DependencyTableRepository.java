@@ -11,6 +11,8 @@ public interface DependencyTableRepository extends JpaRepository<DependencyTable
 
     Optional<DependencyTableEntity> findByFirstSubPropertyAndSecondSubProperty(SubPropertyEntity first, SubPropertyEntity second);
 
+    Optional<DependencyTableEntity> findByFirstSubProperty_Id(Long id);
+
     void deleteByProperty(PropertyEntity property);
 
     void deleteAllByPropertyId(Long propertyId);

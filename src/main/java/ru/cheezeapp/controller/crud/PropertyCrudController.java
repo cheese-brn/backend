@@ -3,11 +3,16 @@ package ru.cheezeapp.controller.crud;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import ru.cheezeapp.entity.FactParametrFuncEntity;
 import ru.cheezeapp.entity.PropertyEntity;
 import ru.cheezeapp.service.DependencyTableService;
+import ru.cheezeapp.service.factParamFunc.FactParamFuncService;
 import ru.cheezeapp.service.property.PropertyCrudService;
 import ru.cheezeapp.service.property.PropertySearchService;
 import ru.cheezeapp.utils.jsonConverter.JsonToObjectConverter;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Контроллер для обработки CRUD запросов, связанных со свойствами.
@@ -28,6 +33,9 @@ public class PropertyCrudController {
     @Autowired
     DependencyTableService dependencyTableService;
 
+    @Autowired
+    FactParamFuncService factParamFuncService;
+
     /**
      * Метод обработки запроса на добавление или обновления свойства.
      * Если ID совйства == 0, значит добавяем, иначе, редактируем.
@@ -46,9 +54,20 @@ public class PropertyCrudController {
                 log.info("[POST /property/send/]\tNew property was created");
                 return "Свойство было успешно добавлено";
             } else {
-                dependencyTableService.deleteAllByPropertyId(property.getId());
+//                List<FactParametrFuncEntity> factParams = factParamFuncService.findAllByPropertyId(property.getId())
+//                        .stream()
+//                        .map(func -> FactParametrFuncEntity.builder()
+//                                .firstParametr(func.getFirstParametr())
+//                                .secondParametr(func.getSecondParametr())
+//                                .thirdParametr(func.getThirdParametr())
+//                                .strain(func.getStrain())
+//                                .dependencyTable(func.getDependencyTable())
+//                                .build())
+//                        .collect(Collectors.toList());
+//                dependencyTableService.deleteAllByPropertyId(property.getId());
                 propertyCrudService.updateProperty(property);
-                dependencyTableService.addFunctions(propertyJson, property);
+//                dependencyTableService.addFunctions(propertyJson, property);
+//                factParamFuncService.addAll(factParams);
                 log.info("[POST /property/send/]\tProperty was updated, id = " + property.getId());
                 return "Свойство было успешно обновлено";
             }

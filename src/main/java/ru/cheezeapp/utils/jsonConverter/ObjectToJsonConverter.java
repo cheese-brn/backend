@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import ru.cheezeapp.entity.*;
+import ru.cheezeapp.model.DependencyTable;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -65,6 +66,7 @@ public class ObjectToJsonConverter {
         List<DependencyTableEntity> dependencies = strain.getFactParametrsFunc()
                 .stream()
                 .map(FactParametrFuncEntity::getDependencyTable)
+                .filter(dependencyTable -> !dependencyTable.getProperty().isDeleted())
                 .distinct()
                 .collect(Collectors.toList());
         ArrayNode factParamsArrayNode = mapper.createArrayNode();
@@ -93,12 +95,21 @@ public class ObjectToJsonConverter {
             propertyNode.set("functions", functionsNode);
             factParamsArrayNode.add(propertyNode);
         }
-        for (DependencyTableEntity function : dependencies) {
+        LinkedMultiValueMap<PropertyEntity, DependencyTableEntity> functionsMap = new LinkedMultiValueMap<>();
+        for (DependencyTableEntity function : dependencies.stream()
+                .filter(dependencyTable -> !dependencyTable.getProperty().isDeleted())
+                .collect(Collectors.toList()))
+            functionsMap.add(function.getProperty(), function);
+        for (PropertyEntity property : functionsMap.keySet()) {
             ObjectNode propertyNode = mapper.createObjectNode();
-            propertyNode.put("id", function.getProperty().getId());
-            propertyNode.put("name", function.getProperty().getName());
-            propertyNode.put("description", function.getProperty().getDescription());
-            propertyNode.set("functions", functionsToJson(strain, function));
+            propertyNode.put("id", property.getId());
+            propertyNode.put("name", property.getName());
+            propertyNode.put("description", property.getDescription());
+            propertyNode.set("subProps", mapper.createArrayNode());
+            ArrayNode functions = mapper.createArrayNode();
+            for (DependencyTableEntity function : Objects.requireNonNull(functionsMap.get(property)))
+                functions.add(functionsToJson(strain, function));
+            propertyNode.set("functions", functions);
             factParamsArrayNode.add(propertyNode);
         }
         try {

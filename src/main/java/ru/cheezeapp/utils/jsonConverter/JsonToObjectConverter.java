@@ -215,18 +215,45 @@ public class JsonToObjectConverter {
                     .build();
             property.setSubProperties(jsonToSubProperties(jsonNodes.path("subProps").toString(), property));
             if (jsonNodes.has("functions")) {
+                List<DependencyTableEntity> dependencies = new ArrayList<>();
                 List<FunctionPair> functions = jsonToFunction(json, property);
-                for (FunctionPair function : functions)
-                    property.getSubProperties().addAll(function.fst());
+                for (FunctionPair function : functions) {
+                    Optional<DependencyTableEntity> dependency = dependencyTableRepository
+                            .findByFirstSubProperty_Id(function.fst().get(0).getId());
+                    if (dependency.isPresent()) {
+                        DependencyTableEntity currentFunc = dependency.get();
+                        SubPropertyEntity firstParam = currentFunc.getFirstSubProperty();
+                        firstParam.setName(function.fst().get(0).getName());
+                        firstParam.setUnit(function.fst().get(0).getUnit());
+                        SubPropertyEntity secondParam = currentFunc.getSecondSubProperty();
+                        secondParam.setName(function.fst().get(1).getName());
+                        secondParam.setUnit(function.fst().get(1).getUnit());
+                        property.getSubProperties().addAll(List.of(firstParam, secondParam));
+                        currentFunc.setFunctionName(function.snd());
+                        dependencies.add(currentFunc);
+                    }
+                    else {
+                        property.getSubProperties().addAll(function.fst());
+                        dependencies.add(DependencyTableEntity.builder()
+                                .property(property)
+                                .firstSubProperty(function.fst().get(0))
+                                .secondSubProperty(function.fst().get(1))
+                                .functionName(function.snd())
+                                .factParametrsFunc(new ArrayList<>())
+                                .build());
+                    }
+                }
+                property.setDependencies(dependencies);
                 property.setPropertyType(true);
-            } else
+            } else {
+                property.setDependencies(new ArrayList<>());
                 property.setPropertyType(false);
+            }
             property.setCypher(property.hashCode());
             List<FactParametrEntity> factParametrEntityList = new ArrayList<>();
             for (SubPropertyEntity subPropertyEntity : property.getSubProperties())
                 factParametrEntityList.addAll(subPropertyEntity.getFactParametrs());
             property.setFactParametrs(factParametrEntityList);
-            property.setDependencies(new ArrayList<>());
             return property;
         } catch (Exception e) {
             e.printStackTrace();
@@ -285,14 +312,17 @@ public class JsonToObjectConverter {
     }
 
     private SubPropertyEntity jsonNodeToSubProperty(JsonNode subProperty, PropertyEntity property) {
-        Long id = subProperty.path("id").longValue();
+        long id = subProperty.path("id").longValue();
         SubPropertyEntity subPropertyEntity = SubPropertyEntity.builder()
-                .id(id)
                 .name(subProperty.path("name").textValue())
                 .property(property)
                 .unit(subProperty.path("unit").textValue())
-                .factParametrs(factParametrRepository.findFactParametrEntitiesBySubPropertyId(id))
+                .factParametrs(new ArrayList<>())
                 .build();
+        if (id != 0) {
+            subPropertyEntity.setId(id);
+            subPropertyEntity.setFactParametrs(factParametrRepository.findFactParametrEntitiesBySubProperty_Id(id));
+        }
         subPropertyEntity.setCypher(subPropertyEntity.hashCode());
         DataTypeEntity dataType = dataTypeRepository.findById(subProperty.path("datatype").longValue())
                 .orElse(dataTypeRepository.getById(1L));
