@@ -61,6 +61,7 @@ public class ObjectToJsonConverter {
         MultiValueMap<PropertyEntity, FactParametrEntity> propertyMap = new LinkedMultiValueMap<>();
         for (FactParametrEntity factParametr : strain.getFactParametrs().stream()
                 .filter(param -> !param.getProperty().isDeleted())
+                .sorted(Comparator.comparing(param -> param.getProperty().getName()))
                 .collect(Collectors.toList()))
             propertyMap.add(factParametr.getProperty(), factParametr);
         List<DependencyTableEntity> dependencies = strain.getFactParametrsFunc()
@@ -68,6 +69,7 @@ public class ObjectToJsonConverter {
                 .map(FactParametrFuncEntity::getDependencyTable)
                 .filter(dependencyTable -> !dependencyTable.getProperty().isDeleted())
                 .distinct()
+                .sorted(Comparator.comparing(dependencyTable -> dependencyTable.getProperty().getName()))
                 .collect(Collectors.toList());
         ArrayNode factParamsArrayNode = mapper.createArrayNode();
         for (PropertyEntity property : propertyMap.keySet()) {
