@@ -7,6 +7,7 @@ import ru.cheezeapp.entity.PropertyEntity;
 import ru.cheezeapp.service.property.PropertyCrudService;
 import ru.cheezeapp.service.property.PropertySearchService;
 import ru.cheezeapp.utils.jsonConverter.JsonToObjectConverter;
+import ru.cheezeapp.utils.jsonConverter.ResponseToJsonConverter;
 
 /**
  * Контроллер для обработки CRUD запросов, связанных со свойствами.
@@ -43,11 +44,11 @@ public class PropertyCrudController {
             } else {
                 propertyCrudService.updateProperty(property);
                 log.info("[POST /property/send/]\tProperty was updated, id = " + property.getId());
-                return "Свойство было успешно обновлено";
+                return ResponseToJsonConverter.responseToJson("Свойство было успешно обновлено");
             }
         } catch (Exception e) {
             log.info("[POST /property/send/]\tThrows exception: " + e.getMessage());
-            return e.getMessage();
+            return ResponseToJsonConverter.responseToJson(e.getMessage());
         }
     }
 
@@ -63,10 +64,10 @@ public class PropertyCrudController {
         try {
             propertyCrudService.softDeletionById(id);
             log.info("[GET /property/delete/" + id + "]\tSoft deleted property with id: " + id);
-            return "Свойство помещено в корзину";
+            return ResponseToJsonConverter.responseToJson("Свойство помещено в корзину");
         } catch (Exception e) {
             log.info("[GET /property/delete/" + id + "]\tThrows exception: " + e.getMessage());
-            return e.getMessage();
+            return ResponseToJsonConverter.responseToJson(e.getMessage());
         }
     }
 
@@ -82,10 +83,10 @@ public class PropertyCrudController {
         try {
             propertyCrudService.hardDeletionById(id);
             log.info("[GET /property/hard_delete/" + id + "]\tHard deleted property with id: " + id);
-            return "Свойство удалено";
+            return ResponseToJsonConverter.responseToJson("Свойство удалено");
         } catch (Exception e) {
             log.info("[GET /property/hard_delete/" + id + "]\tThrows exception: " + e.getMessage());
-            return e.getMessage();
+            return ResponseToJsonConverter.responseToJson(e.getMessage());
         }
     }
 
@@ -101,10 +102,10 @@ public class PropertyCrudController {
         try {
             propertyCrudService.restoreById(id);
             log.info("[GET /property/restore/" + id + "]\tRestored property with id: " + id);
-            return "Свойство восстановлено из корзины";
+            return ResponseToJsonConverter.responseToJson("Свойство восстановлено из корзины");
         } catch (Exception e) {
             log.info("[GET /property/restore/" + id + "]\tThrows exception: " + e.getMessage());
-            return e.getMessage();
+            return ResponseToJsonConverter.responseToJson(e.getMessage());
         }
     }
 

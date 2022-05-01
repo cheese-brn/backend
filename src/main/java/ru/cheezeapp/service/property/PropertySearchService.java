@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.cheezeapp.dao.PropertyRepository;
 import ru.cheezeapp.entity.PropertyEntity;
-import ru.cheezeapp.entity.RodStrainEntity;
 
 import java.util.List;
 import java.util.Optional;
@@ -73,7 +72,7 @@ public class PropertySearchService {
      */
     @Transactional(readOnly = true)
     public List<PropertyEntity> findByNameContaining(String name) {
-        if(name.length() == 0)
+        if (name.length() == 0)
             return propertyRepository.findAllByDeletedIsFalse(Sort.by("name"));
         return propertyRepository.findByNameContainingIgnoreCaseAndDeletedIsFalse(name);
     }

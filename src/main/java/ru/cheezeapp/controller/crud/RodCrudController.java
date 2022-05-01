@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.cheezeapp.entity.RodStrainEntity;
 import ru.cheezeapp.service.rod.RodCrudService;
 import ru.cheezeapp.utils.jsonConverter.JsonToObjectConverter;
+import ru.cheezeapp.utils.jsonConverter.ResponseToJsonConverter;
 
 /**
  * Контроллер для обработки CRUD запросов, связанных с родами.
@@ -35,15 +36,15 @@ public class RodCrudController {
             if (rod.getId() == 0) {
                 rodCrudService.addRod(rod);
                 log.info("[POST /rod/send/]\tNew rod was created");
-                return "Род был успешно добавлен";
+                return ResponseToJsonConverter.responseToJson("Род был успешно добавлен");
             } else {
                 rodCrudService.updateRod(rod);
                 log.info("[POST /rod/send/]\tRod was updated, id = " + rod.getId());
-                return "Род был успешно обновлен";
+                return ResponseToJsonConverter.responseToJson("Род был успешно обновлен");
             }
         } catch (Exception e) {
             log.info("[POST /rod/send/]\tThrows exception: " + e.getMessage());
-            return e.getMessage();
+            return ResponseToJsonConverter.responseToJson(e.getMessage());
         }
     }
 
@@ -59,10 +60,10 @@ public class RodCrudController {
         try {
             rodCrudService.softDeletionById(id);
             log.info("[GET /rod/delete/" + id + "]\tSoft deleted rod with id: " + id);
-            return "Род помещён в корзину";
+            return ResponseToJsonConverter.responseToJson("Род помещён в корзину");
         } catch (Exception e) {
             log.info("[GET /rod/delete/" + id + "]\tThrows exception: " + e.getMessage());
-            return e.getMessage();
+            return ResponseToJsonConverter.responseToJson(e.getMessage());
         }
     }
 
@@ -78,10 +79,10 @@ public class RodCrudController {
         try {
             rodCrudService.hardDeletionById(id);
             log.info("[GET /rod/hard_delete/" + id + "]\tHard deleted rod with id: " + id);
-            return "Род успешно удален";
+            return ResponseToJsonConverter.responseToJson("Род успешно удален");
         } catch (Exception e) {
             log.info("[GET /rod/hard_delete/" + id + "]\tThrows exception: " + e.getMessage());
-            return e.getMessage();
+            return ResponseToJsonConverter.responseToJson(e.getMessage());
         }
     }
 
@@ -96,10 +97,10 @@ public class RodCrudController {
         try {
             rodCrudService.hardDeleteAll();
             log.info("[GET /rod/hard_delete_all/]\thardDeleteAllRods() method done");
-            return "Рода удалены";
+            return ResponseToJsonConverter.responseToJson("Рода удалены");
         } catch (Exception e) {
             log.info("[GET /rod/hard_delete_all/]\tThrows exception: " + e.getMessage());
-            return e.getMessage();
+            return ResponseToJsonConverter.responseToJson(e.getMessage());
         }
     }
 
@@ -115,10 +116,10 @@ public class RodCrudController {
         try {
             rodCrudService.restoreById(id);
             log.info("[GET /rod/restore/" + id + "]\tRestored rod with id: " + id);
-            return "Род восстановлен из корзины";
+            return ResponseToJsonConverter.responseToJson("Род восстановлен из корзины");
         } catch (Exception e) {
             log.info("[GET /rod/delete/" + id + "]\tThrows exception: " + e.getMessage());
-            return e.getMessage();
+            return ResponseToJsonConverter.responseToJson(e.getMessage());
         }
     }
 

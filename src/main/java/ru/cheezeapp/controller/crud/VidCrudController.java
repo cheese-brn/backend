@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.cheezeapp.entity.VidStrainEntity;
 import ru.cheezeapp.service.vid.VidCrudService;
 import ru.cheezeapp.utils.jsonConverter.JsonToObjectConverter;
+import ru.cheezeapp.utils.jsonConverter.ResponseToJsonConverter;
 
 /**
  * Контроллер для обработки CRUD запросов, связанных со штаммами.
@@ -35,15 +36,15 @@ public class VidCrudController {
             if (vid.getId() == 0) {
                 vidCrudService.addVid(vid);
                 log.info("[POST /vid/send/]\tNew vid was created");
-                return "Вид был успешно добавлен";
+                return ResponseToJsonConverter.responseToJson("Вид был успешно добавлен");
             } else {
                 vidCrudService.updateVid(vid);
                 log.info("[POST /vid/send/]\tVid was updated, id = " + vid.getId());
-                return "Вид был успешно обновлен";
+                return ResponseToJsonConverter.responseToJson("Вид был успешно обновлен");
             }
         } catch (Exception e) {
             log.info("[POST /vid/send/]\tThrows exception: " + e.getMessage());
-            return e.getMessage();
+            return ResponseToJsonConverter.responseToJson(e.getMessage());
         }
     }
 
@@ -59,10 +60,10 @@ public class VidCrudController {
         try {
             vidCrudService.softDeletionById(id);
             log.info("[GET /vid/delete/" + id + "]\tSoft deleted vid with id: " + id);
-            return "Вид помещён в корзину";
+            return ResponseToJsonConverter.responseToJson("Вид помещён в корзину");
         } catch (Exception e) {
             log.info("[GET /vid/delete/" + id + "]\tThrows exception: " + e.getMessage());
-            return e.getMessage();
+            return ResponseToJsonConverter.responseToJson(e.getMessage());
         }
     }
 
@@ -78,10 +79,10 @@ public class VidCrudController {
         try {
             vidCrudService.hardDeletionById(id);
             log.info("[GET /vid/hard_delete/" + id + "]\tHard deleted vid with id: " + id);
-            return "Вид успешно удален";
+            return ResponseToJsonConverter.responseToJson("Вид успешно удален");
         } catch (Exception e) {
             log.info("[GET /vid/hard_delete/" + id + "]\tThrows exception: " + e.getMessage());
-            return e.getMessage();
+            return ResponseToJsonConverter.responseToJson(e.getMessage());
         }
     }
 
@@ -96,10 +97,10 @@ public class VidCrudController {
         try {
             vidCrudService.hardDeleteAll();
             log.info("[GET /vid/hard_delete_all/]\tHard deleted all vids");
-            return "Вид помещён в корзину";
+            return ResponseToJsonConverter.responseToJson("Вид помещён в корзину");
         } catch (Exception e) {
             log.info("[GET /vid/hard_delete/]\tThrows exception: " + e.getMessage());
-            return e.getMessage();
+            return ResponseToJsonConverter.responseToJson(e.getMessage());
         }
     }
 
@@ -115,10 +116,10 @@ public class VidCrudController {
         try {
             vidCrudService.restoreById(id);
             log.info("[GET /vid/restore/" + id + "]\tRestored vid with id: " + id);
-            return "Вид успешно восстановлен";
+            return ResponseToJsonConverter.responseToJson("Вид успешно восстановлен");
         } catch (Exception e) {
             log.info("[GET /vid/restore/" + id + "]\tThrows exception: " + e.getMessage());
-            return e.getMessage();
+            return ResponseToJsonConverter.responseToJson(e.getMessage());
         }
     }
 

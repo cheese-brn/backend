@@ -111,7 +111,7 @@ public class JsonToObjectConverter {
     /**
      * Метод конвертации JSON в список фактических параметров функции
      *
-     * @param json JSON строка
+     * @param json   JSON строка
      * @param strain штамм
      * @return список фактических параметров функции штамма
      */
@@ -244,8 +244,7 @@ public class JsonToObjectConverter {
                         property.getSubProperties().addAll(List.of(firstParam, secondParam));
                         currentFunc.setFunctionName(function.snd());
                         dependencies.add(currentFunc);
-                    }
-                    else {
+                    } else {
                         property.getSubProperties().addAll(function.fst());
                         dependencies.add(DependencyTableEntity.builder()
                                 .property(property)
@@ -328,7 +327,7 @@ public class JsonToObjectConverter {
      * Метод конвертации JSON в подсвойство
      *
      * @param subProperty JSON подсвойства
-     * @param property свойство
+     * @param property    свойство
      * @return объект подсвойства
      */
     private SubPropertyEntity jsonNodeToSubProperty(JsonNode subProperty, PropertyEntity property) {

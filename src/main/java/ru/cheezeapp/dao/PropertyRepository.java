@@ -6,6 +6,9 @@ import ru.cheezeapp.entity.PropertyEntity;
 
 import java.util.List;
 
+/**
+ * Репозиторий для доступа к таблице "Свойство"
+ */
 public interface PropertyRepository extends JpaRepository<PropertyEntity, Long> {
 
     /**

@@ -7,6 +7,18 @@ import ru.cheezeapp.entity.SubPropertyEntity;
 
 import java.util.List;
 
+/**
+ * Репозиторий для доступа к таблице "Подсвойство"
+ */
 public interface SubPropertyRepository extends JpaRepository<SubPropertyEntity, Long> {
+
+    /**
+     * Метод поиска подсвойств по свойству
+     *
+     * @param propertyEntity свойство
+     * @param name           сортировка по имени
+     * @return список свойств
+     */
     List<SubPropertyEntity> findAllByProperty(PropertyEntity propertyEntity, Sort name);
+
 }

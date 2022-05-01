@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import ru.cheezeapp.entity.*;
-import ru.cheezeapp.model.DependencyTable;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -88,7 +87,7 @@ public class ObjectToJsonConverter {
             propertyNode.set("subProps", factParamNodes);
             List<DependencyTableEntity> functions = dependencies.stream()
                     .filter(dependency -> dependency.getProperty().getId().equals(property.getId()))
-                            .collect(Collectors.toList());
+                    .collect(Collectors.toList());
             dependencies.removeAll(functions);
             ArrayNode functionsNode = mapper.createArrayNode();
             for (DependencyTableEntity function : functions) {
@@ -124,7 +123,8 @@ public class ObjectToJsonConverter {
 
     /**
      * Метод конвертации функции в JSON
-     * @param strain штамм
+     *
+     * @param strain   штамм
      * @param function функция
      * @return ObjectNode функции
      */
@@ -140,8 +140,8 @@ public class ObjectToJsonConverter {
      * Метод конвертации фактических параметров функции в JSON
      *
      * @param dependencyTable функция
-     * @param strain штамм
-     * @param paramNumber номер параметра (1 или 2)
+     * @param strain          штамм
+     * @param paramNumber     номер параметра (1 или 2)
      * @return ObjectNode функции
      */
     private static ObjectNode funcParamsToJson(DependencyTableEntity dependencyTable, StrainEntity strain, int paramNumber) {
@@ -157,8 +157,7 @@ public class ObjectToJsonConverter {
             for (FactParametrFuncEntity param : factParametrFuncEntities)
                 valuesNode.add(param.getFirstParametr());
             funcParam.set("values", valuesNode);
-        }
-        else {
+        } else {
             funcParam.put("id", dependencyTable.getSecondSubProperty().getId());
             funcParam.put("name", dependencyTable.getSecondSubProperty().getName());
             funcParam.put("unit", dependencyTable.getSecondSubProperty().getUnit());
