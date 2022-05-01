@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.*;
 import ru.cheezeapp.entity.StrainEntity;
 import ru.cheezeapp.service.property.PropertyCrudService;
 import ru.cheezeapp.service.strain.StrainCrudService;
+import ru.cheezeapp.service.strain.StrainSearchService;
 import ru.cheezeapp.utils.jsonConverter.JsonToObjectConverter;
+import ru.cheezeapp.utils.jsonConverter.ResponseToJsonConverter;
 
 /**
  * Контроллер для обработки CRUD запросов, связанных со штаммами.
@@ -24,13 +26,16 @@ public class StrainCrudController {
     @Autowired
     JsonToObjectConverter jsonToObjectConverter;
 
+    @Autowired
+    StrainSearchService strainSearchService;
+
     /**
      * Метод обработки запроса на мягкое удаление штамма
      *
      * @param id ID удаляемого штамма
      * @return сообщение об обработке
      */
-    @PostMapping("/strain/delete/{id}")
+    @GetMapping("/strain/delete/{id}")
     public String softDeletionOfStrainById(@PathVariable Long id) {
         log.info("[POST /strain/delete/" + id + "]\tEntered softDeletionOfStrainById() method");
         try {
@@ -49,7 +54,7 @@ public class StrainCrudController {
      * @param id ID удаляемого штамма
      * @return сообщение об обработке
      */
-    @PostMapping("/strain/hard_delete/{id}")
+    @GetMapping("/strain/hard_delete/{id}")
     public String hardDeletionOfStrainById(@PathVariable Long id) {
         log.info("[POST /strain/hard_delete/" + id + "]\tEntered hardDeletionOfStrainById() method");
         try {
@@ -77,15 +82,17 @@ public class StrainCrudController {
             if (strain.getId() == 0) {
                 strainCrudService.addStrain(strain);
                 log.info("[POST /strain/send/]\tNew strain was created");
-                return "Штамм был успешно добавлен";
+                return ResponseToJsonConverter.strainCreationResponseToJson(strainSearchService
+                        .findStrainIdByVidIdAndExemplarAndModification(strain.getVidStrain().getId(),
+                                strain.getExemplar(), strain.getModification()));
             } else {
                 strainCrudService.updateStrain(strain);
                 log.info("[POST /strain/send/]\tStrain was updated, id = " + strain.getId());
-                return "Штамм был успешно обновлен";
+                return ResponseToJsonConverter.responseToJson("Штамм был успешно обновлен");
             }
         } catch (Exception e) {
             log.info("[POST /strain/send/]\tThrows exception: " + e.getMessage());
-            return e.getMessage();
+            return ResponseToJsonConverter.responseToJson(e.getMessage());
         }
     }
 
@@ -94,16 +101,16 @@ public class StrainCrudController {
      *
      * @return сообщение об обработке
      */
-    @PostMapping("/strain/hard_delete_all")
+    @GetMapping("/strain/hard_delete_all")
     public String hardDeleteAllStrains() {
         log.info("[POST /strain/hard_delete_all/]\tEntered hardDeleteAllStrains() method");
         try {
             strainCrudService.hardDeleteAllStrains();
             log.info("[POST /strain/hard_delete_all/]\tAll deleted strains were hardly deleted");
-            return "Корзина очищена";
+            return ResponseToJsonConverter.responseToJson("Корзина очищена от штаммов");
         } catch (Exception e) {
             log.info("[POST /strain/hard_delete_all/]\tThrows exception: " + e.getMessage());
-            return e.getMessage();
+            return ResponseToJsonConverter.responseToJson(e.getMessage());
         }
     }
 
@@ -113,16 +120,16 @@ public class StrainCrudController {
      * @param id ID восстанавливаемого штамма
      * @return сообщение об обработке
      */
-    @PostMapping("/strain/restore/{id}")
+    @GetMapping("/strain/restore/{id}")
     public String restoreStrain(@PathVariable Long id) {
         log.info("[POST /strain/restore/" + id + "]\tEntered restoreStrain() method");
         try {
             strainCrudService.restoreStrain(id);
             log.info("[POST /strain/restore/" + id + "]\tStrain was restored from bucket");
-            return "Штамм восстновлен из корзины";
+            return ResponseToJsonConverter.responseToJson("Штамм восстновлен из корзины");
         } catch (Exception e) {
             log.info("[POST /strain/restore/" + id + "]\tThrows exception: " + e.getMessage());
-            return e.getMessage();
+            return ResponseToJsonConverter.responseToJson(e.getMessage());
         }
     }
 

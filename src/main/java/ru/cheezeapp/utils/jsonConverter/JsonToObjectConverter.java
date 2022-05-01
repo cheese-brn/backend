@@ -108,6 +108,13 @@ public class JsonToObjectConverter {
         }
     }
 
+    /**
+     * Метод конвертации JSON в список фактических параметров функции
+     *
+     * @param json JSON строка
+     * @param strain штамм
+     * @return список фактических параметров функции штамма
+     */
     public List<FactParametrFuncEntity> jsonToFactParamsFunc(String json, StrainEntity strain) {
         try {
             List<FactParametrFuncEntity> factParametrFuncEntities = new ArrayList<>();
@@ -149,6 +156,12 @@ public class JsonToObjectConverter {
         }
     }
 
+    /**
+     * Метод получения значений из параметра функции
+     *
+     * @param parameter параметр функции
+     * @return список значений
+     */
     private List<String> getFunctionValuesFromParameter(JsonNode parameter) {
         List<String> values = new ArrayList<>();
         JsonNode valueNode = parameter.get("values");
@@ -311,6 +324,13 @@ public class JsonToObjectConverter {
         }
     }
 
+    /**
+     * Метод конвертации JSON в подсвойство
+     *
+     * @param subProperty JSON подсвойства
+     * @param property свойство
+     * @return объект подсвойства
+     */
     private SubPropertyEntity jsonNodeToSubProperty(JsonNode subProperty, PropertyEntity property) {
         long id = subProperty.path("id").longValue();
         SubPropertyEntity subPropertyEntity = SubPropertyEntity.builder()
