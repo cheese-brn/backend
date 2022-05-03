@@ -40,7 +40,7 @@ public class PropertyCrudController {
             if (property.getId() == 0) {
                 propertyCrudService.addProperty(property);
                 log.info("[POST /property/send/]\tNew property was created");
-                return "Свойство было успешно добавлено";
+                return ResponseToJsonConverter.responseToJson("Свойство было успешно добавлено");
             } else {
                 propertyCrudService.updateProperty(property);
                 log.info("[POST /property/send/]\tProperty was updated, id = " + property.getId());

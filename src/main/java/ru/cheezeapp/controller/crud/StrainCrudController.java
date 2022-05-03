@@ -37,14 +37,14 @@ public class StrainCrudController {
      */
     @GetMapping("/strain/delete/{id}")
     public String softDeletionOfStrainById(@PathVariable Long id) {
-        log.info("[POST /strain/delete/" + id + "]\tEntered softDeletionOfStrainById() method");
+        log.info("[GET /strain/delete/" + id + "]\tEntered softDeletionOfStrainById() method");
         try {
             strainCrudService.softDeletionOfStrainById(id);
-            log.info("[POST /strain/delete/" + id + "]\tSoft deleted strain with id: " + id);
-            return "Штамм помещён в корзину";
+            log.info("[GET /strain/delete/" + id + "]\tSoft deleted strain with id: " + id);
+            return ResponseToJsonConverter.responseToJson("Штамм помещён в корзину");
         } catch (Exception e) {
-            log.info("[POST /strain/delete/" + id + "]\tThrows exception: " + e.getMessage());
-            return e.getMessage();
+            log.info("[GET /strain/delete/" + id + "]\tThrows exception: " + e.getMessage());
+            return ResponseToJsonConverter.responseToJson(e.getMessage());
         }
     }
 
@@ -56,14 +56,14 @@ public class StrainCrudController {
      */
     @GetMapping("/strain/hard_delete/{id}")
     public String hardDeletionOfStrainById(@PathVariable Long id) {
-        log.info("[POST /strain/hard_delete/" + id + "]\tEntered hardDeletionOfStrainById() method");
+        log.info("[GET /strain/hard_delete/" + id + "]\tEntered hardDeletionOfStrainById() method");
         try {
             strainCrudService.hardDeletionOfStrainById(id);
-            log.info("[POST /strain/hard_delete/" + id + "]\tHard deleted strain with id: " + id);
-            return "Штамм успешно удалён";
+            log.info("[GET /strain/hard_delete/" + id + "]\tHard deleted strain with id: " + id);
+            return ResponseToJsonConverter.responseToJson("Штамм успешно удалён");
         } catch (Exception e) {
-            log.info("[POST /strain/hard_delete/" + id + "]\tThrows exception: " + e.getMessage());
-            return e.getMessage();
+            log.info("[GET /strain/hard_delete/" + id + "]\tThrows exception: " + e.getMessage());
+            return ResponseToJsonConverter.responseToJson(e.getMessage());
         }
     }
 
@@ -103,13 +103,13 @@ public class StrainCrudController {
      */
     @GetMapping("/strain/hard_delete_all")
     public String hardDeleteAllStrains() {
-        log.info("[POST /strain/hard_delete_all/]\tEntered hardDeleteAllStrains() method");
+        log.info("[GET /strain/hard_delete_all/]\tEntered hardDeleteAllStrains() method");
         try {
             strainCrudService.hardDeleteAllStrains();
-            log.info("[POST /strain/hard_delete_all/]\tAll deleted strains were hardly deleted");
+            log.info("[GET /strain/hard_delete_all/]\tAll deleted strains were hardly deleted");
             return ResponseToJsonConverter.responseToJson("Корзина очищена от штаммов");
         } catch (Exception e) {
-            log.info("[POST /strain/hard_delete_all/]\tThrows exception: " + e.getMessage());
+            log.info("[GET /strain/hard_delete_all/]\tThrows exception: " + e.getMessage());
             return ResponseToJsonConverter.responseToJson(e.getMessage());
         }
     }
@@ -122,13 +122,13 @@ public class StrainCrudController {
      */
     @GetMapping("/strain/restore/{id}")
     public String restoreStrain(@PathVariable Long id) {
-        log.info("[POST /strain/restore/" + id + "]\tEntered restoreStrain() method");
+        log.info("[GET /strain/restore/" + id + "]\tEntered restoreStrain() method");
         try {
             strainCrudService.restoreStrain(id);
-            log.info("[POST /strain/restore/" + id + "]\tStrain was restored from bucket");
+            log.info("[GET /strain/restore/" + id + "]\tStrain was restored from bucket");
             return ResponseToJsonConverter.responseToJson("Штамм восстновлен из корзины");
         } catch (Exception e) {
-            log.info("[POST /strain/restore/" + id + "]\tThrows exception: " + e.getMessage());
+            log.info("[GET /strain/restore/" + id + "]\tThrows exception: " + e.getMessage());
             return ResponseToJsonConverter.responseToJson(e.getMessage());
         }
     }
