@@ -123,4 +123,12 @@ public class PropertyCrudService {
         }
     }
 
+    /**
+     * Процедура удаления всех свойств из корзины
+     */
+    public void hardDeleteAll() {
+        log.info("PROPERTY CRUD SERVICE\tEntered hardDeleteAllProperties() method");
+        propertyRepository.deleteAllByDeletedIsTrue();
+        log.info("PROPERTY CRUD SERVICE\thardDeleteAllProperties() method done");
+    }
 }

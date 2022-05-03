@@ -35,4 +35,8 @@ public interface PropertyRepository extends JpaRepository<PropertyEntity, Long> 
      */
     List<PropertyEntity> findByNameContainingIgnoreCaseAndDeletedIsFalse(String name);
 
+    /**
+     * Процедура удаления всех свойств из корзины
+     */
+    void deleteAllByDeletedIsTrue();
 }

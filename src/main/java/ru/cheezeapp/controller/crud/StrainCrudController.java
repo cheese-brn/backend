@@ -49,25 +49,6 @@ public class StrainCrudController {
     }
 
     /**
-     * Метод обработки запроса на полное удаление штамма из БД
-     *
-     * @param id ID удаляемого штамма
-     * @return сообщение об обработке
-     */
-    @GetMapping("/strain/hard_delete/{id}")
-    public String hardDeletionOfStrainById(@PathVariable Long id) {
-        log.info("[GET /strain/hard_delete/" + id + "]\tEntered hardDeletionOfStrainById() method");
-        try {
-            strainCrudService.hardDeletionOfStrainById(id);
-            log.info("[GET /strain/hard_delete/" + id + "]\tHard deleted strain with id: " + id);
-            return ResponseToJsonConverter.responseToJson("Штамм успешно удалён");
-        } catch (Exception e) {
-            log.info("[GET /strain/hard_delete/" + id + "]\tThrows exception: " + e.getMessage());
-            return ResponseToJsonConverter.responseToJson(e.getMessage());
-        }
-    }
-
-    /**
      * Метод обработки запроса на добавление или обновления штамма.
      * Если ID штамма == 0, значит добавяем, иначе, редактируем.
      *
@@ -92,43 +73,6 @@ public class StrainCrudController {
             }
         } catch (Exception e) {
             log.info("[POST /strain/send/]\tThrows exception: " + e.getMessage());
-            return ResponseToJsonConverter.responseToJson(e.getMessage());
-        }
-    }
-
-    /**
-     * Метод удаления всех штаммов из корзины
-     *
-     * @return сообщение об обработке
-     */
-    @GetMapping("/strain/hard_delete_all")
-    public String hardDeleteAllStrains() {
-        log.info("[GET /strain/hard_delete_all/]\tEntered hardDeleteAllStrains() method");
-        try {
-            strainCrudService.hardDeleteAllStrains();
-            log.info("[GET /strain/hard_delete_all/]\tAll deleted strains were hardly deleted");
-            return ResponseToJsonConverter.responseToJson("Корзина очищена от штаммов");
-        } catch (Exception e) {
-            log.info("[GET /strain/hard_delete_all/]\tThrows exception: " + e.getMessage());
-            return ResponseToJsonConverter.responseToJson(e.getMessage());
-        }
-    }
-
-    /**
-     * Метод восстановления штамма из корзины
-     *
-     * @param id ID восстанавливаемого штамма
-     * @return сообщение об обработке
-     */
-    @GetMapping("/strain/restore/{id}")
-    public String restoreStrain(@PathVariable Long id) {
-        log.info("[GET /strain/restore/" + id + "]\tEntered restoreStrain() method");
-        try {
-            strainCrudService.restoreStrain(id);
-            log.info("[GET /strain/restore/" + id + "]\tStrain was restored from bucket");
-            return ResponseToJsonConverter.responseToJson("Штамм восстновлен из корзины");
-        } catch (Exception e) {
-            log.info("[GET /strain/restore/" + id + "]\tThrows exception: " + e.getMessage());
             return ResponseToJsonConverter.responseToJson(e.getMessage());
         }
     }

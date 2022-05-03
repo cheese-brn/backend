@@ -71,42 +71,4 @@ public class PropertyCrudController {
         }
     }
 
-    /**
-     * Метод обработки запроса на полное удаление свойства
-     *
-     * @param id ID удаляемого свойства
-     * @return сообщение об обработке
-     */
-    @GetMapping("/property/hard_delete/{id}")
-    public String hardDeletionOfPropertyById(@PathVariable Long id) {
-        log.info("[GET /property/hard_delete/" + id + "]\tEntered hardDeletionOfPropertyById() method");
-        try {
-            propertyCrudService.hardDeletionById(id);
-            log.info("[GET /property/hard_delete/" + id + "]\tHard deleted property with id: " + id);
-            return ResponseToJsonConverter.responseToJson("Свойство удалено");
-        } catch (Exception e) {
-            log.info("[GET /property/hard_delete/" + id + "]\tThrows exception: " + e.getMessage());
-            return ResponseToJsonConverter.responseToJson(e.getMessage());
-        }
-    }
-
-    /**
-     * Метод обработки запроса на полное удаление свойства
-     *
-     * @param id ID удаляемого свойства
-     * @return сообщение об обработке
-     */
-    @GetMapping("/property/restore/{id}")
-    public String restoreOfPropertyById(@PathVariable Long id) {
-        log.info("[GET /property/restore/" + id + "]\tEntered restoreOfPropertyById() method");
-        try {
-            propertyCrudService.restoreById(id);
-            log.info("[GET /property/restore/" + id + "]\tRestored property with id: " + id);
-            return ResponseToJsonConverter.responseToJson("Свойство восстановлено из корзины");
-        } catch (Exception e) {
-            log.info("[GET /property/restore/" + id + "]\tThrows exception: " + e.getMessage());
-            return ResponseToJsonConverter.responseToJson(e.getMessage());
-        }
-    }
-
 }
