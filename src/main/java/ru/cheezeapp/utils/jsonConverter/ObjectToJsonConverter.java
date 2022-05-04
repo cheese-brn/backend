@@ -130,7 +130,7 @@ public class ObjectToJsonConverter {
      */
     private static ObjectNode functionsToJson(StrainEntity strain, DependencyTableEntity function) {
         ObjectNode functionNode = mapper.createObjectNode();
-        functionNode.put("funcName", function.getFunctionName());
+        functionNode.put("name", function.getFunctionName());
         functionNode.set("firstParam", funcParamsToJson(function, strain, 1));
         functionNode.set("secondParam", funcParamsToJson(function, strain, 2));
         return functionNode;
