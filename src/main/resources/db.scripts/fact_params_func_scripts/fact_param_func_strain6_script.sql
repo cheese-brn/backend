@@ -1,6 +1,6 @@
 insert into fact_param_func
 values (11,
-        '90 ºТ',
+        '90',
         '24',
         '',
         6,
@@ -8,7 +8,7 @@ values (11,
 
 insert into fact_param_func
 values (12,
-        '180 ºТ',
+        '180',
         '168',
         '',
         6,

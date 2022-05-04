@@ -6,6 +6,9 @@ import ru.cheezeapp.entity.PropertyEntity;
 
 import java.util.List;
 
+/**
+ * Репозиторий для доступа к таблице "Свойство"
+ */
 public interface PropertyRepository extends JpaRepository<PropertyEntity, Long> {
 
     /**
@@ -32,4 +35,8 @@ public interface PropertyRepository extends JpaRepository<PropertyEntity, Long> 
      */
     List<PropertyEntity> findByNameContainingIgnoreCaseAndDeletedIsFalse(String name);
 
+    /**
+     * Процедура удаления всех свойств из корзины
+     */
+    void deleteAllByDeletedIsTrue();
 }

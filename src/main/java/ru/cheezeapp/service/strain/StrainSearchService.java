@@ -129,4 +129,14 @@ public class StrainSearchService {
         return strainRepository.findByExemplarContainingAndDeletedIsFalse(name);
     }
 
+    /**
+     * Метод поиска id штамма по id вида, экземпляру и модификации
+     *
+     * @return id штамма
+     */
+    public Long findStrainIdByVidIdAndExemplarAndModification(Long vidId, String exemplar, String modification) {
+        Optional<StrainEntity> strainOptional = strainRepository
+                .findStrainEntityByVidStrain_Id_AndExemplarAndModification(vidId, exemplar, modification);
+        return strainOptional.map(StrainEntity::getId).orElse(null);
+    }
 }

@@ -6,13 +6,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.cheezeapp.dao.PropertyRepository;
 import ru.cheezeapp.dao.SubPropertyRepository;
-import ru.cheezeapp.entity.FactParametrEntity;
-import ru.cheezeapp.entity.PropertyEntity;
-import ru.cheezeapp.entity.SubPropertyEntity;
+import ru.cheezeapp.entity.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Сервис с Crud операциями для свойства
@@ -57,7 +54,10 @@ public class PropertyCrudService {
             property.setSubProperties(propertyEntity.get().getSubProperties());
             property.getSubProperties().clear();
             property.getSubProperties().addAll(subProperties);
-            property.setFactParametrs(propertyEntity.get().getFactParametrs());
+            List<DependencyTableEntity> dependencies = property.getDependencies();
+            property.setDependencies(propertyEntity.get().getDependencies());
+            property.getDependencies().clear();
+            property.getDependencies().addAll(dependencies);
             propertyRepository.save(property);
             log.info("PROPERTY CRUD SERVICE\tUpdated property with id = " + property.getId());
         }
@@ -123,4 +123,13 @@ public class PropertyCrudService {
         }
     }
 
+    /**
+     * Процедура удаления всех свойств из корзины
+     */
+    @Transactional
+    public void hardDeleteAll() {
+        log.info("PROPERTY CRUD SERVICE\tEntered hardDeleteAllProperties() method");
+        propertyRepository.deleteAllByDeletedIsTrue();
+        log.info("PROPERTY CRUD SERVICE\thardDeleteAllProperties() method done");
+    }
 }

@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import ru.cheezeapp.entity.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -62,6 +64,36 @@ public class CatalogsToJson {
     }
 
     /**
+     * Метод конвертации списка родов с видами в Json
+     *
+     * @param rodStrainEntityList список родов
+     * @return JSON родов с видами
+     */
+    public static String rodsWithVidsToJson(List<RodStrainEntity> rodStrainEntityList) {
+        ArrayNode rodsNode = mapper.createArrayNode();
+        for (RodStrainEntity rodStrain : rodStrainEntityList) {
+            ObjectNode rodNode = mapper.createObjectNode();
+            rodNode.put("id", rodStrain.getId());
+            rodNode.put("name", rodStrain.getName());
+            ArrayNode vidsNode = mapper.createArrayNode();
+            for (VidStrainEntity vidStrain : rodStrain.getVids()) {
+                ObjectNode vidNode = mapper.createObjectNode();
+                vidNode.put("id", vidStrain.getId());
+                vidNode.put("name", vidStrain.getName());
+                vidsNode.add(vidNode);
+            }
+            rodNode.set("vids", vidsNode);
+            rodsNode.add(rodNode);
+        }
+        try {
+            return mapper.writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(rodsNode).replace("\\", "");
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
      * Метод конвертации списка штаммов в Json
      *
      * @param strains список штаммов
@@ -110,12 +142,53 @@ public class CatalogsToJson {
     }
 
     /**
-     * Метод конвертации списка подсвойств в Json
+     * Метод конвертации списка подсвойств без функций в Json
      *
      * @param subproperties список подсвойств
      * @return Json списка подсвойств
      */
     public static String subpropertyCatalogToJson(List<SubPropertyEntity> subproperties) {
+        try {
+            ObjectNode objectNode = mapper.createObjectNode();
+            ArrayNode subpropertiesNode = listSubpropertiesToJson(subproperties);
+            objectNode.set("subproperties", subpropertiesNode);
+            return mapper.writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(objectNode).replace("\\", "");
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * Метод конвертации списка подсвойств с функциями в Json
+     *
+     * @param property сповйство
+     * @return Json списка подсвойств
+     */
+    public static String subpropertyCatalogWithFunctionsToJson(PropertyEntity property) {
+        try {
+            List<SubPropertyEntity> functionSubprops = new ArrayList<>();
+            for (DependencyTableEntity dependency : property.getDependencies())
+                functionSubprops.addAll(Arrays.asList(dependency.getFirstSubProperty(), dependency.getSecondSubProperty()));
+            List<SubPropertyEntity> defaultSubprops = property.getSubProperties();
+            defaultSubprops.removeAll(functionSubprops);
+            ObjectNode subpropertiesAndFunctions = mapper.createObjectNode();
+            subpropertiesAndFunctions.set("properties", listSubpropertiesToJson(defaultSubprops));
+            subpropertiesAndFunctions.set("functions", functionCatalogToJson(property));
+            return mapper.writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(subpropertiesAndFunctions).replace("\\", "");
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * Метод перевода списка всех подсвойств в json
+     *
+     * @param subproperties список подсвойств
+     * @return объект ArrayNode со списком подсвойств
+     */
+    private static ArrayNode listSubpropertiesToJson(List<SubPropertyEntity> subproperties) {
         ArrayNode arrayNode = mapper.createArrayNode();
         for (SubPropertyEntity subproperty : subproperties) {
             ObjectNode subpropertyNode = mapper.createObjectNode();
@@ -125,42 +198,41 @@ public class CatalogsToJson {
             subpropertyNode.put("datatype", subproperty.getDataType().getName());
             arrayNode.add(subpropertyNode);
         }
-        try {
-            return mapper.writerWithDefaultPrettyPrinter()
-                    .writeValueAsString(arrayNode).replace("\\", "");
-        } catch (Exception e) {
-            return null;
-        }
+        return arrayNode;
     }
 
     /**
-     * Метод конвертации списка родов с видами в Json
+     * Метод перевода функций подсвойства в json
      *
-     * @param rodStrainEntityList список родов
-     * @return JSON родов с видами
+     * @param property свойство
+     * @return объект ArrayNode с функциями
      */
-    public static String rodsToJson(List<RodStrainEntity> rodStrainEntityList) {
-        ArrayNode rodsNode = mapper.createArrayNode();
-        for (RodStrainEntity rodStrain : rodStrainEntityList) {
-            ObjectNode rodNode = mapper.createObjectNode();
-            rodNode.put("id", rodStrain.getId());
-            rodNode.put("name", rodStrain.getName());
-            ArrayNode vidsNode = mapper.createArrayNode();
-            for (VidStrainEntity vidStrain : rodStrain.getVids()) {
-                ObjectNode vidNode = mapper.createObjectNode();
-                vidNode.put("id", vidStrain.getId());
-                vidNode.put("name", vidStrain.getName());
-                vidsNode.add(vidNode);
-            }
-            rodNode.set("vids", vidsNode);
-            rodsNode.add(rodNode);
+    public static ArrayNode functionCatalogToJson(PropertyEntity property) {
+        ArrayNode functionsNode = mapper.createArrayNode();
+        List<DependencyTableEntity> dependencyTableEntities = property.getDependencies();
+        for (DependencyTableEntity dependency : dependencyTableEntities) {
+            ObjectNode function = mapper.createObjectNode();
+            function.set("firstParam", subpropertyToJson(dependency.getFirstSubProperty()));
+            function.set("secondParam", subpropertyToJson(dependency.getSecondSubProperty()));
+            function.put("name", dependency.getFunctionName());
+            functionsNode.add(function);
         }
-        try {
-            return mapper.writerWithDefaultPrettyPrinter()
-                    .writeValueAsString(rodsNode).replace("\\", "");
-        } catch (Exception e) {
-            return null;
-        }
+        return functionsNode;
+    }
+
+    /**
+     * Метод перевода подсвойства в json
+     *
+     * @param subPropertyEntity подсвойство
+     * @return объект ObjectNode с подсвойством
+     */
+    private static ObjectNode subpropertyToJson(SubPropertyEntity subPropertyEntity) {
+        ObjectNode subpropertyNode = mapper.createObjectNode();
+        subpropertyNode.put("id", subPropertyEntity.getId());
+        subpropertyNode.put("name", subPropertyEntity.getName());
+        subpropertyNode.put("datatype", subPropertyEntity.getDataType().getName());
+        subpropertyNode.put("unit", subPropertyEntity.getUnit());
+        return subpropertyNode;
     }
 
 }

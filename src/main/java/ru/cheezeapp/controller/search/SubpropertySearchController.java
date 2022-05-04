@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import ru.cheezeapp.entity.*;
+import ru.cheezeapp.service.property.PropertySearchService;
 import ru.cheezeapp.service.subproperty.SubpropertySearchService;
 import ru.cheezeapp.utils.jsonConverter.CatalogsToJson;
 import ru.cheezeapp.utils.jsonConverter.ObjectToJsonConverter;
@@ -18,6 +19,9 @@ import java.util.List;
 @RestController
 @Slf4j
 public class SubpropertySearchController {
+
+    @Autowired
+    PropertySearchService propertySearchService;
 
     @Autowired
     private SubpropertySearchService subpropertySearchService;
@@ -56,9 +60,8 @@ public class SubpropertySearchController {
      */
     @GetMapping("/subproperties/properties/{id}")
     public String getListOfSubpropertiesByPropertyId(@PathVariable Long id) {
-        List<SubPropertyEntity> subproperties = subpropertySearchService.findSubpropertiesByPropertyId(id);
         log.info("[GET /subproperties/properties/{id}]\tReturn list of subproperty by ID's property");
-        return CatalogsToJson.subpropertyCatalogToJson(subproperties);
+        return CatalogsToJson.subpropertyCatalogWithFunctionsToJson(propertySearchService.findById(id));
     }
 
 }

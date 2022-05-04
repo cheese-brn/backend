@@ -5,12 +5,14 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import ru.cheezeapp.entity.FactParametrEntity;
-import ru.cheezeapp.entity.StrainEntity;
+import ru.cheezeapp.entity.*;
 
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Класс, содержащий методы формирования документа из объекта штамма
@@ -171,13 +173,44 @@ public class StrainToDocumentConverter {
         parameters.add("Наименование", formStrainName(strain));
         parameters.add("Происхождение", strain.getOrigin());
         parameters.add("Способ получения", strain.getObtainingMethod());
-        for (FactParametrEntity factParametr : strain.getFactParametrs()) {
-            String value;
-            if (factParametr.getSubProperty().getName().equals(""))
-                value = factParametr.getValue();
-            else value = factParametr.getSubProperty().getName() + ": " +
-                    factParametr.getValue();
-            parameters.add(factParametr.getProperty().getName(), value);
+        List<PropertyEntity> strainProperties = strain.getFactParametrs().stream()
+                .map(FactParametrEntity::getProperty)
+                .distinct()
+                .collect(Collectors.toList());
+        for (FactParametrFuncEntity param : strain.getFactParametrsFunc())
+            if (!strainProperties.contains(param.getDependencyTable().getProperty()))
+                strainProperties.add(param.getDependencyTable().getProperty());
+        for (PropertyEntity currentProperty : strainProperties) {
+            StringBuilder value = new StringBuilder();
+            List<FactParametrEntity> factParams = strain.getFactParametrs().stream()
+                    .filter(param -> param.getProperty().equals(currentProperty))
+                    .collect(Collectors.toList());
+            for (FactParametrEntity factParametr : factParams) {
+                if (factParametr.getSubProperty().getName() == null || factParametr.getSubProperty().getName().equals(""))
+                    value.append(factParametr.getValue()).append(System.lineSeparator());
+                else
+                    value.append(factParametr.getSubProperty().getName()).append(": ").append(factParametr.getValue())
+                            .append(System.lineSeparator());
+            }
+            List<DependencyTableEntity> functions = strain.getFactParametrsFunc().stream()
+                    .map(FactParametrFuncEntity::getDependencyTable)
+                    .filter(dependencyTable -> dependencyTable.getProperty().equals(currentProperty))
+                    .distinct()
+                    .collect(Collectors.toList());
+
+            for (DependencyTableEntity function : functions) {
+                if (function.getFunctionName() != null || !function.getFunctionName().equals(""))
+                    value.append(function.getFunctionName()).append(": ");
+                List<FactParametrFuncEntity> funcParams = function.getFactParametrsFunc().stream()
+                        .filter(param -> param.getStrain().equals(strain))
+                        .collect(Collectors.toList());
+                String firstUnit = function.getFirstSubProperty().getUnit();
+                String secondUnit = function.getSecondSubProperty().getUnit();
+                for (FactParametrFuncEntity param : funcParams)
+                    value.append(param.getFirstParametr()).append(" ").append(firstUnit).append(" (")
+                            .append(param.getSecondParametr()).append(" ").append(secondUnit).append(") ");
+            }
+            parameters.add(currentProperty.getName(), value.toString());
         }
         return parameters;
     }

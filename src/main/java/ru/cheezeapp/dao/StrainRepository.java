@@ -8,6 +8,9 @@ import ru.cheezeapp.entity.VidStrainEntity;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Репозиторий для доступа к таблице "Штамм"
+ */
 public interface StrainRepository extends JpaRepository<StrainEntity, Long> {
 
     /**
@@ -47,6 +50,23 @@ public interface StrainRepository extends JpaRepository<StrainEntity, Long> {
      */
     void deleteAllByDeletedIsTrue();
 
+    /**
+     * Метод поиска неудаленных штаммов, которые содержат в строке экземпляра переданную строку
+     *
+     * @param name строка для поиска
+     * @return список найденных штаммов
+     */
     List<StrainEntity> findByExemplarContainingAndDeletedIsFalse(String name);
+
+    /**
+     * Метод поиска штамма по id вида, экземпляру и модификации
+     *
+     * @param vidId        id вида
+     * @param exemplar     экземпляр
+     * @param modification модификация
+     * @return optional объект, содержащий id
+     */
+    Optional<StrainEntity>
+    findStrainEntityByVidStrain_Id_AndExemplarAndModification(Long vidId, String exemplar, String modification);
 
 }

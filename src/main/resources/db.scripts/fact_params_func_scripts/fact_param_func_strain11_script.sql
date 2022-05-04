@@ -1,6 +1,6 @@
 insert into fact_param_func
 values (17,
-        '50 ºТ',
+        '50',
         '120',
         '',
         11,

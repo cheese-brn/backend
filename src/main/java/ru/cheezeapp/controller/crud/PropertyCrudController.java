@@ -5,7 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.cheezeapp.entity.PropertyEntity;
 import ru.cheezeapp.service.property.PropertyCrudService;
+import ru.cheezeapp.service.property.PropertySearchService;
 import ru.cheezeapp.utils.jsonConverter.JsonToObjectConverter;
+import ru.cheezeapp.utils.jsonConverter.ResponseToJsonConverter;
 
 /**
  * Контроллер для обработки CRUD запросов, связанных со свойствами.
@@ -16,6 +18,9 @@ public class PropertyCrudController {
 
     @Autowired
     PropertyCrudService propertyCrudService;
+
+    @Autowired
+    PropertySearchService propertySearchService;
 
     @Autowired
     JsonToObjectConverter jsonToObjectConverter;
@@ -35,15 +40,15 @@ public class PropertyCrudController {
             if (property.getId() == 0) {
                 propertyCrudService.addProperty(property);
                 log.info("[POST /property/send/]\tNew property was created");
-                return "Свойство было успешно добавлено";
+                return ResponseToJsonConverter.responseToJson("Свойство было успешно добавлено");
             } else {
                 propertyCrudService.updateProperty(property);
                 log.info("[POST /property/send/]\tProperty was updated, id = " + property.getId());
-                return "Свойство было успешно обновлено";
+                return ResponseToJsonConverter.responseToJson("Свойство было успешно обновлено");
             }
         } catch (Exception e) {
             log.info("[POST /property/send/]\tThrows exception: " + e.getMessage());
-            return e.getMessage();
+            return ResponseToJsonConverter.responseToJson(e.getMessage());
         }
     }
 
@@ -59,48 +64,10 @@ public class PropertyCrudController {
         try {
             propertyCrudService.softDeletionById(id);
             log.info("[GET /property/delete/" + id + "]\tSoft deleted property with id: " + id);
-            return "Свойство помещено в корзину";
+            return ResponseToJsonConverter.responseToJson("Свойство помещено в корзину");
         } catch (Exception e) {
             log.info("[GET /property/delete/" + id + "]\tThrows exception: " + e.getMessage());
-            return e.getMessage();
-        }
-    }
-
-    /**
-     * Метод обработки запроса на полное удаление свойства
-     *
-     * @param id ID удаляемого свойства
-     * @return сообщение об обработке
-     */
-    @GetMapping("/property/hard_delete/{id}")
-    public String hardDeletionOfPropertyById(@PathVariable Long id) {
-        log.info("[GET /property/hard_delete/" + id + "]\tEntered hardDeletionOfPropertyById() method");
-        try {
-            propertyCrudService.hardDeletionById(id);
-            log.info("[GET /property/hard_delete/" + id + "]\tHard deleted property with id: " + id);
-            return "Свойство удалено";
-        } catch (Exception e) {
-            log.info("[GET /property/hard_delete/" + id + "]\tThrows exception: " + e.getMessage());
-            return e.getMessage();
-        }
-    }
-
-    /**
-     * Метод обработки запроса на полное удаление свойства
-     *
-     * @param id ID удаляемого свойства
-     * @return сообщение об обработке
-     */
-    @GetMapping("/property/restore/{id}")
-    public String restoreOfPropertyById(@PathVariable Long id) {
-        log.info("[GET /property/restore/" + id + "]\tEntered restoreOfPropertyById() method");
-        try {
-            propertyCrudService.restoreById(id);
-            log.info("[GET /property/restore/" + id + "]\tRestored property with id: " + id);
-            return "Свойство восстановлено из корзины";
-        } catch (Exception e) {
-            log.info("[GET /property/restore/" + id + "]\tThrows exception: " + e.getMessage());
-            return e.getMessage();
+            return ResponseToJsonConverter.responseToJson(e.getMessage());
         }
     }
 

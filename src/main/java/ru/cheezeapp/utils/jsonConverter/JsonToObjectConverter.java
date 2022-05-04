@@ -8,12 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.cheezeapp.dao.*;
 import ru.cheezeapp.entity.*;
+import ru.cheezeapp.utils.structures.FunctionPair;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class JsonToObjectConverter {
@@ -35,6 +34,9 @@ public class JsonToObjectConverter {
 
     @Autowired
     FactParametrFuncRepository factParametrFuncRepository;
+
+    @Autowired
+    DependencyTableRepository dependencyTableRepository;
 
     @Autowired
     DataTypeRepository dataTypeRepository;
@@ -64,7 +66,8 @@ public class JsonToObjectConverter {
                         .build();
                 strain.setFactParametrs(jsonToFactParams(jsonNodes.path("factParams").toString(),
                         strain));
-                strain.setFactParametrsFunc(new ArrayList<>());
+                strain.setFactParametrsFunc(jsonToFactParamsFunc(jsonNodes.path("factParams").toString(),
+                        strain));
                 return strain;
             }
         } catch (Exception e) {
@@ -73,6 +76,13 @@ public class JsonToObjectConverter {
         return null;
     }
 
+    /**
+     * Метод конвертации JSON строки в список {@link FactParametrEntity}
+     *
+     * @param json   json JSON строка
+     * @param strain штамм
+     * @return список фактических параметров
+     */
     public List<FactParametrEntity> jsonToFactParams(String json, StrainEntity strain) {
         try {
             List<FactParametrEntity> factParams = new ArrayList<>();
@@ -96,6 +106,68 @@ public class JsonToObjectConverter {
             e.printStackTrace();
             return null;
         }
+    }
+
+    /**
+     * Метод конвертации JSON в список фактических параметров функции
+     *
+     * @param json   JSON строка
+     * @param strain штамм
+     * @return список фактических параметров функции штамма
+     */
+    public List<FactParametrFuncEntity> jsonToFactParamsFunc(String json, StrainEntity strain) {
+        try {
+            List<FactParametrFuncEntity> factParametrFuncEntities = new ArrayList<>();
+            JsonNode factParamsJson = mapper.readTree(json);
+            for (JsonNode property : factParamsJson) {
+                if (property.has("functions"))
+                    for (JsonNode function : property.path("functions")) {
+                        Optional<PropertyEntity> propertyEntity = propertyRepository
+                                .findById(property.path("id").longValue());
+                        if (!propertyEntity.isPresent())
+                            continue;
+                        JsonNode firstParamNode = function.get("firstParam");
+                        JsonNode secondParamNode = function.get("secondParam");
+                        Optional<SubPropertyEntity> firstParam = subPropertyRepository
+                                .findById(firstParamNode.get("id").longValue());
+                        Optional<SubPropertyEntity> secondParam = subPropertyRepository
+                                .findById(secondParamNode.get("id").longValue());
+                        if (!firstParam.isPresent() || !secondParam.isPresent())
+                            continue;
+                        Optional<DependencyTableEntity> dependency = dependencyTableRepository
+                                .findByFirstSubPropertyAndSecondSubProperty(firstParam.get(), secondParam.get());
+                        if (!dependency.isPresent())
+                            continue;
+                        List<String> firstParamValues = getFunctionValuesFromParameter(firstParamNode);
+                        List<String> secondParamValues = getFunctionValuesFromParameter(secondParamNode);
+                        for (int i = 0; i < firstParamValues.size(); i++)
+                            factParametrFuncEntities.add(FactParametrFuncEntity.builder()
+                                    .firstParametr(firstParamValues.get(i))
+                                    .secondParametr(secondParamValues.get(i))
+                                    .dependencyTable(dependency.get())
+                                    .strain(strain)
+                                    .build());
+                    }
+            }
+            return factParametrFuncEntities;
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Метод получения значений из параметра функции
+     *
+     * @param parameter параметр функции
+     * @return список значений
+     */
+    private List<String> getFunctionValuesFromParameter(JsonNode parameter) {
+        List<String> values = new ArrayList<>();
+        JsonNode valueNode = parameter.get("values");
+        for (JsonNode value : valueNode)
+            values.add(value.asText());
+        return values;
     }
 
     /**
@@ -127,15 +199,14 @@ public class JsonToObjectConverter {
         try {
             ObjectNode jsonNodes = mapper.readValue(json, ObjectNode.class);
             Optional<RodStrainEntity> rodStrain = rodStrainRepository.findById(jsonNodes.path("rodId").longValue());
-            if(rodStrain.isPresent()) {
+            if (rodStrain.isPresent()) {
                 return VidStrainEntity.builder()
                         .id(jsonNodes.path("vidId").longValue())
                         .name(jsonNodes.path("name").textValue())
                         .rodStrain(rodStrain.get())
                         .build();
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -154,11 +225,45 @@ public class JsonToObjectConverter {
                     .id(jsonNodes.path("id").longValue())
                     .name(jsonNodes.path("name").textValue())
                     .description(jsonNodes.path("description").textValue())
-                    .propertyType(jsonNodes.path("isFunc").booleanValue())
                     .build();
             property.setSubProperties(jsonToSubProperties(jsonNodes.path("subProps").toString(), property));
+            if (jsonNodes.has("functions")) {
+                List<DependencyTableEntity> dependencies = new ArrayList<>();
+                List<FunctionPair> functions = jsonToFunction(json, property);
+                for (FunctionPair function : functions) {
+                    Optional<DependencyTableEntity> dependency = dependencyTableRepository
+                            .findByFirstSubProperty_Id(function.fst().get(0).getId());
+                    if (dependency.isPresent()) {
+                        DependencyTableEntity currentFunc = dependency.get();
+                        SubPropertyEntity firstParam = currentFunc.getFirstSubProperty();
+                        firstParam.setName(function.fst().get(0).getName());
+                        firstParam.setUnit(function.fst().get(0).getUnit());
+                        SubPropertyEntity secondParam = currentFunc.getSecondSubProperty();
+                        secondParam.setName(function.fst().get(1).getName());
+                        secondParam.setUnit(function.fst().get(1).getUnit());
+                        property.getSubProperties().addAll(List.of(firstParam, secondParam));
+                        currentFunc.setFunctionName(function.snd());
+                        dependencies.add(currentFunc);
+                    } else {
+                        property.getSubProperties().addAll(function.fst());
+                        dependencies.add(DependencyTableEntity.builder()
+                                .property(property)
+                                .firstSubProperty(function.fst().get(0))
+                                .secondSubProperty(function.fst().get(1))
+                                .functionName(function.snd())
+                                .factParametrsFunc(new ArrayList<>())
+                                .build());
+                    }
+                }
+                property.setDependencies(dependencies);
+                property.setPropertyType(true);
+            } else {
+                property.setDependencies(new ArrayList<>());
+                property.setPropertyType(false);
+            }
+            property.setCypher(property.hashCode());
             List<FactParametrEntity> factParametrEntityList = new ArrayList<>();
-            for(SubPropertyEntity subPropertyEntity : property.getSubProperties())
+            for (SubPropertyEntity subPropertyEntity : property.getSubProperties())
                 factParametrEntityList.addAll(subPropertyEntity.getFactParametrs());
             property.setFactParametrs(factParametrEntityList);
             return property;
@@ -167,7 +272,7 @@ public class JsonToObjectConverter {
         }
         return null;
     }
-  
+
     /**
      * Метод конвертации JSON строки в список {@link SubPropertyEntity}
      *
@@ -180,16 +285,7 @@ public class JsonToObjectConverter {
             List<SubPropertyEntity> subPropertyEntities = new ArrayList<>();
             JsonNode subPropertiesJson = mapper.readTree(json);
             for (JsonNode subProperty : subPropertiesJson) {
-                Long id = subProperty.path("id").longValue();
-                SubPropertyEntity subPropertyEntity = SubPropertyEntity.builder()
-                        .id(id)
-                        .name(subProperty.path("name").textValue())
-                        .property(property)
-                        .factParametrs(factParametrRepository.findFactParametrEntitiesBySubPropertyId(id))
-                        .build();
-                DataTypeEntity dataType = dataTypeRepository.findById(subProperty.path("datatype").longValue())
-                        .orElse(dataTypeRepository.getById(1L));
-                subPropertyEntity.setDataType(dataType);
+                SubPropertyEntity subPropertyEntity = jsonNodeToSubProperty(subProperty, property);
                 subPropertyEntities.add(subPropertyEntity);
             }
             return subPropertyEntities;
@@ -197,6 +293,60 @@ public class JsonToObjectConverter {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * Метод конвертации JSON строки в список подсвойств функции
+     *
+     * @param json     JSON строка
+     * @param property свойство, которому соответствуют подсвойства
+     * @return список функциональных подсвойств
+     */
+    public List<FunctionPair> jsonToFunction(String json, PropertyEntity property) {
+        try {
+            JsonNode propertyNode = mapper.readTree(json);
+            if (propertyNode.path("functions") == null)
+                return null;
+            List<FunctionPair> functions = new ArrayList<>();
+            JsonNode functionsNode = propertyNode.path("functions");
+            for (JsonNode functionNode : functionsNode) {
+                FunctionPair function = new FunctionPair(new ArrayList<>(),
+                        functionNode.path("name").textValue());
+                function.fst().add(jsonNodeToSubProperty(functionNode.path("firstParam"), property));
+                function.fst().add(jsonNodeToSubProperty(functionNode.path("secondParam"), property));
+                functions.add(function);
+            }
+            return functions;
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Метод конвертации JSON в подсвойство
+     *
+     * @param subProperty JSON подсвойства
+     * @param property    свойство
+     * @return объект подсвойства
+     */
+    private SubPropertyEntity jsonNodeToSubProperty(JsonNode subProperty, PropertyEntity property) {
+        long id = subProperty.path("id").longValue();
+        SubPropertyEntity subPropertyEntity = SubPropertyEntity.builder()
+                .name(subProperty.path("name").textValue())
+                .property(property)
+                .unit(subProperty.path("unit").textValue())
+                .factParametrs(new ArrayList<>())
+                .build();
+        if (id != 0) {
+            subPropertyEntity.setId(id);
+            subPropertyEntity.setFactParametrs(factParametrRepository.findFactParametrEntitiesBySubProperty_Id(id));
+        }
+        subPropertyEntity.setCypher(subPropertyEntity.hashCode());
+        DataTypeEntity dataType = dataTypeRepository.findById(subProperty.path("datatype").longValue())
+                .orElse(dataTypeRepository.getById(1L));
+        subPropertyEntity.setDataType(dataType);
+        return subPropertyEntity;
     }
 
 }
