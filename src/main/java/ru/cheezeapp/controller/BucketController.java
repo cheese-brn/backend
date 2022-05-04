@@ -2,9 +2,9 @@ package ru.cheezeapp.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 import ru.cheezeapp.service.property.PropertyCrudService;
 import ru.cheezeapp.service.rod.RodCrudService;
 import ru.cheezeapp.service.strain.StrainCrudService;
@@ -14,7 +14,7 @@ import ru.cheezeapp.utils.jsonConverter.ResponseToJsonConverter;
 /**
  * Контроллер запросов над операцией с корзиной
  */
-@Controller
+@RestController
 @Slf4j
 public class BucketController {
 

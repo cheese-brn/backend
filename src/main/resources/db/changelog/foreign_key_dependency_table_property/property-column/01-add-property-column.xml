@@ -8,7 +8,7 @@
     <changeSet id="26" author="pavel">
         <addColumn tableName="dependency_table">
             <column name="property_id" type="bigint">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
         </addColumn>
         <rollback>
