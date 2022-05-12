@@ -8,6 +8,8 @@ import java.util.List;
 
 /**
  * Сущность штамма
+ *
+ * @author Nikolay Golovnev
  */
 @Getter
 @Setter
@@ -17,9 +19,7 @@ import java.util.List;
 @Builder
 @Table(name = "strain")
 public class StrainEntity {
-    /**
-     * ID штамма
-     */
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -28,31 +28,31 @@ public class StrainEntity {
     /**
      * Другие сведения
      */
-    @Column(name = "annotation")
+    @Column(name = "annotation", columnDefinition = "TEXT")
     String annotation;
 
     /**
      * Наименование
      */
-    @Column(name = "exemplar")
+    @Column(name = "exemplar", columnDefinition = "TEXT")
     String exemplar;
 
     /**
      * Модификация
      */
-    @Column(name = "modification")
+    @Column(name = "modification", columnDefinition = "TEXT")
     String modification;
 
     /**
      * Способ получения
      */
-    @Column(name = "obtaining_method")
+    @Column(name = "obtaining_method", columnDefinition = "TEXT")
     String obtainingMethod;
 
     /**
      * Происхождение
      */
-    @Column(name = "origin")
+    @Column(name = "origin", columnDefinition = "TEXT")
     String origin;
 
     /**

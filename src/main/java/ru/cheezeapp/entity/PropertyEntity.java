@@ -7,6 +7,8 @@ import java.util.List;
 
 /**
  * Сущность свойства
+ *
+ * @author Nikolay Golovnev
  */
 @Getter
 @Setter
@@ -17,9 +19,7 @@ import java.util.List;
 @EqualsAndHashCode
 @Table(name = "property")
 public class PropertyEntity {
-    /**
-     * ID свойства
-     */
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -34,13 +34,13 @@ public class PropertyEntity {
     /**
      * Описание
      */
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "TEXT")
     String description;
 
     /**
      * Имя
      */
-    @Column(name = "name")
+    @Column(name = "name", columnDefinition = "TEXT")
     String name;
 
     /**

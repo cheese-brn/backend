@@ -14,6 +14,8 @@ import java.util.Optional;
 
 /**
  * Сервис для методов с операциями поиска, связанных с подсвойствами
+ *
+ * @author Nikolay Golovnev
  */
 @Service
 public class SubpropertySearchService {

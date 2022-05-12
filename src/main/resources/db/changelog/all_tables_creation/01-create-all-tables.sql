@@ -32,7 +32,7 @@ GO
 create table fact_param
 (
     id             bigserial UNIQUE NOT NULL,
-    value          varchar(255),
+    value          text,
     strain_id      bigint,
     property_id    bigint,
     subproperty_id bigint,
@@ -71,8 +71,8 @@ create table property
 (
     id            bigserial UNIQUE NOT NULL,
     cypher        bigint,
-    description   varchar(255),
-    name          varchar(255),
+    description   text,
+    name          text,
     property_type boolean,
     constraint property_pkey
         primary key (id)
@@ -89,7 +89,7 @@ create table rod_strain
 (
     id     bigserial UNIQUE NOT NULL,
     cypher bigint,
-    name   varchar(255),
+    name   text,
     constraint rod_strain_pkey
         primary key (id)
 );
@@ -104,11 +104,11 @@ GO
 create table strain
 (
     id               bigserial UNIQUE NOT NULL,
-    annotation       varchar(255),
-    exemplar         varchar(255),
-    modification     varchar(255),
-    obtaining_method varchar(255),
-    origin           varchar(255),
+    annotation       text,
+    exemplar         text,
+    modification     text,
+    obtaining_method text,
+    origin           text,
     vid_id           bigint,
     constraint strain_pkey
         primary key (id)
@@ -124,7 +124,7 @@ GO
 create table subproperty
 (
     id          bigserial UNIQUE NOT NULL,
-    name        varchar(255),
+    name        text,
     property_id bigint,
     datatype_id bigint,
     constraint subproperty_pkey
@@ -142,7 +142,7 @@ create table vid_strain
 (
     id     bigserial UNIQUE NOT NULL,
     cypher bigint,
-    name   varchar(255),
+    name   text,
     rod_id bigint,
     constraint vid_strain_pkey
         primary key (id)

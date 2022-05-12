@@ -8,6 +8,8 @@ import java.util.List;
 
 /**
  * Сущность вида
+ *
+ * @author Nikolay Golovnev
  */
 @Getter
 @Setter
@@ -34,7 +36,7 @@ public class VidStrainEntity {
     /**
      * Наименование
      */
-    @Column(name = "name")
+    @Column(name = "name", columnDefinition = "TEXT")
     String name;
 
     /**

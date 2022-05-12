@@ -7,6 +7,8 @@ import java.util.List;
 
 /**
  * Репозиторий для доступа к таблице "Фактические параметры"
+ *
+ * @author Pavel Chupikov
  */
 public interface FactParametrRepository extends JpaRepository<FactParametrEntity, Long> {
 

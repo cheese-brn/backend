@@ -8,60 +8,60 @@
         <dbms type="postgresql"/>
     </preConditions>
 
-    <changeSet id="0" author="pavel">
+    <changeSet id="0" author="Pavel Chupikov">
         <tagDatabase tag="db_init"/>
     </changeSet>
 
     <include file="all_tables_creation/db.changelog-tables_creation.xml" relativeToChangelogFile="true"/>
 
-    <changeSet id="10" author="pavel">
+    <changeSet id="10" author="Pavel Chupikov">
         <tagDatabase tag="all_tables_creation"/>
     </changeSet>
 
     <include file="foreign_keys_creation/db.changelog-fk_creation.xml" relativeToChangelogFile="true"/>
 
-    <changeSet id="17" author="pavel">
+    <changeSet id="17" author="Pavel Chupikov">
         <tagDatabase tag="fk_keys_creation"/>
     </changeSet>
 
     <include file="columns_for_delete_creation/db.changelog-columns_for_delete.xml" relativeToChangelogFile="true"/>
 
-    <changeSet id="19" author="pavel">
+    <changeSet id="19" author="Pavel Chupikov">
         <tagDatabase tag="columns_for_delete_creation"/>
     </changeSet>
 
     <include file="lost_column_for_strain/db.changelog-add-lost-column-for-strain-table.xml"
              relativeToChangelogFile="true"/>
 
-    <changeSet id="21" author="pavel">
+    <changeSet id="21" author="Pavel Chupikov">
         <tagDatabase tag="lost_column_for_stain_creation"/>
     </changeSet>
 
     <include file="unit_column_for_subproperty/db.changelog-add-unit-column-for-subproperty-table.xml"
              relativeToChangelogFile="true"/>
 
-    <changeSet id="23" author="pavel">
+    <changeSet id="23" author="Pavel Chupikov">
         <tagDatabase tag="unit_column_for_subproperty_creation"/>
     </changeSet>
 
     <include file="cypher_column_for_subproperty/db.changelog-add-cypher-column-for-subproperty-table.xml"
              relativeToChangelogFile="true"/>
 
-    <changeSet id="25" author="pavel">
+    <changeSet id="25" author="Pavel Chupikov">
         <tagDatabase tag="cypher_column_for_subproperty_creation"/>
     </changeSet>
 
     <include file="foreign_key_dependency_table_property/db.changelog-add-fk-for-dependency-table-for-property.xml"
              relativeToChangelogFile="true"/>
 
-    <changeSet id="28" author="pavel">
+    <changeSet id="28" author="Pavel Chupikov">
         <tagDatabase tag="foreign_key_dependency_table_property_creation"/>
     </changeSet>
 
     <include file="function_name_column_for_dependency_table/db.changelog-add-lost-column-for-strain-table.xml"
              relativeToChangelogFile="true"/>
 
-    <changeSet id="30" author="pavel">
+    <changeSet id="30" author="Pavel Chupikov">
         <tagDatabase tag="function_name_column_for_dependency_table"/>
     </changeSet>
 

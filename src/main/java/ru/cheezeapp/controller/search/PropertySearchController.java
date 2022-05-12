@@ -13,6 +13,8 @@ import java.util.stream.Collectors;
 
 /**
  * Контроллер для обработки запросов, связанных с поиском свойств.
+ *
+ * @author Pavel Chupikov
  */
 @RestController
 @Slf4j
@@ -22,7 +24,7 @@ public class PropertySearchController {
     private PropertySearchService propertySearchService;
 
     /**
-     * Метод поиска списка всех неудаленных свойств и передачи его в виде JSON
+     * Обробатчик запроса на поиск всех неудаленных свойств и передачи его в виде JSON
      *
      * @return JSON списка свойств
      */
@@ -34,7 +36,7 @@ public class PropertySearchController {
     }
 
     /**
-     * Метод поиска списка всех удаленных свойств и передачи его в виде JSON
+     * Обробатчик запроса на поиск всех удаленных свойств и передачи его в виде JSON
      *
      * @return JSON списка свойств
      */
@@ -46,7 +48,7 @@ public class PropertySearchController {
     }
 
     /**
-     * Метод поиска свойства по id и передачи его в виде JSON
+     * Обробатчик запроса на поиск свойства по id и передачи его в виде JSON
      *
      * @param id id свойства
      * @return JSON свойства

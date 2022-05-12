@@ -13,6 +13,8 @@ import java.util.List;
 
 /**
  * Контроллер для обработки запросов, связанных с поиском видов.
+ *
+ * @author Pavel Chupikov
  */
 @RestController
 @Slf4j
@@ -25,6 +27,7 @@ public class VidSearchController {
      * API-метод, который предоставляет список всех неудаленных видов в формате JSON
      *
      * @return JSON списка видов
+     * @author Nikolay Golovnev
      */
     @GetMapping("/vids")
     public String getListOfVids() {
@@ -37,6 +40,7 @@ public class VidSearchController {
      * API-метод, который предоставляет список всех удаленных видов в формате JSON
      *
      * @return JSON списка видов
+     * @author Nikolay Golovnev
      */
     @GetMapping("/deleted_vids")
     public String getListOfDeletedVids() {
@@ -46,12 +50,11 @@ public class VidSearchController {
     }
 
     /**
-     * Метод поиска вида по id и передачи его в виде JSON
+     * Обробатчик запроса на поиск вида по id и передачи его в виде JSON
      *
      * @param id id вида
      * @return JSON вида
      */
-    //TODO реализовать метод JSON (стоит заглушка)
     @GetMapping("/vids/{id}")
     public String getVidById(@PathVariable Long id) {
         VidStrainEntity vid = vidSearchService.findById(id);
@@ -60,7 +63,7 @@ public class VidSearchController {
     }
 
     /**
-     * Метод поиска видов по заданному ID рода и формирования JSON
+     * Обробатчик запроса на поиск видов по заданному ID рода и формирования JSON
      *
      * @param id ID рода
      * @return JSON списка видов
@@ -72,6 +75,13 @@ public class VidSearchController {
         return CatalogsToJson.vidCatalogToJson(vidListByRodId);
     }
 
+    /**
+     * Обробатчик запроса на поиск родов по содержанию строки в их имени
+     *
+     * @param name строка для поиска
+     * @return список родов
+     * @author Nikolay Golovnev
+     */
     @PostMapping("/vids/searchByName")
     public String getListOfVidsByNameContaining(@RequestBody(required = false) String name) {
         if (name == null)

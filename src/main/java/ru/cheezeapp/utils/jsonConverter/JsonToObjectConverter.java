@@ -14,6 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Класс, содержащий методы конвертирования Json в объекты
+ *
+ * @author Pavel Chupikov
+ */
 @Service
 public class JsonToObjectConverter {
 
@@ -232,25 +237,25 @@ public class JsonToObjectConverter {
                 List<FunctionPair> functions = jsonToFunction(json, property);
                 for (FunctionPair function : functions) {
                     Optional<DependencyTableEntity> dependency = dependencyTableRepository
-                            .findByFirstSubProperty_Id(function.fst().get(0).getId());
+                            .findByFirstSubProperty_Id(function.getFst().get(0).getId());
                     if (dependency.isPresent()) {
                         DependencyTableEntity currentFunc = dependency.get();
                         SubPropertyEntity firstParam = currentFunc.getFirstSubProperty();
-                        firstParam.setName(function.fst().get(0).getName());
-                        firstParam.setUnit(function.fst().get(0).getUnit());
+                        firstParam.setName(function.getFst().get(0).getName());
+                        firstParam.setUnit(function.getFst().get(0).getUnit());
                         SubPropertyEntity secondParam = currentFunc.getSecondSubProperty();
-                        secondParam.setName(function.fst().get(1).getName());
-                        secondParam.setUnit(function.fst().get(1).getUnit());
+                        secondParam.setName(function.getFst().get(1).getName());
+                        secondParam.setUnit(function.getFst().get(1).getUnit());
                         property.getSubProperties().addAll(List.of(firstParam, secondParam));
-                        currentFunc.setFunctionName(function.snd());
+                        currentFunc.setFunctionName(function.getSnd());
                         dependencies.add(currentFunc);
                     } else {
-                        property.getSubProperties().addAll(function.fst());
+                        property.getSubProperties().addAll(function.getFst());
                         dependencies.add(DependencyTableEntity.builder()
                                 .property(property)
-                                .firstSubProperty(function.fst().get(0))
-                                .secondSubProperty(function.fst().get(1))
-                                .functionName(function.snd())
+                                .firstSubProperty(function.getFst().get(0))
+                                .secondSubProperty(function.getFst().get(1))
+                                .functionName(function.getSnd())
                                 .factParametrsFunc(new ArrayList<>())
                                 .build());
                     }
@@ -312,8 +317,8 @@ public class JsonToObjectConverter {
             for (JsonNode functionNode : functionsNode) {
                 FunctionPair function = new FunctionPair(new ArrayList<>(),
                         functionNode.path("name").textValue());
-                function.fst().add(jsonNodeToSubProperty(functionNode.path("firstParam"), property));
-                function.fst().add(jsonNodeToSubProperty(functionNode.path("secondParam"), property));
+                function.getFst().add(jsonNodeToSubProperty(functionNode.path("firstParam"), property));
+                function.getFst().add(jsonNodeToSubProperty(functionNode.path("secondParam"), property));
                 functions.add(function);
             }
             return functions;

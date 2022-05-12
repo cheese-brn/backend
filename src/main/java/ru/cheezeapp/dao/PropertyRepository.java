@@ -8,6 +8,8 @@ import java.util.List;
 
 /**
  * Репозиторий для доступа к таблице "Свойство"
+ *
+ * @author Pavel Chupikov
  */
 public interface PropertyRepository extends JpaRepository<PropertyEntity, Long> {
 

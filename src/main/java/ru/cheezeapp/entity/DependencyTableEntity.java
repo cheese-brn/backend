@@ -7,6 +7,8 @@ import java.util.List;
 
 /**
  * Сущность таблицы зависимостей
+ *
+ * @author Nikolay Golovnev
  */
 @Getter
 @Setter
@@ -16,15 +18,16 @@ import java.util.List;
 @Builder
 @Table(name = "dependency_table")
 public class DependencyTableEntity {
-    /**
-     * ID зависимости
-     */
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     Long id;
 
-    @Column(name = "function_name")
+    /**
+     * Наименование функции
+     */
+    @Column(name = "function_name", columnDefinition = "TEXT")
     String functionName;
 
     /**
@@ -41,6 +44,9 @@ public class DependencyTableEntity {
     @JoinColumn(name = "second_subproperty_id", nullable = false)
     SubPropertyEntity secondSubProperty;
 
+    /**
+     * Внешний ключ на фактические параметры функции
+     */
     @OneToMany(targetEntity = FactParametrFuncEntity.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "dependency_table_id", referencedColumnName = "id")
     List<FactParametrFuncEntity> factParametrsFunc;

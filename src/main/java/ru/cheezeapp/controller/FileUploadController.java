@@ -7,6 +7,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.cheezeapp.service.DocumentService;
 
+/**
+ * Контроллер для обработки запросов на скачивание документов
+ *
+ * @author Pavel Chupikov
+ */
 @RestController
 public class FileUploadController {
 

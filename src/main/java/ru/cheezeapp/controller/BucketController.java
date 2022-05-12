@@ -13,6 +13,8 @@ import ru.cheezeapp.utils.jsonConverter.ResponseToJsonConverter;
 
 /**
  * Контроллер запросов над операцией с корзиной
+ *
+ * @author Pavel Chupikov
  */
 @RestController
 @Slf4j
@@ -184,7 +186,7 @@ public class BucketController {
     }
 
     /**
-     * Метод удаления всех штаммов из корзины
+     * Метод обработки апроса на удаление всех штаммов из корзины
      *
      * @return сообщение об обработке
      */
@@ -202,7 +204,7 @@ public class BucketController {
     }
 
     /**
-     * Метод восстановления штамма из корзины
+     * Метод обработки запроса на восстановление штамма из корзины
      *
      * @param id ID восстанавливаемого штамма
      * @return сообщение об обработке

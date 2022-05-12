@@ -8,6 +8,8 @@ import java.util.List;
 
 /**
  * Сущность типа данных
+ *
+ * @author Nikolay Golovnev
  */
 @Getter
 @Setter
@@ -17,9 +19,7 @@ import java.util.List;
 @Builder
 @Table(name = "data_type")
 public class DataTypeEntity {
-    /**
-     * ID типа данных
-     */
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

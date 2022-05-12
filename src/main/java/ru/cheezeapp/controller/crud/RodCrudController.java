@@ -10,6 +10,8 @@ import ru.cheezeapp.utils.jsonConverter.ResponseToJsonConverter;
 
 /**
  * Контроллер для обработки CRUD запросов, связанных с родами.
+ *
+ * @author Pavel Chupikov
  */
 @RestController
 @Slf4j

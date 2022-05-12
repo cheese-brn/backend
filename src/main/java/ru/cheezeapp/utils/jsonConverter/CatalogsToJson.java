@@ -11,6 +11,8 @@ import java.util.List;
 
 /**
  * Класс, содержащий методы конвертирования каталогов в Json
+ *
+ * @author Nikolay Golovnev
  */
 public class CatalogsToJson {
 
@@ -68,6 +70,7 @@ public class CatalogsToJson {
      *
      * @param rodStrainEntityList список родов
      * @return JSON родов с видами
+     * @author Pavel Chupikov
      */
     public static String rodsWithVidsToJson(List<RodStrainEntity> rodStrainEntityList) {
         ArrayNode rodsNode = mapper.createArrayNode();
@@ -146,6 +149,7 @@ public class CatalogsToJson {
      *
      * @param subproperties список подсвойств
      * @return Json списка подсвойств
+     * @author Pavel Chupikov
      */
     public static String subpropertyCatalogToJson(List<SubPropertyEntity> subproperties) {
         try {
@@ -164,6 +168,7 @@ public class CatalogsToJson {
      *
      * @param property сповйство
      * @return Json списка подсвойств
+     * @author Pavel Chupikov
      */
     public static String subpropertyCatalogWithFunctionsToJson(PropertyEntity property) {
         try {
@@ -187,6 +192,7 @@ public class CatalogsToJson {
      *
      * @param subproperties список подсвойств
      * @return объект ArrayNode со списком подсвойств
+     * @author Pavel Chupikov
      */
     private static ArrayNode listSubpropertiesToJson(List<SubPropertyEntity> subproperties) {
         ArrayNode arrayNode = mapper.createArrayNode();
@@ -206,6 +212,7 @@ public class CatalogsToJson {
      *
      * @param property свойство
      * @return объект ArrayNode с функциями
+     * @author Pavel Chupikov
      */
     public static ArrayNode functionCatalogToJson(PropertyEntity property) {
         ArrayNode functionsNode = mapper.createArrayNode();
@@ -225,6 +232,7 @@ public class CatalogsToJson {
      *
      * @param subPropertyEntity подсвойство
      * @return объект ObjectNode с подсвойством
+     * @author Pavel Chupikov
      */
     private static ObjectNode subpropertyToJson(SubPropertyEntity subPropertyEntity) {
         ObjectNode subpropertyNode = mapper.createObjectNode();

@@ -15,6 +15,8 @@ import java.util.List;
 
 /**
  * Контроллер для обработки запросов, связанных с поиском подсвойств.
+ *
+ * @author Pavel Chupikov
  */
 @RestController
 @Slf4j
@@ -27,7 +29,7 @@ public class SubpropertySearchController {
     private SubpropertySearchService subpropertySearchService;
 
     /**
-     * Метод поиска списка всех подсвойств и передачи его в виде JSON
+     * Обробатчик запроса на поиск списка всех подсвойств и передачи его в виде JSON
      *
      * @return JSON списка подсвойств
      */
@@ -39,12 +41,11 @@ public class SubpropertySearchController {
     }
 
     /**
-     * Метод поиска подсвойства по id и передачи его в виде JSON
+     * Обробатчик запроса на поиск подсвойства по id и передачи его в виде JSON
      *
      * @param id id подсвойства
      * @return JSON подсвойства
      */
-    //TODO убрать заглушку JSON
     @GetMapping("/subproperties/{id}")
     public String getSubpropertyById(@PathVariable Long id) {
         SubPropertyEntity subproperty = subpropertySearchService.findById(id);
@@ -53,7 +54,7 @@ public class SubpropertySearchController {
     }
 
     /**
-     * Метод поиска подсвойств по заданному ID свойства и передачи его в виде JSON
+     * Обробатчик запроса на поиск подсвойств по заданному ID свойства и передачи его в виде JSON
      *
      * @param id ID свойства
      * @return JSON списка подсвойств

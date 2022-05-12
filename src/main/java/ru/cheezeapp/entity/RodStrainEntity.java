@@ -9,6 +9,8 @@ import java.util.Set;
 
 /**
  * Сущность рода
+ *
+ * @author Nikolay Golovnev
  */
 @Getter
 @Setter
@@ -18,9 +20,7 @@ import java.util.Set;
 @Builder
 @Table(name = "rod_strain")
 public class RodStrainEntity {
-    /**
-     * ID рода
-     */
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -35,7 +35,7 @@ public class RodStrainEntity {
     /**
      * Наименование
      */
-    @Column(name = "name")
+    @Column(name = "name", columnDefinition = "TEXT")
     String name;
 
     /**

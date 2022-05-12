@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * Класс преобразования ответов на запросы в Json
+ *
+ * @author Pavel Chupikov
  */
 public class ResponseToJsonConverter {
 

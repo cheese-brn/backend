@@ -11,6 +11,8 @@ import java.util.Optional;
 
 /**
  * Контроллер для обработки CRUD запросов, связанных с видами.
+ *
+ * @author Pavel Chupikov
  */
 @Service
 @Slf4j

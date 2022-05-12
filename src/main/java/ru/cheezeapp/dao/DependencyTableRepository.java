@@ -8,6 +8,8 @@ import java.util.Optional;
 
 /**
  * Репозиторий для доступа к таблице "Зависимости"
+ *
+ * @author Pavel Chupikov
  */
 public interface DependencyTableRepository extends JpaRepository<DependencyTableEntity, Long> {
 

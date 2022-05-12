@@ -10,12 +10,13 @@ import ru.cheezeapp.entity.*;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * Класс, содержащий методы формирования документа из объекта штамма
+ *
+ * @author Pavel Chupikov
  */
 public class StrainToDocumentConverter {
 

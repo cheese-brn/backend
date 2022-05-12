@@ -6,6 +6,8 @@ import javax.persistence.*;
 
 /**
  * Сущность фактического параметра функции
+ *
+ * @author Nikolay Golovnev
  */
 @Getter
 @Setter
@@ -15,9 +17,7 @@ import javax.persistence.*;
 @Builder
 @Table(name = "fact_param_func")
 public class FactParametrFuncEntity {
-    /**
-     * ID
-     */
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

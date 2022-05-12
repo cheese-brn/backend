@@ -9,6 +9,8 @@ import java.util.List;
 
 /**
  * Репозиторий для доступа к таблице "Подсвойство"
+ *
+ * @author Pavel Chupikov
  */
 public interface SubPropertyRepository extends JpaRepository<SubPropertyEntity, Long> {
 

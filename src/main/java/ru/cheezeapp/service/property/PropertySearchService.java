@@ -12,6 +12,8 @@ import java.util.Optional;
 
 /**
  * Сервис для методов с операциями поиска, связанных со свойствами
+ *
+ * @author Pavel Chupikov
  */
 @Service
 public class PropertySearchService {
@@ -23,6 +25,7 @@ public class PropertySearchService {
      * Поиск всех свойств в репозитории
      *
      * @return список свойств, отсортированных по наименованию
+     * @author Nikolay Golovnev
      */
     @Transactional(readOnly = true)
     public List<PropertyEntity> findAll() {
@@ -54,6 +57,7 @@ public class PropertySearchService {
      *
      * @param id ID свойства
      * @return сущность свойства
+     * @author Nikolay Golovnev
      */
     @Transactional(readOnly = true)
     public PropertyEntity findById(Long id) {

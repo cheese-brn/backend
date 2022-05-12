@@ -13,6 +13,8 @@ import java.util.Optional;
 
 /**
  * Сервис с Crud операциями для рода
+ *
+ * @author Pavel Chupikov
  */
 @Service
 @Slf4j

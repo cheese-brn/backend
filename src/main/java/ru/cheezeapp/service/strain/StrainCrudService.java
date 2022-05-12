@@ -11,6 +11,8 @@ import java.util.Optional;
 
 /**
  * Сервис с Crud операциями для штамма
+ *
+ * @author Pavel Chupikov
  */
 @Service
 @Slf4j

@@ -11,6 +11,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+/**
+ * Класс со служебными методами для создания документов
+ *
+ * @author Pavel Chupikov
+ */
 public class DocumentUtils {
 
     /**

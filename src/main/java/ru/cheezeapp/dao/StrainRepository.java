@@ -10,6 +10,8 @@ import java.util.Optional;
 
 /**
  * Репозиторий для доступа к таблице "Штамм"
+ *
+ * @author Pavel Chupikov
  */
 public interface StrainRepository extends JpaRepository<StrainEntity, Long> {
 

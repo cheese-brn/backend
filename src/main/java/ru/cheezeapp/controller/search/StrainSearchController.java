@@ -12,6 +12,8 @@ import java.util.List;
 
 /**
  * Контроллер для обработки запросов, связанных с поиском штаммов.
+ *
+ * @author Pavel Chupikov
  */
 @RestController
 @Slf4j
@@ -21,7 +23,7 @@ public class StrainSearchController {
     private StrainSearchService strainSearchService;
 
     /**
-     * Метод поиска всех неудаленных штаммов. Формируем JSON и отправляем его
+     * Обробатчик запроса на поиск всех неудаленных штаммов. Формируем JSON и отправляем его
      *
      * @return список штаммов
      */
@@ -33,7 +35,7 @@ public class StrainSearchController {
     }
 
     /**
-     * Метод поиска всех удаленных штаммов. Формируем JSON и отправляем его
+     * Обробатчик запроса на поиск всех удаленных штаммов. Формируем JSON и отправляем его
      *
      * @return список штаммов
      */
@@ -45,7 +47,7 @@ public class StrainSearchController {
     }
 
     /**
-     * Метод поиска штамма по ID. Формируем JSON и отправляем клиенту
+     * Обробатчик запроса на поиск штамма по ID. Формируем JSON и отправляем клиенту
      *
      * @param id ID штамма
      * @return JSON штамма
@@ -58,7 +60,7 @@ public class StrainSearchController {
     }
 
     /**
-     * Метод поиска штаммов по заданному ID вида и формирования JSON
+     * Обробатчик запроса на поиск штаммов по заданному ID вида и формирования JSON
      *
      * @param id ID вида
      * @return JSON списка штаммов
@@ -71,7 +73,7 @@ public class StrainSearchController {
     }
 
     /**
-     * Метод поиска штаммов по заданному ID рода и формирования JSON
+     * Обробатчик запроса на поиск штаммов по заданному ID рода и формирования JSON
      *
      * @param id ID рода
      * @return JSON списка штаммов
@@ -83,6 +85,13 @@ public class StrainSearchController {
         return CatalogsToJson.strainCatalogToJson(strainsListByRodId);
     }
 
+    /**
+     * Обробатчик запроса на поиск штаммов по содержанию строки в их имени
+     *
+     * @param name строка для поиска
+     * @return список штаммов
+     * @author Nikolay Golovnev
+     */
     @PostMapping("/strains/searchByName")
     public String getListOfStrainsByExamplarContaining(@RequestBody(required = false) String name) {
         if (name == null)

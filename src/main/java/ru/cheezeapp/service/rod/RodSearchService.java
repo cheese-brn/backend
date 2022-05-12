@@ -12,6 +12,8 @@ import java.util.Optional;
 
 /**
  * Сервис для методов с операциями поиска, связанных с родами
+ *
+ * @author Pavel Chupikov
  */
 @Service
 public class RodSearchService {
@@ -44,6 +46,7 @@ public class RodSearchService {
      *
      * @param id ID рода
      * @return сущность найденного рода
+     * @author Nikolay Golovnev
      */
     @Transactional(readOnly = true)
     public RodStrainEntity findById(Long id) {
@@ -59,6 +62,7 @@ public class RodSearchService {
      *
      * @param name частичное имя
      * @return список сущностей родов
+     * @author Nikolay Golovnev
      */
     @Transactional(readOnly = true)
     public List<RodStrainEntity> findByNameContaining(String name) {

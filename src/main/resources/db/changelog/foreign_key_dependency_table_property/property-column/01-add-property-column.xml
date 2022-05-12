@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="26" author="pavel">
+    <changeSet id="26" author="Pavel Chupikov">
         <addColumn tableName="dependency_table">
             <column name="property_id" type="bigint">
                 <constraints nullable="true"/>

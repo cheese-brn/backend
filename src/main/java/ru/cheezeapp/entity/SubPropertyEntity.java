@@ -8,6 +8,8 @@ import java.util.List;
 
 /**
  * Сущность подсвойства
+ *
+ * @author Nikolay Golovnev
  */
 @Getter
 @Setter
@@ -18,9 +20,7 @@ import java.util.List;
 @Builder
 @Table(name = "subproperty")
 public class SubPropertyEntity {
-    /**
-     * ID подсвойства
-     */
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -29,7 +29,7 @@ public class SubPropertyEntity {
     /**
      * Наименование
      */
-    @Column(name = "name")
+    @Column(name = "name", columnDefinition = "TEXT")
     String name;
 
     /**

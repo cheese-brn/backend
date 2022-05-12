@@ -13,6 +13,8 @@ import java.util.stream.Collectors;
 
 /**
  * Класс, содержащий методы конвертирования объектов в Json
+ *
+ * @author Pavel Chupikov
  */
 public class ObjectToJsonConverter {
 
@@ -23,6 +25,7 @@ public class ObjectToJsonConverter {
      *
      * @param strain Модель штамма
      * @return Json штамма
+     * @author Nikolay Golovnev
      */
     public static String strainToJson(StrainEntity strain) {
         ObjectNode strainNode = mapper.createObjectNode();
@@ -174,6 +177,7 @@ public class ObjectToJsonConverter {
      *
      * @param rod Модель рода
      * @return Json рода
+     * @author Nikolay Golovnev
      */
     public static String rodToJson(RodStrainEntity rod) {
         ObjectNode rodNode = mapper.createObjectNode();
@@ -193,6 +197,7 @@ public class ObjectToJsonConverter {
      *
      * @param vid Модель вида
      * @return Json вида
+     * @author Nikolay Golovnev
      */
     public static String vidToJson(VidStrainEntity vid) {
         ObjectNode vidNode = mapper.createObjectNode();
@@ -213,6 +218,7 @@ public class ObjectToJsonConverter {
      *
      * @param property Модель свойства
      * @return Json свойства
+     * @author Nikolay Golovnev
      */
     public static String propertyToJson(PropertyEntity property) {
         ObjectNode propertyNode = mapper.createObjectNode();
@@ -234,6 +240,7 @@ public class ObjectToJsonConverter {
      *
      * @param subproperty Модель подсвойства
      * @return Json подсвойства
+     * @author Nikolay Golovnev
      */
     public static String subpropertyToJson(SubPropertyEntity subproperty) {
         ObjectNode subpropertyNode = mapper.createObjectNode();

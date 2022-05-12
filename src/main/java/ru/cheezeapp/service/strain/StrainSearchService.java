@@ -18,6 +18,8 @@ import java.util.Optional;
 
 /**
  * Сервис для методов с операциями поиска, связанных со штаммами
+ *
+ * @author Pavel Chupikov
  */
 @Service
 public class StrainSearchService {
@@ -77,6 +79,7 @@ public class StrainSearchService {
      *
      * @param id ID вида
      * @return список найденных неудаленных штаммов, отсортированных по экземпляру
+     * @author Nikolay Golovnev
      */
     @Transactional(readOnly = true)
     public List<StrainEntity> findStrainsByVidId(Long id) {
@@ -92,6 +95,7 @@ public class StrainSearchService {
      *
      * @param name имя штамма
      * @return Сущность штамма
+     * @author Nikolay Golovnev
      */
     @Transactional(readOnly = true)
     public StrainEntity findByName(String name) {
@@ -123,6 +127,7 @@ public class StrainSearchService {
      *
      * @param name частичное наименование экземпляра
      * @return список сущностей штамма
+     * @author Nikolay Golovnev
      */
     @Transactional(readOnly = true)
     public List<StrainEntity> findByExemplarContaining(String name) {

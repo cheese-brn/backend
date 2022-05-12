@@ -14,6 +14,8 @@ import java.util.Optional;
 
 /**
  * Сервис для методов с операциями поиска, связанных с видами
+ *
+ * @author Nikolay Golovnev
  */
 @Service
 public class VidSearchService {
@@ -43,6 +45,7 @@ public class VidSearchService {
      * Поиск всех неудаленных видов из репозитория
      *
      * @return список всех видов, отсортированных по наименованию
+     * @author Pavel Chupikov
      */
     @Transactional(readOnly = true)
     public List<VidStrainEntity> findAllNonDeletedVids() {
@@ -53,6 +56,7 @@ public class VidSearchService {
      * Поиск всех удаленных видов из репозитория
      *
      * @return список всех видов, отсортированных по наименованию
+     * @author Pavel Chupikov
      */
     @Transactional(readOnly = true)
     public List<VidStrainEntity> findAllDeletedVids() {

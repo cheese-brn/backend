@@ -12,6 +12,11 @@ import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.util.Optional;
 
+/**
+ * Сервисы для работы с документами
+ *
+ * @author Pavel Chupikov
+ */
 @Service
 public class DocumentService {
 
@@ -29,21 +34,21 @@ public class DocumentService {
      */
     public Resource formStrainDocumentByIdAsResource(Long id) {
         Optional<StrainEntity> strain = strainRepository.findById(id);
-        if (strain.isPresent()) {
-            try {
-                Resource resource = StrainToDocumentConverter.strainToDocumentAsResource(strain.get());
-                if (resource.exists() || resource.isReadable()) {
-                    return resource;
-                } else {
-                    throw new FileNotFoundException(
-                            "Could not read file: " + resource.getFilename());
-
-                }
-            } catch (MalformedURLException | FileNotFoundException e) {
-                e.printStackTrace();
-            }
+        if (!strain.isPresent()) {
+            return null;
         }
-        return null;
+        try {
+            Resource resource = StrainToDocumentConverter.strainToDocumentAsResource(strain.get());
+            if (resource.exists() || resource.isReadable()) {
+                return resource;
+            } else {
+                throw new FileNotFoundException(
+                        "Could not read file: " + resource.getFilename());
+            }
+        } catch (MalformedURLException | FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 }

@@ -9,6 +9,8 @@ import java.util.List;
 
 /**
  * Репозиторий для доступа к таблице "Вид штамма"
+ *
+ * @author Pavel Chupikov
  */
 public interface VidStrainRepository extends JpaRepository<VidStrainEntity, Long> {
 

@@ -8,6 +8,8 @@ import java.util.List;
 
 /**
  * Репозиторий для доступа к таблице "Род штамма"
+ *
+ * @author Pavel Chupikov
  */
 public interface RodStrainRepository extends JpaRepository<RodStrainEntity, Long> {
 

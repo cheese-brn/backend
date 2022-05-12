@@ -11,6 +11,11 @@ import ru.cheezeapp.utils.jsonConverter.ObjectToJsonConverter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Контроллер для обработки запросов, связанных с поиском родов.
+ *
+ * @author Pavel Chupikov
+ */
 @RestController
 @Slf4j
 public class RodSearchController {
@@ -19,9 +24,10 @@ public class RodSearchController {
     private RodSearchService rodSearchService;
 
     /**
-     * Метод поиска всех родов и формирования их в список, вывод в виде JSON
+     * Обробатчик запроса на поиск всех родов и формирования их в список, вывод в виде JSON
      *
      * @return JSON списка родов
+     * @author Nikolay Golovnev
      */
     @GetMapping("/rods")
     public String getListOfRods() {
@@ -31,9 +37,10 @@ public class RodSearchController {
     }
 
     /**
-     * Метод поиска всех родов и формирования их в список, вывод в виде JSON
+     * Обробатчик запроса на поиск родов и формирования их в список, вывод в виде JSON
      *
      * @return JSON списка родов
+     * @author Nikolay Golovnev
      */
     @GetMapping("/deleted_rods")
     public String getListOfDeletedRods() {
@@ -42,12 +49,26 @@ public class RodSearchController {
         return CatalogsToJson.rodCatalogToJson(rodsStrainEntity);
     }
 
+    /**
+     * Обробатчик запроса на поиск рода по Id
+     *
+     * @param id id рода
+     * @return найденный род
+     */
     @GetMapping("/rods/{id}")
     public String getRodById(@PathVariable Long id) {
         RodStrainEntity rod = rodSearchService.findById(id);
+        log.info("[GET /rods/" + id + "]\tReturn rod with id = " + id);
         return ObjectToJsonConverter.rodToJson(rod);
     }
 
+    /**
+     * Обробатчик запроса на поиск родов по содержанию строки в их имени
+     *
+     * @param name строка для поиска
+     * @return список родов
+     * @author Nikolay Golovnev
+     */
     @PostMapping("/rods/searchByName")
     public String getListOfRodsByNameContaining(@RequestBody(required = false) String name) {
         if (name == null)
@@ -69,6 +90,7 @@ public class RodSearchController {
     @GetMapping("/rods/rodsWithVids")
     public String getListOfRodsWithVids() {
         List<RodStrainEntity> rodStrainEntityList = rodSearchService.findAllNonDeletedRods();
+        log.info("[GET /rods/rodsWithVids]\tReturn list of rods with vids");
         return CatalogsToJson.rodsWithVidsToJson(rodStrainEntityList);
     }
 
