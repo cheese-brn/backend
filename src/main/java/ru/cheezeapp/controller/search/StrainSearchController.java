@@ -17,6 +17,7 @@ import java.util.List;
  */
 @RestController
 @Slf4j
+@CrossOrigin
 public class StrainSearchController {
 
     @Autowired

@@ -17,6 +17,7 @@ import ru.cheezeapp.utils.jsonConverter.ResponseToJsonConverter;
  */
 @RestController
 @Slf4j
+@CrossOrigin
 public class StrainCrudController {
 
     @Autowired
