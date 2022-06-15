@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @Slf4j
+@CrossOrigin
 public class PropertySearchController {
 
     @Autowired

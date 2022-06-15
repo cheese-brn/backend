@@ -30,8 +30,8 @@ public class DocumentUtils {
         File folder = new File(DOCUMENTS_DIRECTORY);
         if (!folder.exists())
             try {
-                Files.createDirectory(Paths.get(DOCUMENTS_DIRECTORY));
-            } catch (IOException e) {
+                folder.mkdirs();
+            } catch (SecurityException e) {
                 e.printStackTrace();
             }
     }

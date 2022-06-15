@@ -13,6 +13,7 @@ import ru.cheezeapp.service.DocumentService;
  * @author Pavel Chupikov
  */
 @RestController
+@CrossOrigin
 public class FileUploadController {
 
     @Autowired
