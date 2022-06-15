@@ -24,7 +24,7 @@ public class PropertySearchController {
     private PropertySearchService propertySearchService;
 
     /**
-     * Обробатчик запроса на поиск всех неудаленных свойств и передачи его в виде JSON
+     * Обработчик запроса на поиск всех неудаленных свойств и передачи его в виде JSON
      *
      * @return JSON списка свойств
      */
@@ -36,7 +36,7 @@ public class PropertySearchController {
     }
 
     /**
-     * Обробатчик запроса на поиск всех удаленных свойств и передачи его в виде JSON
+     * Обработчик запроса на поиск всех удаленных свойств и передачи его в виде JSON
      *
      * @return JSON списка свойств
      */
@@ -48,7 +48,7 @@ public class PropertySearchController {
     }
 
     /**
-     * Обробатчик запроса на поиск свойства по id и передачи его в виде JSON
+     * Обработчик запроса на поиск свойства по id и передачи его в виде JSON
      *
      * @param id id свойства
      * @return JSON свойства
@@ -61,7 +61,7 @@ public class PropertySearchController {
     }
 
     /**
-     * Обробатчик запроса на поиск свойств по фрагменту
+     * Обработчик запроса на поиск свойств по фрагменту
      *
      * @param name фрагмент имени свойства
      * @return список найденных свойств

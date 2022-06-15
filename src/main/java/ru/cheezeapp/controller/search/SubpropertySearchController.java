@@ -29,7 +29,7 @@ public class SubpropertySearchController {
     private SubpropertySearchService subpropertySearchService;
 
     /**
-     * Обробатчик запроса на поиск списка всех подсвойств и передачи его в виде JSON
+     * Обработчик запроса на поиск списка всех подсвойств и передачи его в виде JSON
      *
      * @return JSON списка подсвойств
      */
@@ -41,7 +41,7 @@ public class SubpropertySearchController {
     }
 
     /**
-     * Обробатчик запроса на поиск подсвойства по id и передачи его в виде JSON
+     * Обработчик запроса на поиск подсвойства по id и передачи его в виде JSON
      *
      * @param id id подсвойства
      * @return JSON подсвойства
@@ -54,7 +54,7 @@ public class SubpropertySearchController {
     }
 
     /**
-     * Обробатчик запроса на поиск подсвойств по заданному ID свойства и передачи его в виде JSON
+     * Обработчик запроса на поиск подсвойств по заданному ID свойства и передачи его в виде JSON
      *
      * @param id ID свойства
      * @return JSON списка подсвойств

@@ -88,7 +88,7 @@ public class JsonToObjectConverter {
      * @param strain штамм
      * @return список фактических параметров
      */
-    public List<FactParametrEntity> jsonToFactParams(String json, StrainEntity strain) {
+    private List<FactParametrEntity> jsonToFactParams(String json, StrainEntity strain) {
         try {
             List<FactParametrEntity> factParams = new ArrayList<>();
             JsonNode factParamsJson = mapper.readTree(json);
@@ -120,7 +120,7 @@ public class JsonToObjectConverter {
      * @param strain штамм
      * @return список фактических параметров функции штамма
      */
-    public List<FactParametrFuncEntity> jsonToFactParamsFunc(String json, StrainEntity strain) {
+    private List<FactParametrFuncEntity> jsonToFactParamsFunc(String json, StrainEntity strain) {
         try {
             List<FactParametrFuncEntity> factParametrFuncEntities = new ArrayList<>();
             JsonNode factParamsJson = mapper.readTree(json);
@@ -307,7 +307,7 @@ public class JsonToObjectConverter {
      * @param property свойство, которому соответствуют подсвойства
      * @return список функциональных подсвойств
      */
-    public List<FunctionPair> jsonToFunction(String json, PropertyEntity property) {
+    private List<FunctionPair> jsonToFunction(String json, PropertyEntity property) {
         try {
             JsonNode propertyNode = mapper.readTree(json);
             if (propertyNode.path("functions") == null)

@@ -24,7 +24,7 @@ public class RodSearchController {
     private RodSearchService rodSearchService;
 
     /**
-     * Обробатчик запроса на поиск всех родов и формирования их в список, вывод в виде JSON
+     * Обработчик запроса на поиск всех родов и формирования их в список, вывод в виде JSON
      *
      * @return JSON списка родов
      * @author Nikolay Golovnev
@@ -37,7 +37,7 @@ public class RodSearchController {
     }
 
     /**
-     * Обробатчик запроса на поиск родов и формирования их в список, вывод в виде JSON
+     * Обработчик запроса на поиск родов и формирования их в список, вывод в виде JSON
      *
      * @return JSON списка родов
      * @author Nikolay Golovnev
@@ -50,7 +50,7 @@ public class RodSearchController {
     }
 
     /**
-     * Обробатчик запроса на поиск рода по Id
+     * Обработчик запроса на поиск рода по Id
      *
      * @param id id рода
      * @return найденный род
@@ -63,7 +63,7 @@ public class RodSearchController {
     }
 
     /**
-     * Обробатчик запроса на поиск родов по содержанию строки в их имени
+     * Обработчик запроса на поиск родов по содержанию строки в их имени
      *
      * @param name строка для поиска
      * @return список родов

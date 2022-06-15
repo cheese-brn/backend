@@ -214,7 +214,7 @@ public class CatalogsToJson {
      * @return объект ArrayNode с функциями
      * @author Pavel Chupikov
      */
-    public static ArrayNode functionCatalogToJson(PropertyEntity property) {
+    private static ArrayNode functionCatalogToJson(PropertyEntity property) {
         ArrayNode functionsNode = mapper.createArrayNode();
         List<DependencyTableEntity> dependencyTableEntities = property.getDependencies();
         for (DependencyTableEntity dependency : dependencyTableEntities) {
